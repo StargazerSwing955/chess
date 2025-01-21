@@ -8,9 +8,14 @@ package chess;
  */
 public class ChessPosition {
 
+    private final int row;
+    private final int col;
+
     public ChessPosition(int row, int col) {
         //position on board??
         //so column and row?
+        this.row = row;
+        this.col = col;
     }
 
     /**
@@ -19,7 +24,7 @@ public class ChessPosition {
      */
     public int getRow() {
         //row position
-        throw new RuntimeException("Not implemented");
+      return row;
     }
 
     /**
@@ -28,6 +33,6 @@ public class ChessPosition {
      */
     public int getColumn() {
         //column position
-        throw new RuntimeException("Not implemented");
-    }
+        return col;
+        }
 }

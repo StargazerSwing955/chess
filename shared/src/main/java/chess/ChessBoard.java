@@ -8,10 +8,13 @@ package chess;
  */
 public class ChessBoard {
 
+
+
     //remember to override equals() and hashcode()
+    private ChessPiece[][] cBoard = new ChessPiece[8][8];
     public ChessBoard() {
         // where to create chess board
-        int[][] chessBoard = new int[8][8];
+
     }
 
     /**
@@ -23,7 +26,7 @@ public class ChessBoard {
     public void addPiece(ChessPosition position, ChessPiece piece) {
         //places Piece on the board based on the Position to add it and its type
         //no return?
-        throw new RuntimeException("Not implemented");
+        cBoard[position.getRow()][position.getColumn()] = piece;
     }
 
     /**
@@ -36,7 +39,7 @@ public class ChessBoard {
     public ChessPiece getPiece(ChessPosition position) {
         //states what is on that Position
         //returns piece or null
-        throw new RuntimeException("Not implemented");
+        return cBoard[position.getRow()][position.getColumn()];
     }
 
     /**
