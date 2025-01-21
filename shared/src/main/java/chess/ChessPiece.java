@@ -12,7 +12,7 @@ public class ChessPiece {
 
     public ChessPiece(ChessGame.TeamColor pieceColor, ChessPiece.PieceType type) {
     }
-
+    //remember to override equals() and hashcode()
     /**
      * The various different chess piece options
      */
@@ -29,6 +29,7 @@ public class ChessPiece {
      * @return Which team this chess piece belongs to
      */
     public ChessGame.TeamColor getTeamColor() {
+        //black or white
         throw new RuntimeException("Not implemented");
     }
 
@@ -36,6 +37,7 @@ public class ChessPiece {
      * @return which type of chess piece this piece is
      */
     public PieceType getPieceType() {
+
         throw new RuntimeException("Not implemented");
     }
 
@@ -47,6 +49,8 @@ public class ChessPiece {
      * @return Collection of valid moves
      */
     public Collection<ChessMove> pieceMoves(ChessBoard board, ChessPosition myPosition) {
+        //move calculations
+        //does not account for check
         throw new RuntimeException("Not implemented");
     }
 }

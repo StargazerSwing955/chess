@@ -8,8 +8,10 @@ package chess;
  */
 public class ChessBoard {
 
+    //remember to override equals() and hashcode()
     public ChessBoard() {
-        
+        // where to create chess board
+        int[][] chessBoard = new int[8][8];
     }
 
     /**
@@ -19,6 +21,8 @@ public class ChessBoard {
      * @param piece    the piece to add
      */
     public void addPiece(ChessPosition position, ChessPiece piece) {
+        //places Piece on the board based on the Position to add it and its type
+        //no return?
         throw new RuntimeException("Not implemented");
     }
 
@@ -30,6 +34,8 @@ public class ChessBoard {
      * position
      */
     public ChessPiece getPiece(ChessPosition position) {
+        //states what is on that Position
+        //returns piece or null
         throw new RuntimeException("Not implemented");
     }
 
@@ -38,6 +44,10 @@ public class ChessBoard {
      * (How the game of chess normally starts)
      */
     public void resetBoard() {
+        //resets board; wow, exactly what's name says!
         throw new RuntimeException("Not implemented");
+        //8 pawns
+        //Rook, Knight, Bishop, Queen, King, Bishop, Knight, Rook
+        //Q and King lined up across the board
     }
 }
