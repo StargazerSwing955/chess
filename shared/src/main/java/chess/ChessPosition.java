@@ -12,8 +12,8 @@ public class ChessPosition {
     private final int col;
 
     public ChessPosition(int row, int col) {
-        //position on board??
-        //so column and row?
+        //position on board
+        // (row,col)
         this.row = row;
         this.col = col;
     }

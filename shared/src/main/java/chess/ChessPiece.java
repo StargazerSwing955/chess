@@ -10,7 +10,13 @@ import java.util.Collection;
  */
 public class ChessPiece {
 
+    private final ChessGame.TeamColor tColor;
+    private final ChessPiece.PieceType pType;
+
     public ChessPiece(ChessGame.TeamColor pieceColor, ChessPiece.PieceType type) {
+        this.tColor = pieceColor;
+        this.pType = type;
+
     }
     //remember to override equals() and hashcode()
     /**
@@ -30,15 +36,14 @@ public class ChessPiece {
      */
     public ChessGame.TeamColor getTeamColor() {
         //black or white
-        throw new RuntimeException("Not implemented");
+        return this.tColor;
     }
 
     /**
      * @return which type of chess piece this piece is
      */
     public PieceType getPieceType() {
-
-        throw new RuntimeException("Not implemented");
+        return this.pType;
     }
 
     /**
@@ -51,6 +56,8 @@ public class ChessPiece {
     public Collection<ChessMove> pieceMoves(ChessBoard board, ChessPosition myPosition) {
         //move calculations
         //does not account for check
+
+        //create abstract class for move calculator
         throw new RuntimeException("Not implemented");
     }
 }
