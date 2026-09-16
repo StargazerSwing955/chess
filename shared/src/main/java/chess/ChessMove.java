@@ -37,8 +37,7 @@ public class ChessMove {
      * @return ChessPosition of ending location
      */
     public ChessPosition getEndPosition() {
-        //based on moves made in game
-        //just get position at the end of the game???
+        //pos at the end of a turn (i think)
         return endPosition;
     }
 
@@ -50,5 +49,11 @@ public class ChessMove {
      */
     public ChessPiece.PieceType getPromotionPiece() {
         return promotionPiece;
+    }
+
+    //paused the video and typed this out
+    @Override
+    public String toString(){
+        return String.format("%s%s", startPosition, endPosition);
     }
 }
