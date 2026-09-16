@@ -16,6 +16,13 @@ public class ChessMove {
      * @return ChessPosition of starting location
      */
     public ChessPosition getStartPosition() {
+
+        //rook, knight, bishop, king, queen, bishop, knight, rook
+        //8 pawns
+        //4 empty rows
+        //8 pawns
+        //rook, knight, bishop, king, queen, bishop, knight, rook
+
         throw new RuntimeException("Not implemented");
     }
 
@@ -23,6 +30,8 @@ public class ChessMove {
      * @return ChessPosition of ending location
      */
     public ChessPosition getEndPosition() {
+        //based on moves made in game
+        //just get position at the end of the game???
         throw new RuntimeException("Not implemented");
     }
 

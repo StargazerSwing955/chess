@@ -29,6 +29,8 @@ public class ChessPiece {
      * @return Which team this chess piece belongs to
      */
     public ChessGame.TeamColor getTeamColor() {
+
+        //return black or white
         throw new RuntimeException("Not implemented");
     }
 
@@ -36,6 +38,8 @@ public class ChessPiece {
      * @return which type of chess piece this piece is
      */
     public PieceType getPieceType() {
+
+
         throw new RuntimeException("Not implemented");
     }
 
@@ -47,6 +51,8 @@ public class ChessPiece {
      * @return Collection of valid moves
      */
     public Collection<ChessMove> pieceMoves(ChessBoard board, ChessPosition myPosition) {
+
+        //based on PieceType
         throw new RuntimeException("Not implemented");
     }
 }
