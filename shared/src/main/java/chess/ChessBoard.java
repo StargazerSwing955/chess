@@ -23,7 +23,9 @@ public class ChessBoard {
      */
     public void addPiece(ChessPosition position, ChessPiece piece) {
 
-     squares[position.getRow()][position.getColumn()] = piece;
+     squares[position.getRow()-1][position.getColumn()-1] = piece;
+     //-1 because the positions those functions get start at 1, not 0
+
     }
 
     /**
@@ -35,7 +37,7 @@ public class ChessBoard {
      */
     public ChessPiece getPiece(ChessPosition position) {
 
-        throw new RuntimeException("Not implemented");
+        return squares[position.getRow()-1][position.getColumn()-1];
     }
 
     /**
