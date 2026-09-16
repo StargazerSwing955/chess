@@ -1,6 +1,7 @@
 package chess;
 
 import java.util.Collection;
+import java.util.List;
 
 /**
  * Represents a single chess piece
@@ -52,7 +53,7 @@ public class ChessPiece {
      */
     public Collection<ChessMove> pieceMoves(ChessBoard board, ChessPosition myPosition) {
 
-        //based on PieceType
-        throw new RuntimeException("Not implemented");
+        //based on PieceType, expects list of possible moves
+       return List.of();
     }
 }
