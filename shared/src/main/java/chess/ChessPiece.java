@@ -35,7 +35,7 @@ public class ChessPiece {
 
     //each type needs to be implemented as a class
 
-    //larger move calculator class that is called for each of their moves might be better
+    //larger move calculator class that is called for each of their moves might be better - MoveType
 
     /**
      * @return Which team this chess piece belongs to
@@ -66,13 +66,16 @@ public class ChessPiece {
         ChessPiece piece = board.getPiece(myPosition);
 
         //get type
+        return switch (piece.getPieceType()) { //gets the pieceType and calls MoveType based on response
+            case KING -> List.of();
+            case QUEEN -> List.of();
+            case BISHOP -> List.of();
+            case ROOK -> List.of();
+            case KNIGHT -> List.of();
+            case PAWN -> List.of();
+            default -> //should never be called if everything is working right
+                    List.of();
+        };
 
-
-        //video
-        if (piece.getPieceType()==PieceType.BISHOP){
-            return List.of(new ChessMove(new ChessPosition(5,4),new ChessPosition(1,8), null));
-        }
-
-       return List.of();
     }
 }
