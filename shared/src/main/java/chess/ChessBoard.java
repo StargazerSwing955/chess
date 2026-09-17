@@ -7,8 +7,7 @@ package chess;
  * signature of the existing methods.
  */
 public class ChessBoard {
-    //8x8 with alternating colored squares (a1 is white)
-    //following video
+    //8x8 of 'Pieces', which are more like positions passing hats
     ChessPiece[][] squares = new ChessPiece[8][8]; //INDEXED AT 0
 
     public ChessBoard() {

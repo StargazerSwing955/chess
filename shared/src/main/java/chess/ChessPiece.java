@@ -11,6 +11,8 @@ import java.util.List;
  */
 public class ChessPiece {
 
+    //THESE REPRESENT THE SQUARES OF THE BOARD
+
     private final ChessGame.TeamColor pieceColor;
     private final PieceType type;
 
@@ -30,6 +32,10 @@ public class ChessPiece {
         ROOK,
         PAWN
     }
+
+    //each type needs to be implemented as a class
+
+    //larger move calculator class that is called for each of their moves might be better
 
     /**
      * @return Which team this chess piece belongs to
@@ -58,6 +64,11 @@ public class ChessPiece {
     public Collection<ChessMove> pieceMoves(ChessBoard board, ChessPosition myPosition) {
         //based on PieceType, expects list of possible moves
         ChessPiece piece = board.getPiece(myPosition);
+
+        //get type
+
+
+        //video
         if (piece.getPieceType()==PieceType.BISHOP){
             return List.of(new ChessMove(new ChessPosition(5,4),new ChessPosition(1,8), null));
         }
