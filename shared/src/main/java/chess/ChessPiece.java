@@ -76,9 +76,6 @@ public class ChessPiece {
             case ROOK -> moveList.rookMove(board, piece, myPosition);
             case KNIGHT -> List.of();
             case PAWN -> List.of();
-            default -> //should never be called if everything is working right
-                    List.of();
         };
-
     }
 }
