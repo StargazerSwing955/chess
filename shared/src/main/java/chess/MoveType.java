@@ -49,7 +49,7 @@ public class MoveType {
         public ChessMove moveMaker(ChessPosition position, int newRow, int newCol, ChessPiece forPieceType){
             ChessPosition newPos = new ChessPosition(newRow,newCol);
 
-            if (forPieceType.getPieceType()== (ChessPiece.PieceType.PAWN) && (newRow == 9)) {
+            if (forPieceType.getPieceType()== (ChessPiece.PieceType.PAWN) && (newRow == 8)) {
                 //pawn promotion
                 return new ChessMove(position, newPos, null);
             }
@@ -83,11 +83,11 @@ public class MoveType {
              int col = position.getColumn();
              int row = position.getRow();
              int n = 1;
-             while (n <= 8){
+             while (n <= 7){
                  //adding row
                  int r = row + n;
 
-                 if ((1 <= r) && (r <= 9)){
+                 if ((1 <= r) && (r <= 8)){
                      //make chess move
                      ChessMove move = moveMaker(position, r, col, piece);
                      //append move to list
