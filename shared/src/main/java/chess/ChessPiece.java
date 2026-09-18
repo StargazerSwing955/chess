@@ -65,12 +65,15 @@ public class ChessPiece {
         //based on PieceType, expects list of possible moves
         ChessPiece piece = board.getPiece(myPosition);
 
-        //get type
+        //calc set up
+        MoveType moveList = new MoveType(board, piece, myPosition);
+
+        //get type and call for list
         return switch (piece.getPieceType()) { //gets the pieceType and calls MoveType based on response
             case KING -> List.of();
             case QUEEN -> List.of();
             case BISHOP -> List.of();
-            case ROOK -> List.of();
+            case ROOK -> moveList.rookMove(board, piece, myPosition);
             case KNIGHT -> List.of();
             case PAWN -> List.of();
             default -> //should never be called if everything is working right

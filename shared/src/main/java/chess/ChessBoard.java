@@ -8,7 +8,7 @@ package chess;
  */
 public class ChessBoard {
     //8x8 of 'Pieces', which are more like positions passing hats
-    ChessPiece[][] squares = new ChessPiece[8][8]; //INDEXED AT 0
+    final ChessPiece[][] squares = new ChessPiece[8][8]; //INDEXED AT 0
 
     public ChessBoard() {
 

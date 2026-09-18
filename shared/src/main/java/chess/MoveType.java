@@ -13,7 +13,26 @@ public class MoveType {
 
      */
     public MoveType(ChessBoard board, ChessPiece piece, ChessPosition position) {
+
+        kingMove(board, piece, position);
+        queenMove(board, piece, position);
+        bishopMove(board, piece, position);
         rookMove(board, piece, position);
+        knightMove(board, piece, position);
+        pawnMove(board, piece, position);
+
+        //return switch (piece.getPieceType()) { //gets the pieceType and calls MoveType based on response
+//            case KING -> List.of();
+//            case QUEEN -> List.of();
+//            case BISHOP -> List.of();
+//            case ROOK -> rookMove(board, piece, position);
+//            case KNIGHT -> List.of();
+//            case PAWN -> List.of();
+//            default -> //should never be called if everything is working right
+//                    List.of();
+//        };
+
+
     }
 
 
@@ -27,10 +46,17 @@ public class MoveType {
 
         //ChessMove function!!
         // have conditional for pawn promos
-        public ChessMove moveMaker(ChessPosition position, int newRow, int newCol){
-            //ChessPosition newPos = ChessPosition(newRow,newCol);
+        public ChessMove moveMaker(ChessPosition position, int newRow, int newCol, ChessPiece forPieceType){
+            ChessPosition newPos = new ChessPosition(newRow,newCol);
 
-            return null;
+            if (forPieceType.getPieceType()== (ChessPiece.PieceType.PAWN) && (newRow == 9)) {
+                //pawn promotion
+                return new ChessMove(position, newPos, null);
+            }
+            else{
+                return new ChessMove(position, newPos, null);
+            }
+
         }
 
         //row and col is -1 in the get piece method to accommodate 0 indexing of the board
@@ -42,26 +68,36 @@ public class MoveType {
         //row+-n && col +-n, if neither would take it off the board
         //(r || c) + n <= 8 && (r || c) - n > 0 [not indexed by 0]
         //test looks like it checks (r+n, c+n) then (r-n, c-n)
+        public List<ChessMove> bishopMove(ChessBoard board, ChessPiece piece, ChessPosition position){
+            List<ChessMove> moveList = new ArrayList<>();
+
+
+            return moveList;
+        }
+
 
         //rooks - rookMove (flat moves, horizontal/vertical)
         //row +- n || col +- n if (r||c) + n >=9 or (r||c) - n >=1
         public List<ChessMove> rookMove(ChessBoard board, ChessPiece piece, ChessPosition position){
-            List<ChessMove> moveList = new ArrayList<>();
+             List<ChessMove> moveList = new ArrayList<>();
              int col = position.getColumn();
              int row = position.getRow();
              int n = 1;
-             while (n < 8){
+             while (n <= 8){
                  //adding row
                  int r = row + n;
+
                  if ((1 <= r) && (r <= 9)){
                      //make chess move
-                     ChessMove move = moveMaker(position, r, col);
-
+                     ChessMove move = moveMaker(position, r, col, piece);
+                     //append move to list
                      moveList.add(move);
                  }
 
+
                 n++;
             }
+
 
             return moveList;
 
@@ -69,18 +105,44 @@ public class MoveType {
 
         //queen - queenMove
         // bishop + rook moves
+        public List<ChessMove> queenMove(ChessBoard board, ChessPiece piece, ChessPosition position){
+            List<ChessMove> moveList = new ArrayList<>();
+
+
+            return moveList;
+        }
 
         //king - kingMove
         //queen moves where n is hard coded as 1
 
+    public List<ChessMove> kingMove(ChessBoard board, ChessPiece piece, ChessPosition position){
+        List<ChessMove> moveList = new ArrayList<>();
+
+
+        return moveList;
+    }
+
         //knights - knightMove
         // [row + 2, col +- 1], [row - 2, col +-1]
         // [col + 2, row +- 1], [col -2, row +-1]
+        public List<ChessMove> knightMove(ChessBoard board, ChessPiece piece, ChessPosition position){
+            List<ChessMove> moveList = new ArrayList<>();
+
+
+            return moveList;
+        }
+
 
         //pawns - pawnMove
         // row + 1 (assuming the teams view their side as row 1)
         // if other team piece at [row+1, col+-1], add to list
         // if row + 1 = 9, get promotion
+        public List<ChessMove> pawnMove(ChessBoard board, ChessPiece piece, ChessPosition position){
+            List<ChessMove> moveList = new ArrayList<>();
+
+
+            return moveList;
+        }
 
 
 
