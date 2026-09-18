@@ -71,6 +71,32 @@ public class MoveType {
         //test looks like it checks (r+n, c+n) then (r-n, c-n)
         public List<ChessMove> bishopMove(ChessBoard board, ChessPiece piece, ChessPosition position){
             List<ChessMove> moveList = new ArrayList<>();
+            int col = position.getColumn();
+            int row = position.getRow();
+            int n = 1;
+            while (n <= 7){
+                //vars for each direction
+                int l = row - n;
+                int r = row + n;
+                int u = col + n;
+                int d = col - n;
+                int[] rowList = {l, r};
+                int[] colList = {u, d};
+                //maybe add them all to a list and loop through them
+                for (int rm : rowList) {
+                    for (int colm : colList) {
+                        if (((1 <= colm) && (colm <= 8) && ((1 <= rm) && (rm <= 8)))) {
+                            //make chess move
+                            ChessMove move = moveMaker(board, position, rm, colm, piece);
+                            //append move to list
+                            moveList.add(move);
+                        }
+                    }
+
+                }
+
+                n++;
+            }
 
 
             return moveList;
@@ -122,7 +148,7 @@ public class MoveType {
         // bishop + rook moves
         public List<ChessMove> queenMove(ChessBoard board, ChessPiece piece, ChessPosition position){
             List<ChessMove> moveList = new ArrayList<>();
-
+            //moveList = rookMove(board,piece,position) + bishopMove(board,piece,position);
 
             return moveList;
         }
