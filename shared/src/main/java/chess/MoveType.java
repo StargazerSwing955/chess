@@ -49,16 +49,20 @@ public class MoveType {
                         if (potPiece.getTeamColor() != piece.getTeamColor()){
                             posMoves.add(moveMaker(position, row, col, piece));
                         }
-                        break;
+                        if(piece.getPieceType() == ChessPiece.PieceType.KNIGHT){
+                            continue;
+                        }
+                        else{
+                            break;
+                        }
                     }
                     posMoves.add(moveMaker(position, row, col, piece));
-
                 }
-
             }
-
             return posMoves;
         }
+
+
 
         // have conditional for pawn promos
         public ChessMove moveMaker(ChessPosition position, int newRow, int newCol, ChessPiece forPieceType){
@@ -74,6 +78,15 @@ public class MoveType {
             }
 
         }
+
+//        public ArrayList<ChessMove> pawnMove(ChessBoard board, ChessPiece piece, ChessPosition position){
+//            int row = position.getRow();
+//            int col = position.getColumn();
+//
+//
+//        }
+
+
 
         //flatMove - row or column
         //does the math for POSSIBLE moves in the horizontal and vertical directions
