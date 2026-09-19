@@ -21,17 +21,6 @@ public class MoveType {
         knightMove(board, piece, position);
         pawnMove(board, piece, position);
 
-        //return switch (piece.getPieceType()) { //gets the pieceType and calls MoveType based on response
-//            case KING -> List.of();
-//            case QUEEN -> List.of();
-//            case BISHOP -> List.of();
-//            case ROOK -> rookMove(board, piece, position);
-//            case KNIGHT -> List.of();
-//            case PAWN -> List.of();
-//            default -> //should never be called if everything is working right
-//                    List.of();
-//        };
-
 
     }
 
@@ -88,8 +77,61 @@ public class MoveType {
 
         //flatMove - row or column
         //does the math for POSSIBLE moves in the horizontal and vertical directions
+        public List<List<int[]>> flatMove(ChessBoard board, ChessPiece piece, ChessPosition position, int max) {
+            List<List<int[]>> straightCoords = List.of();
+            int col = position.getColumn();
+            int row = position.getRow();
+            int n = 1;
+            List<int[]> leftCoords = List.of();
+            List<int[]> rightCoords = List.of();
+            List<int[]> upCoords = List.of();
+            List<int[]> downCoords = List.of();
+
+            while (n <= max) {
+                //vars for each direction
+                int l = row - n; //left
+                int r = row + n; //right
+                int u = col + n; //up
+                int d = col - n; //down
+                int[] calcVals = {l, r, u, d};
+
+                //left
+                if (((1 <= l) && (l <= 8))) {
+                    int[] coords = {l, col};
+                    leftCoords.add(coords);
+                }
+                //right
+                if (((1 <= r) && (r <= 8))) {
+                    int[] coords = {r, col};
+                    rightCoords.add(coords);
+                }
+                //up
+                if (((1 <= u) && (u <= 8))) {
+                    int[] coords = {row, u};
+                    upCoords.add(coords);
+                }
+                //down
+                if (((1 <= d) && (d <= 8))) {
+                    int[] coords = {row, d};
+                    downCoords.add(coords);
+                }
+
+                n++;
+            } //add all the lists
+                straightCoords.add(leftCoords);
+                straightCoords.add(rightCoords);
+                straightCoords.add(upCoords);
+                straightCoords.add(downCoords);
+
+            return straightCoords;
+        }
+
+
 
         //diaMove - diagonal moves
+
+
+
 
         //row and col is -1 in the get piece method to accommodate 0 indexing of the board
         // so final positions must also be 1-9
