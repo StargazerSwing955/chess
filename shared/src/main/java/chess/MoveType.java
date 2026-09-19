@@ -82,26 +82,45 @@ public class MoveType {
             int col = position.getColumn();
 
             ArrayList<ChessMove> pnMove = new ArrayList<ChessMove>();
+            int newRow = 0;
+            int startRowJump = 0;
 
-            int newRow = row+1;
+            switch (piece.getTeamColor()){
+                case BLACK -> newRow = row - 1;
+                case WHITE -> newRow = row + 1;
+            }
+            switch (piece.getTeamColor()){
+                case BLACK -> startRowJump = row - 2;
+                case WHITE -> startRowJump = row + 2;
+            }
+
+
             int leftCol = col - 1;
             int rightCol = col + 1;
 
-            ChessPiece potPiece = board.getPiece(new ChessPosition(newRow, col)); //potPiece for potential piece
+            if ((1 <= newRow) && (newRow <= 8)){
+                ChessPiece potPiece = board.getPiece(new ChessPosition(newRow, col)); //potPiece for potential piece
 
-            if (potPiece == null) {
-                pnMove.add(moveMaker(position, newRow, col, piece));
+                if (potPiece == null) {
+                    pnMove.add(moveMaker(position, newRow, col, piece));
+                }
             }
+            if ((1 <= leftCol) && (leftCol <= 8)){
+                ChessPiece cL = board.getPiece(new ChessPosition(newRow, leftCol));
 
-            ChessPiece cL = board.getPiece(new ChessPosition(newRow, leftCol));
-            ChessPiece cR = board.getPiece(new ChessPosition(newRow, rightCol));
-
-            if ((cL != null) && (cL.getTeamColor() != piece.getTeamColor())){
+                if ((cL != null) && (cL.getTeamColor() != piece.getTeamColor())){
                     pnMove.add(moveMaker(position, newRow, leftCol, piece));
+                }
             }
-            if ((cR != null) && (cR.getTeamColor() != piece.getTeamColor())){
-                pnMove.add(moveMaker(position, newRow, rightCol, piece));
+            if ((1 <= rightCol) && (rightCol <= 8)){
+                ChessPiece cR = board.getPiece(new ChessPosition(newRow, rightCol));
+
+                if ((cR != null) && (cR.getTeamColor() != piece.getTeamColor())){
+                    pnMove.add(moveMaker(position, newRow, leftCol, piece));
+                }
             }
+
+
 
             return pnMove;
         }
