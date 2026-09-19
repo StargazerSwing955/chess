@@ -73,7 +73,7 @@ public class ChessPiece {
         return switch (piece.getPieceType()) { //gets the pieceType and calls MoveType based on response
             case KING -> List.of();
             case QUEEN -> List.of();
-            case BISHOP -> List.of();
+            case BISHOP -> moveList.bishopMove(board, piece, myPosition);
             case ROOK -> moveList.rookMove(board, piece, myPosition);
             case KNIGHT -> List.of();
             case PAWN -> List.of();

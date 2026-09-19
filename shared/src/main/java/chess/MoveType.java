@@ -46,6 +46,30 @@ public class MoveType {
 
         //ChessMove maker function!!
 
+        //filters out what moves (the lists) it can keep
+        public List<ChessMove> moveFilter(List<List<int[]>> moveLists, ChessPiece piece,ChessPosition position, ChessBoard board){
+            List<ChessMove> posMoves = List.of(); //possible moves
+
+            for(List<int[]> mlist : moveLists){ //mlist for movelist
+                for(int[] rc : mlist){ //rc for row-column since these are actual places on the board
+                    int row = rc[0];
+                    int col = rc[1];
+                    ChessPosition pos = new ChessPosition(row, col);
+                    ChessPiece potPiece = board.getPiece(pos); //potPiece for potential piece
+                    if (potPiece != null){
+                        if (potPiece.getTeamColor() != piece.getTeamColor()){
+                            posMoves.add(moveMaker(position, row, col, piece));
+                        }
+                        break;
+                    }
+                    posMoves.add(moveMaker(position, row, col, piece));
+
+                }
+
+            }
+
+            return posMoves;
+        }
 
         // have conditional for pawn promos
         public ChessMove moveMaker(ChessPosition position, int newRow, int newCol, ChessPiece forPieceType){
@@ -61,6 +85,11 @@ public class MoveType {
             }
 
         }
+
+        //flatMove - row or column
+        //does the math for POSSIBLE moves in the horizontal and vertical directions
+
+        //diaMove - diagonal moves
 
         //row and col is -1 in the get piece method to accommodate 0 indexing of the board
         // so final positions must also be 1-9
@@ -112,7 +141,7 @@ public class MoveType {
              int col = position.getColumn();
              int row = position.getRow();
              int n = 1;
-//             while (n <= 7){
+            while (n <= 7){
 //                 //vars for each direction
 //                 int l = row - n;
 //                 int r = row + n;
@@ -138,8 +167,8 @@ public class MoveType {
 //                     }
 //                 }
 //
-//                n++;
-//            }
+                n++;
+            }
 
 
             return moveList;
