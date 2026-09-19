@@ -36,10 +36,10 @@ public class MoveType {
         //ChessMove maker function!!
 
         //filters out what moves (the lists) it can keep
-        public List<ChessMove> moveFilter(List<List<int[]>> moveLists, ChessPiece piece,ChessPosition position, ChessBoard board){
-            List<ChessMove> posMoves = List.of(); //possible moves
+        public ArrayList<ChessMove> moveFilter(ArrayList<ArrayList<int[]>> moveLists, ChessPiece piece, ChessPosition position, ChessBoard board){
+           ArrayList<ChessMove> posMoves = new ArrayList<ChessMove>(); //possible moves
 
-            for(List<int[]> mlist : moveLists){ //mlist for movelist
+            for(ArrayList<int[]> mlist : moveLists){ //mlist for movelist
                 for(int[] rc : mlist){ //rc for row-column since these are actual places on the board
                     int row = rc[0];
                     int col = rc[1];
@@ -77,15 +77,15 @@ public class MoveType {
 
         //flatMove - row or column
         //does the math for POSSIBLE moves in the horizontal and vertical directions
-        public List<List<int[]>> flatMove(ChessBoard board, ChessPiece piece, ChessPosition position, int max) {
-            List<List<int[]>> straightCoords = List.of();
+        public ArrayList<ArrayList<int[]>> flatMove(ChessBoard board, ChessPiece piece, ChessPosition position, int max) {
+            ArrayList<ArrayList<int[]>> straightCoords = new ArrayList<ArrayList<int[]>>();
             int col = position.getColumn();
             int row = position.getRow();
             int n = 1;
-            List<int[]> leftCoords = List.of();
-            List<int[]> rightCoords = List.of();
-            List<int[]> upCoords = List.of();
-            List<int[]> downCoords = List.of();
+           ArrayList<int[]> leftCoords = new ArrayList<int[]>();
+           ArrayList<int[]> rightCoords = new ArrayList<int[]>();
+           ArrayList<int[]> upCoords = new ArrayList<int[]>();
+           ArrayList<int[]> downCoords = new ArrayList<int[]>();
 
             while (n <= max) {
                 //vars for each direction
@@ -142,8 +142,8 @@ public class MoveType {
         //row+-n && col +-n, if neither would take it off the board
         //(r || c) + n <= 8 && (r || c) - n > 0 [not indexed by 0]
         //test looks like it checks (r+n, c+n) then (r-n, c-n)
-        public List<ChessMove> bishopMove(ChessBoard board, ChessPiece piece, ChessPosition position){
-            List<ChessMove> moveList = new ArrayList<>();
+        public ArrayList<ChessMove> bishopMove(ChessBoard board, ChessPiece piece, ChessPosition position){
+            ArrayList<ChessMove> moveList = new ArrayList<>();
             int col = position.getColumn();
             int row = position.getRow();
             int n = 1;
@@ -179,39 +179,9 @@ public class MoveType {
         //rooks - rookMove (flat moves, horizontal/vertical)
         //row +- n || col +- n if (r||c) + n >=8 or (r||c) - n >=1
         public List<ChessMove> rookMove(ChessBoard board, ChessPiece piece, ChessPosition position){
-             List<ChessMove> moveList = new ArrayList<>();
-             int col = position.getColumn();
-             int row = position.getRow();
-             int n = 1;
-            while (n <= 7){
-//                 //vars for each direction
-//                 int l = row - n;
-//                 int r = row + n;
-//                 int u = col + n;
-//                 int d = col - n;
-//                 int[] rowList = {l, r};
-//                 int[] colList = {u, d};
-//                 //maybe add them all to a list and loop through them
-//                 for (int rm : rowList) {
-//                     if (((1 <= rm) && (rm <= 8))) {
-//                         //make chess move
-//                         ChessMove move = moveMaker(board, position, rm, col, piece);
-//                         //append move to list
-//                         moveList.add(move);
-//                     }
-//                 }
-//                 for (int colm : colList) {
-//                     if (((1 <= colm) && (colm <= 8))) {
-//                         //make chess move
-//                         ChessMove move = moveMaker(board, position, row, colm, piece);
-//                         //append move to list
-//                         moveList.add(move);
-//                     }
-//                 }
-//
-                n++;
-            }
 
+           ArrayList<ArrayList<int[]>> tryMoves = flatMove(board, piece, position, 7);
+           ArrayList<ChessMove> moveList = moveFilter(tryMoves,piece,position,board);
 
             return moveList;
 
@@ -219,8 +189,8 @@ public class MoveType {
 
         //queen - queenMove
         // bishop + rook moves
-        public List<ChessMove> queenMove(ChessBoard board, ChessPiece piece, ChessPosition position){
-            List<ChessMove> moveList = new ArrayList<>();
+        public ArrayList<ChessMove> queenMove(ChessBoard board, ChessPiece piece, ChessPosition position){
+           ArrayList<ChessMove> moveList = new ArrayList<>();
             //moveList = rookMove(board,piece,position) + bishopMove(board,piece,position);
 
             return moveList;
@@ -229,8 +199,8 @@ public class MoveType {
         //king - kingMove
         //queen moves where n is hard coded as 1
 
-    public List<ChessMove> kingMove(ChessBoard board, ChessPiece piece, ChessPosition position){
-        List<ChessMove> moveList = new ArrayList<>();
+    public ArrayList<ChessMove> kingMove(ChessBoard board, ChessPiece piece, ChessPosition position){
+        ArrayList<ChessMove> moveList = new ArrayList<>();
 
 
         return moveList;
@@ -239,8 +209,8 @@ public class MoveType {
         //knights - knightMove
         // [row + 2, col +- 1], [row - 2, col +-1]
         // [col + 2, row +- 1], [col -2, row +-1]
-        public List<ChessMove> knightMove(ChessBoard board, ChessPiece piece, ChessPosition position){
-            List<ChessMove> moveList = new ArrayList<>();
+        public ArrayList<ChessMove> knightMove(ChessBoard board, ChessPiece piece, ChessPosition position){
+            ArrayList<ChessMove> moveList = new ArrayList<>();
 
 
             return moveList;
@@ -251,8 +221,8 @@ public class MoveType {
         // row + 1 (assuming the teams view their side as row 1)
         // if other team piece at [row+1, col+-1], add to list
         // if row + 1 = 9, get promotion
-        public List<ChessMove> pawnMove(ChessBoard board, ChessPiece piece, ChessPosition position){
-            List<ChessMove> moveList = new ArrayList<>();
+        public ArrayList<ChessMove> pawnMove(ChessBoard board, ChessPiece piece, ChessPosition position){
+            ArrayList<ChessMove> moveList = new ArrayList<>();
 
 
             return moveList;
