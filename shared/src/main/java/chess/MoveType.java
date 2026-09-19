@@ -199,7 +199,6 @@ public class MoveType {
         //rooks - rookMove (flat moves, horizontal/vertical)
         //row +- n || col +- n if (r||c) + n >=8 or (r||c) - n >=1
         public List<ChessMove> rookMove(ChessBoard board, ChessPiece piece, ChessPosition position){
-
            ArrayList<ArrayList<int[]>> tryMoves = flatMove(board, piece, position, 7);
            ArrayList<ChessMove> moveList = moveFilter(tryMoves,piece,position,board);
 
@@ -210,10 +209,12 @@ public class MoveType {
         //queen - queenMove
         // bishop + rook moves
         public ArrayList<ChessMove> queenMove(ChessBoard board, ChessPiece piece, ChessPosition position){
-            //moveList = rookMove(board,piece,position) + bishopMove(board,piece,position);
             ArrayList<ArrayList<int[]>> tryMoves = flatMove(board, piece, position, 7);
-
             ArrayList<ChessMove> moveList = moveFilter(tryMoves,piece,position,board);
+            tryMoves = diagonalMove(board, piece, position, 7);
+            ArrayList<ChessMove> diaList = moveFilter(tryMoves,piece,position,board);
+            moveList.addAll(diaList);
+
 
             return moveList;
         }
@@ -225,7 +226,9 @@ public class MoveType {
 
         ArrayList<ArrayList<int[]>> tryMoves = flatMove(board, piece, position, 1);
         ArrayList<ChessMove> moveList = moveFilter(tryMoves,piece,position,board);
-
+        tryMoves = diagonalMove(board, piece, position, 1);
+        ArrayList<ChessMove> diaList = moveFilter(tryMoves,piece,position,board);
+        moveList.addAll(diaList);
 
         return moveList;
     }
