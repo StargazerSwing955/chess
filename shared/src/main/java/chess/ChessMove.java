@@ -53,12 +53,6 @@ public class ChessMove {
         return promotionPiece;
     }
 
-    //paused the video and typed this out
-//    @Override
-//    public String toString(){
-//        return String.format("%s%s", startPosition, endPosition);
-//    }
-
 
     @Override
     public boolean equals(Object o) {
@@ -73,4 +67,10 @@ public class ChessMove {
     public int hashCode() {
         return Objects.hash(startPosition, endPosition, promotionPiece);
     }
+
+    @Override
+    public String toString(){
+        return String.format("%s%s", startPosition, endPosition);
+    }
+
 }

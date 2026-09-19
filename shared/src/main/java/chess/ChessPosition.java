@@ -35,10 +35,10 @@ public class ChessPosition {
     }
 
 //    //paused the video and typed this out
-//    @Override
-//    public String toString(){
-//        return String.format("[%d,%d]", row, col);
-//    }
+    @Override
+    public String toString(){
+        return String.format("[%d,%d]", row, col);
+    }
 
     @Override
     public boolean equals(Object o) {

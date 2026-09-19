@@ -44,9 +44,11 @@ public class MoveType {
     3, return moveList
      */
 
-        //ChessMove function!!
+        //ChessMove maker function!!
+
+
         // have conditional for pawn promos
-        public ChessMove moveMaker(ChessBoard board, ChessPosition position, int newRow, int newCol, ChessPiece forPieceType){
+        public ChessMove moveMaker(ChessPosition position, int newRow, int newCol, ChessPiece forPieceType){
             ChessPosition newPos = new ChessPosition(newRow,newCol);
 
 
@@ -74,29 +76,29 @@ public class MoveType {
             int col = position.getColumn();
             int row = position.getRow();
             int n = 1;
-            while (n <= 7){
-                //vars for each direction
-                int l = row - n;
-                int r = row + n;
-                int u = col + n;
-                int d = col - n;
-                int[] rowList = {l, r};
-                int[] colList = {u, d};
-                //maybe add them all to a list and loop through them
-                for (int rm : rowList) {
-                    for (int colm : colList) {
-                        if (((1 <= colm) && (colm <= 8) && ((1 <= rm) && (rm <= 8)))) {
-                            //make chess move
-                            ChessMove move = moveMaker(board, position, rm, colm, piece);
-                            //append move to list
-                            moveList.add(move);
-                        }
-                    }
-
-                }
-
-                n++;
-            }
+//            while (n <= 7){ //does all directions
+//                //vars for each direction
+//                int l = row - n;
+//                int r = row + n;
+//                int u = col + n;
+//                int d = col - n;
+//                int[] rowList = {l, r};
+//                int[] colList = {u, d};
+//                //maybe add them all to a list and loop through them
+//                for (int rm : rowList) {
+//                    for (int colm : colList) {
+//                        if (((1 <= colm) && (colm <= 8) && ((1 <= rm) && (rm <= 8)))) {
+//                            //make chess move
+//                            ChessMove move = moveMaker(board, position, rm, colm, piece);
+//                            //append move to list
+//                            moveList.add(move);
+//                        }
+//                    }
+//
+//                }
+//
+//                n++;
+//            }
 
 
             return moveList;
@@ -110,34 +112,34 @@ public class MoveType {
              int col = position.getColumn();
              int row = position.getRow();
              int n = 1;
-             while (n <= 7){
-                 //vars for each direction
-                 int l = row - n;
-                 int r = row + n;
-                 int u = col + n;
-                 int d = col - n;
-                 int[] rowList = {l, r};
-                 int[] colList = {u, d};
-                 //maybe add them all to a list and loop through them
-                 for (int rm : rowList) {
-                     if (((1 <= rm) && (rm <= 8))) {
-                         //make chess move
-                         ChessMove move = moveMaker(board, position, rm, col, piece);
-                         //append move to list
-                         moveList.add(move);
-                     }
-                 }
-                 for (int colm : colList) {
-                     if (((1 <= colm) && (colm <= 8))) {
-                         //make chess move
-                         ChessMove move = moveMaker(board, position, row, colm, piece);
-                         //append move to list
-                         moveList.add(move);
-                     }
-                 }
-
-                n++;
-            }
+//             while (n <= 7){
+//                 //vars for each direction
+//                 int l = row - n;
+//                 int r = row + n;
+//                 int u = col + n;
+//                 int d = col - n;
+//                 int[] rowList = {l, r};
+//                 int[] colList = {u, d};
+//                 //maybe add them all to a list and loop through them
+//                 for (int rm : rowList) {
+//                     if (((1 <= rm) && (rm <= 8))) {
+//                         //make chess move
+//                         ChessMove move = moveMaker(board, position, rm, col, piece);
+//                         //append move to list
+//                         moveList.add(move);
+//                     }
+//                 }
+//                 for (int colm : colList) {
+//                     if (((1 <= colm) && (colm <= 8))) {
+//                         //make chess move
+//                         ChessMove move = moveMaker(board, position, row, colm, piece);
+//                         //append move to list
+//                         moveList.add(move);
+//                     }
+//                 }
+//
+//                n++;
+//            }
 
 
             return moveList;
