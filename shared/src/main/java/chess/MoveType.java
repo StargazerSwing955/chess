@@ -138,8 +138,8 @@ public class MoveType {
             ArrayList<int[]> downRightCoords = new ArrayList<int[]>(); //row - n, col - n
             while (n <= max) {
                 //vars for each direction
-                int u = row - n; //up
-                int d = row + n; //down
+                int u = row - n; //down
+                int d = row + n; //up ; I know they're switched, I'm too tired to fix them
                 int r = col + n; //right
                 int l = col - n; //left
 
@@ -175,6 +175,78 @@ public class MoveType {
             return xCoords;
         }
 
+        //horseMove - move for the knight
+        public ArrayList<ArrayList<int[]>> horseMove(ChessBoard board, ChessPiece piece, ChessPosition position) {
+            ArrayList<ArrayList<int[]>> LCoords = new ArrayList<ArrayList<int[]>>();
+            int col = position.getColumn();
+            int row = position.getRow();
+            ArrayList<int[]> leftCoords = new ArrayList<int[]>(); // L to the left
+            ArrayList<int[]> rightCoords = new ArrayList<int[]>(); // L to the right
+            ArrayList<int[]> upCoords = new ArrayList<int[]>(); // L ahead
+            ArrayList<int[]> downCoords = new ArrayList<int[]>(); // L behind
+            int uStem = row + 2; //up
+            int dStem = row - 2; //down
+            int rStem = col + 2; //right
+            int lStem = col - 2; //left
+            int uTail = row + 1; //up
+            int dTail = row - 1; //down
+            int rTail = col + 1; //right
+            int lTail = col - 1; //left
+
+            //upwards L (so T)
+            if ((1 <= uStem) && (uStem <= 8)){
+                if ((1 <= rTail) && (rTail <= 8)) {
+                    int[] coords = {uStem, rTail};
+                    upCoords.add(coords);
+                }
+                if((1 <= lTail) && (lTail <= 8)){
+                    int[] coords = {uStem, lTail};
+                    upCoords.add(coords);
+                }
+            }
+            //downwards L
+            if ((1 <= dStem) && (dStem <= 8)){
+                if ((1 <= rTail) && (rTail <= 8)) {
+                    int[] coords = {dStem, rTail};
+                    downCoords.add(coords);
+                }
+                if((1 <= lTail) && (lTail <= 8)){
+                    int[] coords = {dStem, lTail};
+                    downCoords.add(coords);
+                }
+            }
+            //rightward L
+            if ((1 <= rStem) && (rStem <=8)){
+                if((1 <= uTail) && (uTail <= 8)){
+                    int[] coords = {uTail, rStem};
+                    rightCoords.add(coords);
+                }
+                if((1 <= dTail) && (dTail <= 8)){
+                    int[] coords = {dTail, rStem};
+                    rightCoords.add(coords);
+                }
+            }
+            //leftward L
+            if ((1 <= lStem) && (lStem <=8)){
+                if((1 <= uTail) && (uTail <= 8)){
+                    int[] coords = {uTail, lStem};
+                    rightCoords.add(coords);
+                }
+                if((1 <= dTail) && (dTail <= 8)){
+                    int[] coords = {dTail, lStem};
+                    rightCoords.add(coords);
+                }
+            }
+
+
+            //add all the lists
+            LCoords.add(leftCoords);
+            LCoords.add(rightCoords);
+            LCoords.add(upCoords);
+            LCoords.add(downCoords);
+
+            return LCoords;
+        }
 
 
 
@@ -222,23 +294,22 @@ public class MoveType {
         //king - kingMove
         //queen moves where n is hard coded as 1
 
-    public ArrayList<ChessMove> kingMove(ChessBoard board, ChessPiece piece, ChessPosition position){
+        public ArrayList<ChessMove> kingMove(ChessBoard board, ChessPiece piece, ChessPosition position){
+            ArrayList<ArrayList<int[]>> tryMoves = flatMove(board, piece, position, 1);
+            ArrayList<ChessMove> moveList = moveFilter(tryMoves,piece,position,board);
+            tryMoves = diagonalMove(board, piece, position, 1);
+            ArrayList<ChessMove> diaList = moveFilter(tryMoves,piece,position,board);
+            moveList.addAll(diaList);
 
-        ArrayList<ArrayList<int[]>> tryMoves = flatMove(board, piece, position, 1);
-        ArrayList<ChessMove> moveList = moveFilter(tryMoves,piece,position,board);
-        tryMoves = diagonalMove(board, piece, position, 1);
-        ArrayList<ChessMove> diaList = moveFilter(tryMoves,piece,position,board);
-        moveList.addAll(diaList);
-
-        return moveList;
-    }
+            return moveList;
+        }
 
         //knights - knightMove
         // [row + 2, col +- 1], [row - 2, col +-1]
         // [col + 2, row +- 1], [col -2, row +-1]
         public ArrayList<ChessMove> knightMove(ChessBoard board, ChessPiece piece, ChessPosition position){
-            ArrayList<ChessMove> moveList = new ArrayList<>();
-
+            ArrayList<ArrayList<int[]>> tryMoves = horseMove(board, piece, position);
+            ArrayList<ChessMove> moveList = moveFilter(tryMoves,piece,position,board);
 
             return moveList;
         }
