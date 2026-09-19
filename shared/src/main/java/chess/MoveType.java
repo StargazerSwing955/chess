@@ -89,30 +89,29 @@ public class MoveType {
 
             while (n <= max) {
                 //vars for each direction
-                int l = row - n; //left
-                int r = row + n; //right
-                int u = col + n; //up
-                int d = col - n; //down
-                int[] calcVals = {l, r, u, d};
+                int u = row - n; //up
+                int d = row + n; //down
+                int r = col + n; //right
+                int l = col - n; //left
 
-                //left
-                if (((1 <= l) && (l <= 8))) {
-                    int[] coords = {l, col};
-                    leftCoords.add(coords);
-                }
-                //right
-                if (((1 <= r) && (r <= 8))) {
-                    int[] coords = {r, col};
-                    rightCoords.add(coords);
-                }
                 //up
                 if (((1 <= u) && (u <= 8))) {
-                    int[] coords = {row, u};
-                    upCoords.add(coords);
+                    int[] coords = {u, col};
+                    leftCoords.add(coords);
                 }
                 //down
                 if (((1 <= d) && (d <= 8))) {
-                    int[] coords = {row, d};
+                    int[] coords = {d, col};
+                    rightCoords.add(coords);
+                }
+                //right
+                if (((1 <= r) && (r <= 8))) {
+                    int[] coords = {row, r};
+                    upCoords.add(coords);
+                }
+                //left
+                if (((1 <= l) && (l <= 8))) {
+                    int[] coords = {row, l};
                     downCoords.add(coords);
                 }
 
@@ -127,55 +126,54 @@ public class MoveType {
         }
 
 
+        //diagonalMove - diagonal moves
+        public ArrayList<ArrayList<int[]>> diagonalMove(ChessBoard board, ChessPiece piece, ChessPosition position, int max) {
+            ArrayList<ArrayList<int[]>> xCoords = new ArrayList<ArrayList<int[]>>();
+            int col = position.getColumn();
+            int row = position.getRow();
+            int n = 1;
+            ArrayList<int[]> upLeftCoords = new ArrayList<int[]>(); // row + n , col + n
+            ArrayList<int[]> upRightCoords = new ArrayList<int[]>(); //row + n, col - n
+            ArrayList<int[]> downLeftCoords = new ArrayList<int[]>(); // row - n, col + n
+            ArrayList<int[]> downRightCoords = new ArrayList<int[]>(); //row - n, col - n
+            while (n <= max) {
+                //vars for each direction
+                int u = row - n; //up
+                int d = row + n; //down
+                int r = col + n; //right
+                int l = col - n; //left
 
-    //diagonalMove - diagonal moves
-//        public ArrayList<ArrayList<int[]>> diagonalMove(ChessBoard board, ChessPiece piece, ChessPosition position, int max) {
-//            ArrayList<ArrayList<int[]>> xCoords = new ArrayList<ArrayList<int[]>>();
-//            int col = position.getColumn();
-//            int row = position.getRow();
-//            int n = 1;
-//            ArrayList<int[]> upLeftCoords = new ArrayList<int[]>(); // row + n , col + n
-//            ArrayList<int[]> upRightCoords = new ArrayList<int[]>(); //row + n, col - n
-//            ArrayList<int[]> downLeftCoords = new ArrayList<int[]>(); // row - n, col + n
-//            ArrayList<int[]> downRightCoords = new ArrayList<int[]>(); //row - n, col - n
-//            while (n <= max) {
-//                //vars for each direction
-//                int l = row - n; //left
-//                int r = row + n; //right
-//                int u = col + n; //up
-//                int d = col - n; //down
-//
-//                //row + n , col + n
-//                if (((1 <= l) && (l <= 8)) && ((1 <= u) && (u <= 8))) {
-//                    int[] coords = {l, u};
-//                    upLeftCoords.add(coords);
-//                }
-//                //row + n, col - n
-//                if (((1 <= r) && (r <= 8)) && ((1 <= u) && (u <= 8))) {
-//                    int[] coords = {r, u};
-//                    upRightCoords.add(coords);
-//                }
-//                //left and down
-//                if (((1 <= l) && (l <= 8)) && ((d <= u) && (d <= 8))) {
-//                    int[] coords = {l, u};
-//                    upLeftCoords.add(coords);
-//                }
-//                //down
-//                if (((1 <= r) && (r <= 8)) && ((1 <= d) && (d <= 8))) {
-//                    int[] coords = {row, d};
-//                    downRightCoords.add(coords);
-//                }
-//
-//                n++;
-//            } //add all the lists
-//            xCoords.add(upLeftCoords);
-//            xCoords.add(upRightCoords);
-//            xCoords.add(downLeftCoords);
-//            xCoords.add(downRightCoords);
-//
-//
-//            return xCoords;
-//        }
+                //up left
+                if (((1 <= u) && (u <= 8)) && ((1 <= l) && (l <= 8))) {
+                    int[] coords = {u, l};
+                    upLeftCoords.add(coords);
+                }
+                //up right
+                if (((1 <= u) && (u <= 8)) && ((1 <= r) && (r <= 8))) {
+                    int[] coords = {u, r};
+                    upRightCoords.add(coords);
+                }
+                //down left
+                if (((1 <= d) && (d <= 8)) && ((1 <= l) && (l <= 8))) {
+                    int[] coords = {d, l};
+                    downLeftCoords.add(coords);
+                }
+                //down right
+                if (((1 <= d) && (d <= 8)) && ((1 <= r) && (r <= 8))) {
+                    int[] coords = {d, r};
+                    downRightCoords.add(coords);
+                }
+
+              n++;
+            } //add all the lists
+            xCoords.add(upLeftCoords);
+            xCoords.add(upRightCoords);
+            xCoords.add(downLeftCoords);
+            xCoords.add(downRightCoords);
+
+
+            return xCoords;
+        }
 
 
 
@@ -191,11 +189,8 @@ public class MoveType {
         //(r || c) + n <= 8 && (r || c) - n > 0 [not indexed by 0]
         //test looks like it checks (r+n, c+n) then (r-n, c-n)
         public ArrayList<ChessMove> bishopMove(ChessBoard board, ChessPiece piece, ChessPosition position){
-            ArrayList<ChessMove> moveList = new ArrayList<>();
-            int col = position.getColumn();
-            int row = position.getRow();
-            int n = 1;
-
+            ArrayList<ArrayList<int[]>> tryMoves = diagonalMove(board, piece, position, 7);
+            ArrayList<ChessMove> moveList = moveFilter(tryMoves,piece,position,board);
 
             return moveList;
         }
@@ -217,7 +212,6 @@ public class MoveType {
         public ArrayList<ChessMove> queenMove(ChessBoard board, ChessPiece piece, ChessPosition position){
             //moveList = rookMove(board,piece,position) + bishopMove(board,piece,position);
             ArrayList<ArrayList<int[]>> tryMoves = flatMove(board, piece, position, 7);
-
 
             ArrayList<ChessMove> moveList = moveFilter(tryMoves,piece,position,board);
 
