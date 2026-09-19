@@ -190,8 +190,11 @@ public class MoveType {
         //queen - queenMove
         // bishop + rook moves
         public ArrayList<ChessMove> queenMove(ChessBoard board, ChessPiece piece, ChessPosition position){
-           ArrayList<ChessMove> moveList = new ArrayList<>();
             //moveList = rookMove(board,piece,position) + bishopMove(board,piece,position);
+            ArrayList<ArrayList<int[]>> tryMoves = flatMove(board, piece, position, 7);
+
+
+            ArrayList<ChessMove> moveList = moveFilter(tryMoves,piece,position,board);
 
             return moveList;
         }
@@ -200,7 +203,9 @@ public class MoveType {
         //queen moves where n is hard coded as 1
 
     public ArrayList<ChessMove> kingMove(ChessBoard board, ChessPiece piece, ChessPosition position){
-        ArrayList<ChessMove> moveList = new ArrayList<>();
+
+        ArrayList<ArrayList<int[]>> tryMoves = flatMove(board, piece, position, 1);
+        ArrayList<ChessMove> moveList = moveFilter(tryMoves,piece,position,board);
 
 
         return moveList;
