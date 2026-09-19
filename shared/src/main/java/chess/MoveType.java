@@ -62,8 +62,6 @@ public class MoveType {
             return posMoves;
         }
 
-
-
         // have conditional for pawn promos
         public ChessMove moveMaker(ChessPosition position, int newRow, int newCol, ChessPiece forPieceType){
             ChessPosition newPos = new ChessPosition(newRow,newCol);
@@ -79,12 +77,34 @@ public class MoveType {
 
         }
 
-//        public ArrayList<ChessMove> pawnMove(ChessBoard board, ChessPiece piece, ChessPosition position){
-//            int row = position.getRow();
-//            int col = position.getColumn();
-//
-//
-//        }
+        public ArrayList<ChessMove> pMove(ChessBoard board, ChessPiece piece, ChessPosition position){
+            int row = position.getRow();
+            int col = position.getColumn();
+
+            ArrayList<ChessMove> pnMove = new ArrayList<ChessMove>();
+
+            int newRow = row+1;
+            int leftCol = col - 1;
+            int rightCol = col + 1;
+
+            ChessPiece potPiece = board.getPiece(new ChessPosition(newRow, col)); //potPiece for potential piece
+
+            if (potPiece == null) {
+                pnMove.add(moveMaker(position, newRow, col, piece));
+            }
+
+            ChessPiece cL = board.getPiece(new ChessPosition(newRow, leftCol));
+            ChessPiece cR = board.getPiece(new ChessPosition(newRow, rightCol));
+
+            if ((cL != null) && (cL.getTeamColor() != piece.getTeamColor())){
+                    pnMove.add(moveMaker(position, newRow, leftCol, piece));
+            }
+            if ((cR != null) && (cR.getTeamColor() != piece.getTeamColor())){
+                pnMove.add(moveMaker(position, newRow, rightCol, piece));
+            }
+
+            return pnMove;
+        }
 
 
 
@@ -333,8 +353,7 @@ public class MoveType {
         // if other team piece at [row+1, col+-1], add to list
         // if row + 1 = 9, get promotion
         public ArrayList<ChessMove> pawnMove(ChessBoard board, ChessPiece piece, ChessPosition position){
-            ArrayList<ChessMove> moveList = new ArrayList<>();
-
+            ArrayList<ChessMove> moveList = pMove(board,piece,position);
 
             return moveList;
         }
