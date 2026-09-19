@@ -128,7 +128,55 @@ public class MoveType {
 
 
 
-        //diaMove - diagonal moves
+    //diagonalMove - diagonal moves
+//        public ArrayList<ArrayList<int[]>> diagonalMove(ChessBoard board, ChessPiece piece, ChessPosition position, int max) {
+//            ArrayList<ArrayList<int[]>> xCoords = new ArrayList<ArrayList<int[]>>();
+//            int col = position.getColumn();
+//            int row = position.getRow();
+//            int n = 1;
+//            ArrayList<int[]> upLeftCoords = new ArrayList<int[]>(); // row + n , col + n
+//            ArrayList<int[]> upRightCoords = new ArrayList<int[]>(); //row + n, col - n
+//            ArrayList<int[]> downLeftCoords = new ArrayList<int[]>(); // row - n, col + n
+//            ArrayList<int[]> downRightCoords = new ArrayList<int[]>(); //row - n, col - n
+//            while (n <= max) {
+//                //vars for each direction
+//                int l = row - n; //left
+//                int r = row + n; //right
+//                int u = col + n; //up
+//                int d = col - n; //down
+//
+//                //row + n , col + n
+//                if (((1 <= l) && (l <= 8)) && ((1 <= u) && (u <= 8))) {
+//                    int[] coords = {l, u};
+//                    upLeftCoords.add(coords);
+//                }
+//                //row + n, col - n
+//                if (((1 <= r) && (r <= 8)) && ((1 <= u) && (u <= 8))) {
+//                    int[] coords = {r, u};
+//                    upRightCoords.add(coords);
+//                }
+//                //left and down
+//                if (((1 <= l) && (l <= 8)) && ((d <= u) && (d <= 8))) {
+//                    int[] coords = {l, u};
+//                    upLeftCoords.add(coords);
+//                }
+//                //down
+//                if (((1 <= r) && (r <= 8)) && ((1 <= d) && (d <= 8))) {
+//                    int[] coords = {row, d};
+//                    downRightCoords.add(coords);
+//                }
+//
+//                n++;
+//            } //add all the lists
+//            xCoords.add(upLeftCoords);
+//            xCoords.add(upRightCoords);
+//            xCoords.add(downLeftCoords);
+//            xCoords.add(downRightCoords);
+//
+//
+//            return xCoords;
+//        }
+
 
 
 
@@ -147,29 +195,6 @@ public class MoveType {
             int col = position.getColumn();
             int row = position.getRow();
             int n = 1;
-//            while (n <= 7){ //does all directions
-//                //vars for each direction
-//                int l = row - n;
-//                int r = row + n;
-//                int u = col + n;
-//                int d = col - n;
-//                int[] rowList = {l, r};
-//                int[] colList = {u, d};
-//                //maybe add them all to a list and loop through them
-//                for (int rm : rowList) {
-//                    for (int colm : colList) {
-//                        if (((1 <= colm) && (colm <= 8) && ((1 <= rm) && (rm <= 8)))) {
-//                            //make chess move
-//                            ChessMove move = moveMaker(board, position, rm, colm, piece);
-//                            //append move to list
-//                            moveList.add(move);
-//                        }
-//                    }
-//
-//                }
-//
-//                n++;
-//            }
 
 
             return moveList;
