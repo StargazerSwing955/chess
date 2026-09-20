@@ -301,7 +301,7 @@ public class MoveType {
         }
 
         //horseMove - move for the knight
-        public ArrayList<ArrayList<int[]>> horseMove(ChessBoard board, ChessPiece piece, ChessPosition position) {
+        public ArrayList<ArrayList<int[]>> horseMove(ChessPosition position) {
             ArrayList<ArrayList<int[]>> LCoords = new ArrayList<ArrayList<int[]>>();
             int col = position.getColumn();
             int row = position.getRow();
@@ -431,7 +431,7 @@ public class MoveType {
         // [row + 2, col +- 1], [row - 2, col +-1]
         // [col + 2, row +- 1], [col -2, row +-1]
         public ArrayList<ChessMove> knightMove(ChessBoard board, ChessPiece piece, ChessPosition position){
-            ArrayList<ArrayList<int[]>> tryMoves = horseMove(board, piece, position);
+            ArrayList<ArrayList<int[]>> tryMoves = horseMove(position);
 
             return moveFilter(tryMoves,piece,position,board);
         }
