@@ -3,6 +3,8 @@ package chess;
 import java.util.ArrayList;
 import java.util.List;
 
+import static chess.ChessPiece.*;
+
 public class MoveType {
     /*
         performs the calculations of each piece moves, and appends them as the end position in a ChessMove
@@ -47,34 +49,110 @@ public class MoveType {
                     ChessPiece potPiece = board.getPiece(pos); //potPiece for potential piece
                     if (potPiece != null){
                         if (potPiece.getTeamColor() != piece.getTeamColor()){
-                            posMoves.add(moveMaker(position, row, col, piece));
+                            posMoves.add(moveMaker(position, row, col, piece, null));
                         }
-                        if(piece.getPieceType() == ChessPiece.PieceType.KNIGHT){
+                        if(piece.getPieceType() == PieceType.KNIGHT){
                             continue;
                         }
                         else{
                             break;
                         }
                     }
-                    posMoves.add(moveMaker(position, row, col, piece));
+                    posMoves.add(moveMaker(position, row, col, piece, null));
                 }
             }
             return posMoves;
         }
 
         // have conditional for pawn promos
-        public ChessMove moveMaker(ChessPosition position, int newRow, int newCol, ChessPiece forPieceType){
+        public ChessMove moveMaker(ChessPosition position, int newRow, int newCol, ChessPiece forPieceType, PieceType promoType){
             ChessPosition newPos = new ChessPosition(newRow,newCol);
 
+            int promoRow = 0;
+            switch (forPieceType.getTeamColor()){
+                case BLACK -> {
+                     promoRow = 1;
+                }
+                case WHITE -> {
+                     promoRow = 8;
+                }
+            }
 
-            if (forPieceType.getPieceType()== (ChessPiece.PieceType.PAWN) && (newRow == 8)) {
+            if (forPieceType.getPieceType()== (PieceType.PAWN) && (newRow == promoRow)) {
                 //pawn promotion
-                return new ChessMove(position, newPos, null);
+                return new ChessMove(position, newPos, promoType);
             }
             else{
                 return new ChessMove(position, newPos, null);
             }
 
+        }
+        public ArrayList<ChessMove> pPromoMove(ChessBoard board, ChessPiece piece, ChessPosition position){
+
+            int row = position.getRow();
+            int col = position.getColumn();
+
+            ArrayList<ChessMove> pnMove = new ArrayList<ChessMove>();
+            int newRow = 0;
+            int startRowJump = 0;
+            int jumpRow = 0;
+            int promoRow = 0;
+
+            switch (piece.getTeamColor()){
+                case BLACK -> {
+                    newRow = row - 1;
+                    startRowJump = row - 2;
+                    jumpRow = 7;
+                    promoRow = 1;
+                }
+                case WHITE -> {
+                    newRow = row + 1;
+                    startRowJump = row + 2;
+                    jumpRow = 2;
+                    promoRow = 8;
+                }
+            }
+
+            PieceType[] types = new PieceType[]{PieceType.QUEEN,
+                    PieceType.ROOK, PieceType.BISHOP, PieceType.KNIGHT};
+
+            for(PieceType type: types) {
+
+                int leftCol = col - 1;
+                int rightCol = col + 1;
+
+                if ((1 <= newRow) && (newRow <= 8)) {
+                    ChessPiece potPiece = board.getPiece(new ChessPosition(newRow, col)); //potPiece for potential piece
+
+                    if (potPiece == null) {
+                        pnMove.add(moveMaker(position, newRow, col, piece, type));
+                    }
+                }
+                if (row == jumpRow) {
+                    ChessPiece potPiece = board.getPiece(new ChessPosition(startRowJump, col)); //potPiece for potential piece
+
+                    if (potPiece == null) {
+                        pnMove.add(moveMaker(position, startRowJump, col, piece, type));
+                    }
+                }
+
+                if ((1 <= leftCol) && (leftCol <= 8)) {
+                    ChessPiece cL = board.getPiece(new ChessPosition(newRow, leftCol));
+
+                    if ((cL != null) && (cL.getTeamColor() != piece.getTeamColor())) {
+                        pnMove.add(moveMaker(position, newRow, leftCol, piece, type));
+                    }
+                }
+                if ((1 <= rightCol) && (rightCol <= 8)) {
+                    ChessPiece cR = board.getPiece(new ChessPosition(newRow, rightCol));
+
+                    if ((cR != null) && (cR.getTeamColor() != piece.getTeamColor())) {
+                        pnMove.add(moveMaker(position, newRow, rightCol, piece, type));
+                    }
+                }
+            }
+
+            return pnMove;
         }
 
         public ArrayList<ChessMove> pMove(ChessBoard board, ChessPiece piece, ChessPosition position){
@@ -84,43 +162,60 @@ public class MoveType {
             ArrayList<ChessMove> pnMove = new ArrayList<ChessMove>();
             int newRow = 0;
             int startRowJump = 0;
+            int jumpRow = 0;
+            int promoRow = 0;
 
             switch (piece.getTeamColor()){
-                case BLACK -> newRow = row - 1;
-                case WHITE -> newRow = row + 1;
-            }
-            switch (piece.getTeamColor()){
-                case BLACK -> startRowJump = row - 2;
-                case WHITE -> startRowJump = row + 2;
-            }
-
-
-            int leftCol = col - 1;
-            int rightCol = col + 1;
-
-            if ((1 <= newRow) && (newRow <= 8)){
-                ChessPiece potPiece = board.getPiece(new ChessPosition(newRow, col)); //potPiece for potential piece
-
-                if (potPiece == null) {
-                    pnMove.add(moveMaker(position, newRow, col, piece));
+                case BLACK -> {
+                    newRow = row - 1;
+                    startRowJump = row - 2;
+                    jumpRow = 7;
+                    promoRow = 1;
+                }
+                case WHITE -> {
+                    newRow = row + 1;
+                    startRowJump = row + 2;
+                    jumpRow = 2;
+                    promoRow =8;
                 }
             }
-            if ((1 <= leftCol) && (leftCol <= 8)){
-                ChessPiece cL = board.getPiece(new ChessPosition(newRow, leftCol));
-
-                if ((cL != null) && (cL.getTeamColor() != piece.getTeamColor())){
-                    pnMove.add(moveMaker(position, newRow, leftCol, piece));
-                }
-            }
-            if ((1 <= rightCol) && (rightCol <= 8)){
-                ChessPiece cR = board.getPiece(new ChessPosition(newRow, rightCol));
-
-                if ((cR != null) && (cR.getTeamColor() != piece.getTeamColor())){
-                    pnMove.add(moveMaker(position, newRow, leftCol, piece));
-                }
+            if (newRow == promoRow){
+                return pPromoMove(board, piece, position);
             }
 
+                int leftCol = col - 1;
+                int rightCol = col + 1;
 
+
+                if ((1 <= newRow) && (newRow <= 8)) {
+                    ChessPiece potPiece = board.getPiece(new ChessPosition(newRow, col)); //potPiece for potential piece
+
+                    if (potPiece == null) {
+                        pnMove.add(moveMaker(position, newRow, col, piece, null));
+                    }
+                }
+                if (row == jumpRow) {
+                    ChessPiece potPiece = board.getPiece(new ChessPosition(startRowJump, col)); //potPiece for potential piece
+
+                    if (potPiece == null) {
+                        pnMove.add(moveMaker(position, startRowJump, col, piece, null));
+                    }
+                }
+
+                if ((1 <= leftCol) && (leftCol <= 8)) {
+                    ChessPiece cL = board.getPiece(new ChessPosition(newRow, leftCol));
+
+                    if ((cL != null) && (cL.getTeamColor() != piece.getTeamColor())) {
+                        pnMove.add(moveMaker(position, newRow, leftCol, piece, null));
+                    }
+                }
+                if ((1 <= rightCol) && (rightCol <= 8)) {
+                    ChessPiece cR = board.getPiece(new ChessPosition(newRow, rightCol));
+
+                    if ((cR != null) && (cR.getTeamColor() != piece.getTeamColor())) {
+                        pnMove.add(moveMaker(position, newRow, rightCol, piece, null));
+                    }
+                }
 
             return pnMove;
         }
