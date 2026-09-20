@@ -144,13 +144,13 @@ public class MoveType {
             int promoRow = 0;
 
             switch (piece.getTeamColor()){
-                case BLACK -> {
+                case BLACK -> { //not working
                     newRow = row - 1;
                     startRowJump = 5; //where it jumps to
                     jumpRow = 7; //jumping from
                     promoRow = 1;
                 }
-                case WHITE -> {
+                case WHITE -> { //works
                     newRow = row + 1;
                     startRowJump = 4; //where it jumps to
                     jumpRow = 2; //jumping from
@@ -170,17 +170,19 @@ public class MoveType {
 
                     if (potPiece == null) {
                         pnMove.add(moveMaker(position, newRow, col, piece, null));
+
+                        //starting 2 square move
+                        if (row == jumpRow) {
+                            ChessPiece startPotPiece = board.getPiece(new ChessPosition(startRowJump, col)); //potPiece for potential piece
+
+                            if (startPotPiece == null) {
+                                pnMove.add(moveMaker(position, startRowJump, col, piece, null));
+                            }
+                        }
                     }
                 }
 
-                //starting 2 square move
-                if (row == jumpRow) {
-                    ChessPiece potPiece = board.getPiece(new ChessPosition(startRowJump, col)); //potPiece for potential piece
 
-                    if (potPiece == null) {
-                        pnMove.add(moveMaker(position, startRowJump, col, piece, null));
-                    }
-                }
 
                 //check corner
                 if (((1 <= leftCol) && (leftCol <= 8)) && ((1 <= newRow) && (newRow <= 8))) {
