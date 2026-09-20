@@ -146,14 +146,14 @@ public class MoveType {
             switch (piece.getTeamColor()){
                 case BLACK -> {
                     newRow = row - 1;
-                    startRowJump = row - 2;
-                    jumpRow = 7;
+                    startRowJump = 5; //where it jumps to
+                    jumpRow = 7; //jumping from
                     promoRow = 1;
                 }
                 case WHITE -> {
                     newRow = row + 1;
-                    startRowJump = row + 2;
-                    jumpRow = 2;
+                    startRowJump = 4; //where it jumps to
+                    jumpRow = 2; //jumping from
                     promoRow = 8;
                 }
             }
@@ -164,7 +164,7 @@ public class MoveType {
                 int leftCol = col - 1;
                 int rightCol = col + 1;
 
-
+                //generic move
                 if ((1 <= newRow) && (newRow <= 8)) {
                     ChessPiece potPiece = board.getPiece(new ChessPosition(newRow, col)); //potPiece for potential piece
 
@@ -172,6 +172,8 @@ public class MoveType {
                         pnMove.add(moveMaker(position, newRow, col, piece, null));
                     }
                 }
+
+                //starting 2 square move
                 if (row == jumpRow) {
                     ChessPiece potPiece = board.getPiece(new ChessPosition(startRowJump, col)); //potPiece for potential piece
 
@@ -180,6 +182,7 @@ public class MoveType {
                     }
                 }
 
+                //check corner
                 if (((1 <= leftCol) && (leftCol <= 8)) && ((1 <= newRow) && (newRow <= 8))) {
                     ChessPiece cL = board.getPiece(new ChessPosition(newRow, leftCol));
 
