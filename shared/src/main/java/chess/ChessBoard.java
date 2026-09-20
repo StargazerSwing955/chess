@@ -1,8 +1,7 @@
 package chess;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
+
 import java.util.Objects;
 
 /**
@@ -79,19 +78,6 @@ public class ChessBoard {
         //P P P P P P P P 2 ArrayList<ChessPieces> = {P, P, P, P, P, P, P}
         //R N B Q K B N R 1
 
-        ArrayList<ChessPiece> pieceList= new ArrayList<>();
-//        int x = 0;
-//        while(x<=7){
-//            ChessPiece piece = new ChessPiece(ChessGame.TeamColor.BLACK, ChessPiece.PieceType.PAWN);
-//            pieceList.add(piece);
-//            x++;
-//        }
-        //clear board
-//        for(ChessPiece[] square: squares){
-//            for(ChessPiece piece: square) {
-//                addPiece();
-//            }
-//        }
 
         for (int lineRow =1; lineRow <= 8; lineRow++){
            for (int lineCol =1; lineCol <= 8; lineCol++){
@@ -127,15 +113,15 @@ public class ChessBoard {
                   ChessGame.TeamColor black = ChessGame.TeamColor.BLACK;
                   switch (lineCol){
                       case 1, 8 ->
-                              addPiece(new ChessPosition(1, lineCol), new ChessPiece(black, ChessPiece.PieceType.ROOK));
+                              addPiece(new ChessPosition(8, lineCol), new ChessPiece(black, ChessPiece.PieceType.ROOK));
                       case 2, 7 ->
-                              addPiece(new ChessPosition(1, lineCol), new ChessPiece(black, ChessPiece.PieceType.KNIGHT));
+                              addPiece(new ChessPosition(8, lineCol), new ChessPiece(black, ChessPiece.PieceType.KNIGHT));
                       case 3, 6 ->
-                              addPiece(new ChessPosition(1, lineCol), new ChessPiece(black, ChessPiece.PieceType.BISHOP));
+                              addPiece(new ChessPosition(8, lineCol), new ChessPiece(black, ChessPiece.PieceType.BISHOP));
                       case 4 ->
-                              addPiece(new ChessPosition(1, lineCol), new ChessPiece(black, ChessPiece.PieceType.QUEEN));
+                              addPiece(new ChessPosition(8, lineCol), new ChessPiece(black, ChessPiece.PieceType.QUEEN));
                       case 5 ->
-                              addPiece(new ChessPosition(1, lineCol), new ChessPiece(black, ChessPiece.PieceType.KING));
+                              addPiece(new ChessPosition(8, lineCol), new ChessPiece(black, ChessPiece.PieceType.KING));
                       //should never be called
                       default -> throw new IllegalStateException("Unexpected value: " + lineCol);
                   }
@@ -145,10 +131,6 @@ public class ChessBoard {
            }
         }
 
-        //for piece in pieceList
-        //(row, pieceList.index(piece)+1)
-
-
-
     }
+
 }
