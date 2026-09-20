@@ -202,7 +202,7 @@ public class MoveType {
 
         //flatMove - row or column
         //does the math for POSSIBLE moves in the horizontal and vertical directions
-        public ArrayList<ArrayList<int[]>> flatMove(ChessBoard board, ChessPiece piece, ChessPosition position, int max) {
+        public ArrayList<ArrayList<int[]>> flatMove(ChessPosition position, int max) {
             ArrayList<ArrayList<int[]>> straightCoords = new ArrayList<ArrayList<int[]>>();
             int col = position.getColumn();
             int row = position.getRow();
@@ -252,7 +252,7 @@ public class MoveType {
 
 
         //diagonalMove - diagonal moves
-        public ArrayList<ArrayList<int[]>> diagonalMove(ChessBoard board, ChessPiece piece, ChessPosition position, int max) {
+        public ArrayList<ArrayList<int[]>> diagonalMove(ChessPosition position, int max) {
             ArrayList<ArrayList<int[]>> xCoords = new ArrayList<ArrayList<int[]>>();
             int col = position.getColumn();
             int row = position.getRow();
@@ -386,7 +386,7 @@ public class MoveType {
         //(r || c) + n <= 8 && (r || c) - n > 0 [not indexed by 0]
         //test looks like it checks (r+n, c+n) then (r-n, c-n)
         public ArrayList<ChessMove> bishopMove(ChessBoard board, ChessPiece piece, ChessPosition position){
-            ArrayList<ArrayList<int[]>> tryMoves = diagonalMove(board, piece, position, 7);
+            ArrayList<ArrayList<int[]>> tryMoves = diagonalMove(position, 7);
 
             return moveFilter(tryMoves,piece,position,board);
         }
@@ -395,7 +395,7 @@ public class MoveType {
         //rooks - rookMove (flat moves, horizontal/vertical)
         //row +- n || col +- n if (r||c) + n >=8 or (r||c) - n >=1
         public List<ChessMove> rookMove(ChessBoard board, ChessPiece piece, ChessPosition position){
-           ArrayList<ArrayList<int[]>> tryMoves = flatMove(board, piece, position, 7);
+           ArrayList<ArrayList<int[]>> tryMoves = flatMove(position, 7);
 
             return moveFilter(tryMoves,piece,position,board);
 
@@ -404,9 +404,9 @@ public class MoveType {
         //queen - queenMove
         // bishop + rook moves
         public ArrayList<ChessMove> queenMove(ChessBoard board, ChessPiece piece, ChessPosition position){
-            ArrayList<ArrayList<int[]>> tryMoves = flatMove(board, piece, position, 7);
+            ArrayList<ArrayList<int[]>> tryMoves = flatMove(position, 7);
             ArrayList<ChessMove> moveList = moveFilter(tryMoves,piece,position,board);
-            tryMoves = diagonalMove(board, piece, position, 7);
+            tryMoves = diagonalMove(position, 7);
             ArrayList<ChessMove> diaList = moveFilter(tryMoves,piece,position,board);
             moveList.addAll(diaList);
 
@@ -418,9 +418,9 @@ public class MoveType {
         //queen moves where n is hard coded as 1
 
         public ArrayList<ChessMove> kingMove(ChessBoard board, ChessPiece piece, ChessPosition position){
-            ArrayList<ArrayList<int[]>> tryMoves = flatMove(board, piece, position, 1);
+            ArrayList<ArrayList<int[]>> tryMoves = flatMove(position, 1);
             ArrayList<ChessMove> moveList = moveFilter(tryMoves,piece,position,board);
-            tryMoves = diagonalMove(board, piece, position, 1);
+            tryMoves = diagonalMove(position, 1);
             ArrayList<ChessMove> diaList = moveFilter(tryMoves,piece,position,board);
             moveList.addAll(diaList);
 
