@@ -91,8 +91,6 @@ public class MoveType {
 
             ArrayList<ChessMove> pnMove = new ArrayList<ChessMove>();
             int newRow = 0;
-            int startRowJump = 0;
-            int jumpRow = 0;
 
             switch (piece.getTeamColor()){
                 case BLACK -> newRow = row - 1;
