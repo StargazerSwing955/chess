@@ -113,9 +113,6 @@ public class MoveType {
             }
         }
 
-
-
-
         return pawnLegalMoves;
 
     }
@@ -127,9 +124,6 @@ public class MoveType {
         potentialMoves.addAll(moveLine(board, piece, position, 1,-1 ));
         potentialMoves.addAll(moveLine(board, piece, position, -1,1 ));
 
-
-
-
         return potentialMoves;
     }
 
@@ -139,8 +133,6 @@ public class MoveType {
         potentialMoves.addAll(moveLine(board, piece, position, 0,-1 ));
         potentialMoves.addAll(moveLine(board, piece, position, 0,1 ));
 
-
-
         return potentialMoves;
     }
 
@@ -149,7 +141,6 @@ public class MoveType {
         potentialMoves.addAll(rookMove(board,piece,position));
 
         return potentialMoves;
-
     }
 
     public ArrayList<ChessMove> kingMove(ChessBoard board, ChessPiece piece, ChessPosition position){
@@ -185,13 +176,8 @@ public class MoveType {
             pawnMoves.addAll(genericPawn(board, piece, position, direction, startingRow, null));
         }
 
-
         return pawnMoves;
     }
-
-
-
-
 
 
 }
