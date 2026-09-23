@@ -16,13 +16,6 @@ public class MoveType {
      */
     public MoveType(ChessBoard board, ChessPiece piece, ChessPosition position) {
 
-        kingMove(board, piece, position);
-        queenMove(board, piece, position);
-        bishopMove(board, piece, position);
-        rookMove(board, piece, position);
-        knightMove(board, piece, position);
-        pawnMove(board, piece, position);
-
 
     }
 
@@ -202,7 +195,6 @@ public class MoveType {
 
             return pnMove;
         }
-
 
 
         //flatMove - row or column

@@ -34,7 +34,19 @@ public class ChessPosition {
         return col;
     }
 
-//    //paused the video and typed this out
+    public boolean isValid(){
+        return 1 <= row && row <= 8 && 1 <= col && col <= 8;
+    }
+
+    public ChessPosition offSet(int r, int c){
+        return new ChessPosition(row + r, col + c);
+    }
+
+
+
+
+
+    //    //paused the video and typed this out
     @Override
     public String toString(){
         return String.format("[%d,%d]", row, col);

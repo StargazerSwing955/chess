@@ -25,13 +25,6 @@ public class ChessMove {
      * @return ChessPosition of starting location
      */
     public ChessPosition getStartPosition() {
-
-        //rook, knight, bishop, king, queen, bishop, knight, rook
-        //8 pawns
-        //4 empty rows
-        //8 pawns
-        //rook, knight, bishop, king, queen, bishop, knight, rook
-
         return startPosition;
     }
 
@@ -39,7 +32,7 @@ public class ChessMove {
      * @return ChessPosition of ending location
      */
     public ChessPosition getEndPosition() {
-        //pos at the end of a turn (i think)
+        //pos at the end of a turn
         return endPosition;
     }
 
