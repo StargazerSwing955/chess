@@ -12,8 +12,6 @@ import java.util.Objects;
  */
 public class ChessPiece {
 
-    //THESE REPRESENT THE SQUARES OF THE BOARD
-
     private final ChessGame.TeamColor pieceColor;
     private final PieceType type;
 

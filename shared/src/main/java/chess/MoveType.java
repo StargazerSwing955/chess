@@ -20,14 +20,6 @@ public class MoveType {
     }
 
 
-    /*
-    1, get the piece's position - row and col (set them as a var)
-    2, for each calc:
-       perform calculation, determine if in array,
-       set as endPosition in a new move, append to moveList
-    3, return moveList
-     */
-
     //does the logic for moves with iterable possible locations
     public ArrayList<ChessMove> moveLine (ChessBoard board, ChessPiece piece, ChessPosition position, int xOffSet, int yOffSet){
         ArrayList<ChessMove> movesInLine = new ArrayList<>();

@@ -34,10 +34,12 @@ public class ChessPosition {
         return col;
     }
 
+    //determines if on the board
     public boolean isValid(){
         return 1 <= row && row <= 8 && 1 <= col && col <= 8;
     }
 
+    //offset from the passed in position
     public ChessPosition offSet(int r, int c){
         return new ChessPosition(row + r, col + c);
     }
