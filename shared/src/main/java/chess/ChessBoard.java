@@ -58,13 +58,7 @@ public class ChessBoard {
             [[P],[P],[P],[P],[P],[P],[P],[P]],
             [[R],[N],[B],[Q],[K],[B],[N],[R]],
         */
-        //black
-        //r n b q k b n r 8
-        //p p p p p p p p 7
 
-        //white
-        //P P P P P P P P 2 ArrayList<ChessPieces> = {P, P, P, P, P, P, P}
-        //R N B Q K B N R 1
 
 
         for (int lineRow =1; lineRow <= 8; lineRow++){

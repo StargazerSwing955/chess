@@ -11,14 +11,20 @@ import java.util.Collection;
 public class ChessGame {
 
     public ChessGame() {
+       ChessBoard board = new ChessBoard();
+       board.resetBoard();
 
     }
+    //variables
+     private TeamColor turnColor = TeamColor.WHITE;
+    //
 
     /**
      * @return Which team's turn it is
      */
     public TeamColor getTeamTurn() {
-        throw new RuntimeException("Not implemented");
+        //get the color of whose turn it is
+            return turnColor;
     }
 
     /**
@@ -27,7 +33,8 @@ public class ChessGame {
      * @param team the team whose turn it is
      */
     public void setTeamTurn(TeamColor team) {
-        throw new RuntimeException("Not implemented");
+        //set whose turn it is
+        turnColor = team;
     }
 
     /**
@@ -46,7 +53,11 @@ public class ChessGame {
      * startPosition
      */
     public Collection<ChessMove> validMoves(ChessPosition startPosition) {
+        //get the piece and then all its valid moves
+        //account for isInCheck
+
         throw new RuntimeException("Not implemented");
+
     }
 
     /**
@@ -56,7 +67,9 @@ public class ChessGame {
      * @throws InvalidMoveException if move is invalid
      */
     public void makeMove(ChessMove move) throws InvalidMoveException {
-        throw new RuntimeException("Not implemented");
+        //attempt to make the move, but throw invalid if the move is not possible
+        //so likely look at move, check if on validMoves, throw if not, and move piece if it is
+
     }
 
     /**
@@ -66,6 +79,7 @@ public class ChessGame {
      * @return True if the specified team is in check
      */
     public boolean isInCheck(TeamColor teamColor) {
+        //checks if King is in check; check true and has validMoves
         throw new RuntimeException("Not implemented");
     }
 
@@ -76,6 +90,8 @@ public class ChessGame {
      * @return True if the specified team is in checkmate
      */
     public boolean isInCheckmate(TeamColor teamColor) {
+        //checks if game someone won
+        //check if king in check and no escape; validMoves is null and check true
         throw new RuntimeException("Not implemented");
     }
 
@@ -87,6 +103,8 @@ public class ChessGame {
      * @return True if the specified team is in stalemate, otherwise false
      */
     public boolean isInStalemate(TeamColor teamColor) {
+        //checks if it's a draw
+        //validMoves is null and King NOT in check
         throw new RuntimeException("Not implemented");
     }
 
@@ -96,6 +114,7 @@ public class ChessGame {
      * @param board the new board to use
      */
     public void setBoard(ChessBoard board) {
+        //set the board for each turn
         throw new RuntimeException("Not implemented");
     }
 
@@ -105,6 +124,7 @@ public class ChessGame {
      * @return the chessboard
      */
     public ChessBoard getBoard() {
+        //gets current chessboard
         throw new RuntimeException("Not implemented");
     }
 }
