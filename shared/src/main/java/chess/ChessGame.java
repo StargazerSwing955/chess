@@ -81,7 +81,23 @@ public class ChessGame {
 
     }
 
-    public boolean checkBoardForCheck(ChessBoard board, ChessMove move){
+    public ChessPosition findKing(ChessBoard board, TeamColor color){
+       ChessPosition kingPos = new ChessPosition(1,1);
+       for (int r = 1; r <=8; r++){
+           for (int c = 1; c <=8; c++){
+               ChessPosition testPos = new ChessPosition(r,c);
+               ChessPiece testPiece = board.getPiece(testPos);
+               if (testPiece.getPieceType() == ChessPiece.PieceType.KING && testPiece.getTeamColor() == color){
+                   kingPos = testPos;
+               }
+           }
+       }
+       return kingPos;
+    }
+
+    public boolean checkBoardForCheck(ChessBoard board, TeamColor color){
+
+
 
         return true;
     }
