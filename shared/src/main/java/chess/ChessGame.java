@@ -40,6 +40,14 @@ public class ChessGame {
         turnColor = team;
     }
 
+    public void teamTurnSwap(){
+        if (turnColor == TeamColor.WHITE){
+            turnColor = TeamColor.BLACK;
+        } else if (turnColor == TeamColor.BLACK) {
+            turnColor = TeamColor.WHITE;
+        }
+    }
+
     /**
      * Enum identifying the 2 possible teams in a chess game
      */
@@ -60,7 +68,7 @@ public class ChessGame {
         //account for Check
         Collection<ChessMove> allMoves = new ArrayList<>();
         ChessPiece piece = board.getPiece(startPosition);
-        if(piece != null){
+        if(piece != null && piece.getTeamColor() == getTeamTurn()){
             allMoves = piece.pieceMoves(board,startPosition);
             if (allMoves.isEmpty()){
                 return allMoves;
@@ -87,10 +95,16 @@ public class ChessGame {
     public void makeMove(ChessMove move) throws InvalidMoveException {
         //attempt to make the move, but throw invalid if the move is not possible
         //so likely look at move, check if on validMoves, throw if not, and move piece if it is
-        if (validMoves(move.getStartPosition()).contains(move)){
-            ChessPiece movingPiece = board.getPiece(move.getStartPosition());
-            board.addPiece(move.getEndPosition(), movingPiece);
-            board.addPiece(move.getStartPosition(), null);
+        ChessPiece movingPiece = board.getPiece(move.getStartPosition());
+        if (movingPiece!= null && validMoves(move.getStartPosition()).contains(move)){
+            if(move.getPromotionPiece() != null){
+                board.addPiece(move.getEndPosition(), new ChessPiece(movingPiece.getTeamColor(), move.getPromotionPiece()));
+                board.addPiece(move.getStartPosition(), null);
+            }else{
+                board.addPiece(move.getEndPosition(), movingPiece);
+                board.addPiece(move.getStartPosition(), null);
+            }
+            teamTurnSwap();
         }
         else{
             throw new InvalidMoveException();
@@ -145,7 +159,7 @@ public class ChessGame {
      */
     public boolean isInCheck(TeamColor teamColor) {
         //checks if King is in check; check true and has validMoves
-        return checkBoardForCheck(board, teamColor);
+        return (checkBoardForCheck(board, teamColor));
     }
 
     /**
