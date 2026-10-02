@@ -1,5 +1,6 @@
 package chess;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 /**
@@ -11,13 +12,12 @@ import java.util.Collection;
 public class ChessGame {
 
     public ChessGame() {
-       ChessBoard board = new ChessBoard();
-       board.resetBoard();
 
     }
     //variables
      private TeamColor turnColor = TeamColor.WHITE;
-    //
+     ChessBoard board = new ChessBoard();
+
 
     /**
      * @return Which team's turn it is
@@ -54,9 +54,18 @@ public class ChessGame {
      */
     public Collection<ChessMove> validMoves(ChessPosition startPosition) {
         //get the piece and then all its valid moves
-        //account for isInCheck
+        //account for Check
 
-        throw new RuntimeException("Not implemented");
+        ChessPiece piece = board.getPiece(startPosition);
+        Collection<ChessMove> allMoves = piece.pieceMoves(board,startPosition);
+
+        if (allMoves.isEmpty()){
+            return allMoves;
+        }
+
+
+
+        return allMoves;
 
     }
 
@@ -71,6 +80,13 @@ public class ChessGame {
         //so likely look at move, check if on validMoves, throw if not, and move piece if it is
 
     }
+
+    public boolean checkBoardForCheck(ChessBoard board, ChessMove move){
+
+        return true;
+    }
+
+
 
     /**
      * Determines if the given team is in check
@@ -115,7 +131,7 @@ public class ChessGame {
      */
     public void setBoard(ChessBoard board) {
         //set the board for each turn
-        throw new RuntimeException("Not implemented");
+        this.board = board;
     }
 
     /**
@@ -125,6 +141,6 @@ public class ChessGame {
      */
     public ChessBoard getBoard() {
         //gets current chessboard
-        throw new RuntimeException("Not implemented");
+        return board;
     }
 }
