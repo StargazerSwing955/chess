@@ -3,6 +3,7 @@ package chess;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Objects;
 
 /**
  * A class that can manage a chess game, making moves on a board
@@ -13,11 +14,12 @@ import java.util.HashMap;
 public class ChessGame {
 
     public ChessGame() {
-
+        board.resetBoard();
     }
     //variables
      private TeamColor turnColor = TeamColor.WHITE;
      ChessBoard board = new ChessBoard();
+
 
 
     /**
@@ -56,18 +58,24 @@ public class ChessGame {
     public Collection<ChessMove> validMoves(ChessPosition startPosition) {
         //get the piece and then all its valid moves
         //account for Check
-
+        Collection<ChessMove> allMoves = new ArrayList<>();
         ChessPiece piece = board.getPiece(startPosition);
-        Collection<ChessMove> allMoves = piece.pieceMoves(board,startPosition);
-
-        if (allMoves.isEmpty()){
-            return allMoves;
+        if(piece != null){
+            allMoves = piece.pieceMoves(board,startPosition);
+            if (allMoves.isEmpty()){
+                return allMoves;
+            }else{
+                for (ChessMove move : allMoves){
+                    ChessBoard testboard = board;
+                    testboard.addPiece(move.getStartPosition(),null);
+                    testboard.addPiece(move.getEndPosition(), piece);
+                    if (checkBoardForCheck(testboard, piece.getTeamColor())){
+                        allMoves.remove(move);
+                    }
+                }
+            }
         }
-
-
-
         return allMoves;
-
     }
 
     /**
@@ -79,7 +87,14 @@ public class ChessGame {
     public void makeMove(ChessMove move) throws InvalidMoveException {
         //attempt to make the move, but throw invalid if the move is not possible
         //so likely look at move, check if on validMoves, throw if not, and move piece if it is
-
+        if (validMoves(move.getStartPosition()).contains(move)){
+            ChessPiece movingPiece = board.getPiece(move.getStartPosition());
+            board.addPiece(move.getEndPosition(), movingPiece);
+            board.addPiece(move.getStartPosition(), null);
+        }
+        else{
+            throw new InvalidMoveException();
+        }
     }
 
     public ChessPosition findKing(ChessBoard board, TeamColor color){
@@ -88,7 +103,7 @@ public class ChessGame {
            for (int c = 1; c <=8; c++){
                ChessPosition testPos = new ChessPosition(r,c);
                ChessPiece testPiece = board.getPiece(testPos);
-               if (testPiece.getPieceType() == ChessPiece.PieceType.KING && testPiece.getTeamColor() == color){
+               if (testPiece != null && testPiece.getPieceType() == ChessPiece.PieceType.KING && testPiece.getTeamColor() == color){
                    kingPos = testPos;
                }
            }
@@ -117,7 +132,6 @@ public class ChessGame {
                 }
             }
         }
-
         return isChecked;
     }
 
@@ -131,7 +145,7 @@ public class ChessGame {
      */
     public boolean isInCheck(TeamColor teamColor) {
         //checks if King is in check; check true and has validMoves
-        throw new RuntimeException("Not implemented");
+        return checkBoardForCheck(board, teamColor);
     }
 
     /**
@@ -177,5 +191,19 @@ public class ChessGame {
     public ChessBoard getBoard() {
         //gets current chessboard
         return board;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        ChessGame chessGame = (ChessGame) o;
+        return turnColor == chessGame.turnColor && Objects.equals(board, chessGame.board);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(turnColor, board);
     }
 }
