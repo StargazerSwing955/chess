@@ -2,6 +2,7 @@ package chess;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 
 /**
  * A class that can manage a chess game, making moves on a board
@@ -96,10 +97,28 @@ public class ChessGame {
     }
 
     public boolean checkBoardForCheck(ChessBoard board, TeamColor color){
+        boolean isChecked = false;
+        ChessPosition kingPos = findKing(board, color);
+        HashMap<ChessPiece, ChessPosition> enemyPieceList = new HashMap<>();
+        for (int r = 1; r <=8; r++){
+            for (int c = 1; c <=8; c++){
+                ChessPosition testPos = new ChessPosition(r,c);
+                ChessPiece testPiece = board.getPiece(testPos);
+                if (testPiece != null && testPiece.getTeamColor() != color){
+                    enemyPieceList.put(testPiece, testPos);
+                }
+            }
+        }
+        for (ChessPiece enemyPiece : enemyPieceList.keySet()){
+            Collection<ChessMove> enemyMove = enemyPiece.pieceMoves(board,enemyPieceList.get(enemyPiece));
+            for (ChessMove move :enemyMove){
+                if(move.getEndPosition() == kingPos){
+                    isChecked = true;
+                }
+            }
+        }
 
-
-
-        return true;
+        return isChecked;
     }
 
 
