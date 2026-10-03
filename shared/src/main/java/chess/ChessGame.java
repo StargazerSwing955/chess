@@ -151,7 +151,7 @@ public class ChessGame {
         //check if pieces put king in check
         for (ChessPiece enemyPiece : enemyPieceList.keySet()){
             Collection<ChessMove> enemyMove = enemyPiece.pieceMoves(board,enemyPieceList.get(enemyPiece));
-            for (ChessMove move :enemyMove){
+            for (ChessMove move : enemyMove){
                 if (move.getEndPosition() == kingPos) {
                     isChecked = true;
                     break;
