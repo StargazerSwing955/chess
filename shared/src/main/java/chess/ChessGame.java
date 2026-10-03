@@ -67,6 +67,7 @@ public class ChessGame {
         //get the piece and then all its valid moves
         //account for Check
         Collection<ChessMove> allMoves = new ArrayList<>();
+        Collection<ChessMove> validMoveSet = new ArrayList<>();
         ChessPiece piece = board.getPiece(startPosition);
         if(piece != null){
             allMoves = piece.pieceMoves(board,startPosition);
@@ -83,13 +84,15 @@ public class ChessGame {
                             testboard.addPiece(move.getEndPosition(), piece);
                             testboard.addPiece(move.getStartPosition(), null);
                         }
-                    if (checkBoardForCheck(testboard, piece.getTeamColor())){
-                        allMoves.remove(move);
+                    if (!checkBoardForCheck(testboard, piece.getTeamColor())){
+                        validMoveSet.add(move); //finds invalid moves
                     }
                 }
+
+
             }
         }
-        return allMoves;
+        return validMoveSet;
     }
 
     /**
@@ -154,11 +157,7 @@ public class ChessGame {
             Collection<ChessMove> enemyMove = enemyPiece.pieceMoves(passedBoard,enemyPieceList.get(enemyPiece));
             for (ChessMove move : enemyMove){
                 ChessPosition kingComparePosition = move.getEndPosition();
-                int kingRow = kingPos.getRow();
-                int kingCol = kingPos.getColumn();
-                int compRow = kingComparePosition.getRow();
-                int compCol = kingComparePosition.getColumn();
-                if ((compRow == kingRow) && (compCol == kingCol)) {
+                if (kingComparePosition.equals(kingPos)) {
                     isChecked = true;
                     break;
                 }
