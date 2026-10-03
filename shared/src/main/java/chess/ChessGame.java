@@ -170,14 +170,18 @@ public class ChessGame {
     //checks if there are moves for all pieces of color
     public boolean canMove(ChessBoard board, TeamColor color){
         boolean movePossible = true;
+        Collection<ChessMove> possibleMoves = new ArrayList<>();
         for (int r = 1; r <=8; r++){
             for (int c = 1; c <=8; c++){
                 ChessPosition testPos = new ChessPosition(r,c);
                 ChessPiece testPiece = board.getPiece(testPos);
-                if ((testPiece != null && testPiece.getTeamColor() == color) && !validMoves(testPos).isEmpty()){
-                   movePossible = false;
+                if ((testPiece != null && testPiece.getTeamColor() == color)){
+                   possibleMoves.addAll(validMoves(testPos));
                 }
             }
+        }
+        if (possibleMoves.isEmpty()){
+            movePossible = false;
         }
         return movePossible;
     }
@@ -192,7 +196,7 @@ public class ChessGame {
      */
     public boolean isInCheck(TeamColor teamColor) {
         //checks if King is in check; check true and has validMoves
-        return (checkBoardForCheck(board, teamColor) && canMove(board, teamColor));
+        return checkBoardForCheck(board, teamColor);
     }
 
     /**
