@@ -10,9 +10,9 @@ import java.util.Objects;
  * Note: You can add to this class, but you may not alter
  * signature of the existing methods.
  */
-public class ChessBoard {
+public class ChessBoard implements Cloneable {
     //8x8 of 'Pieces', which are more like positions passing hats
-    final ChessPiece[][] squares = new ChessPiece[8][8]; //INDEXED AT 0
+    ChessPiece[][] squares = new ChessPiece[8][8]; //INDEXED AT 0
 
     public ChessBoard() {
 
@@ -41,7 +41,6 @@ public class ChessBoard {
 
         return squares[position.getRow()-1][position.getColumn()-1];
     }
-
 
     /**
      * Sets the board to the default starting board
@@ -114,6 +113,29 @@ public class ChessBoard {
         }
 
     }
+
+    @Override
+    public ChessBoard clone(){
+        try {
+            ChessBoard clone = (ChessBoard) super.clone();
+
+            ChessPiece[][] squaresClone = new ChessPiece[8][8];
+            for (int r= 0; r<8; r++){
+                for (int c =0; c<8; c++){
+                    if (squares[r][c] != null){
+                        squaresClone[r][c] = new ChessPiece(squares[r][c].getTeamColor(),squares[r][c].getPieceType());
+                    }
+                }
+            }
+            clone.squares = squaresClone;
+
+            return  clone;
+        }
+        catch (CloneNotSupportedException e){
+            throw new RuntimeException(e);
+        }
+    }
+
 
     @Override
     public boolean equals(Object o) {

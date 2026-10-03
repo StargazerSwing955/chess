@@ -74,7 +74,7 @@ public class ChessGame {
                 return allMoves;
             }else{
                 for (ChessMove move : allMoves){
-                    ChessBoard testboard = board; //NOT CURRENTLY A COPY OF THE BOARD
+                    ChessBoard testboard = board.clone(); //NOT CURRENTLY A COPY OF THE BOARD
                     testboard.addPiece(move.getStartPosition(),null);
                     testboard.addPiece(move.getEndPosition(), piece);
                     if (checkBoardForCheck(testboard, piece.getTeamColor())){
@@ -110,6 +110,8 @@ public class ChessGame {
             throw new InvalidMoveException();
         }
     }
+
+
     //locates the king for check
     public ChessPosition findKing(ChessBoard board, TeamColor color){
        ChessPosition kingPos = new ChessPosition(1,1);
@@ -129,6 +131,7 @@ public class ChessGame {
     public boolean checkBoardForCheck(ChessBoard board, TeamColor color){
         boolean isChecked = false;
         ChessPosition kingPos = findKing(board, color);
+        //get enemy pieces
         HashMap<ChessPiece, ChessPosition> enemyPieceList = new HashMap<>();
         for (int r = 1; r <=8; r++){
             for (int c = 1; c <=8; c++){
@@ -139,7 +142,7 @@ public class ChessGame {
                 }
             }
         }
-
+        //check if pieces put king in check
         for (ChessPiece enemyPiece : enemyPieceList.keySet()){
             Collection<ChessMove> enemyMove = enemyPiece.pieceMoves(board,enemyPieceList.get(enemyPiece));
             for (ChessMove move :enemyMove){
@@ -151,6 +154,7 @@ public class ChessGame {
         }
         return isChecked;
     }
+
     //checks if there are moves for all pieces of color
     public boolean canMove(ChessBoard board, TeamColor color){
         boolean movePossible = false;
