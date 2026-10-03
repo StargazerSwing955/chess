@@ -66,17 +66,17 @@ public class ChessGame {
     public Collection<ChessMove> validMoves(ChessPosition startPosition) {
         //get the piece and then all its valid moves
         //account for Check
-        Collection<ChessMove> allMoves = new ArrayList<>();
-        Collection<ChessMove> validMoveSet = new ArrayList<>();
+        Collection<ChessMove> allMoves; //list for iterating through the moves a piece can make
+        Collection<ChessMove> validMoveSet = new ArrayList<>(); //for adding to a list if it does not cause check
         ChessPiece piece = board.getPiece(startPosition);
         if(piece != null){
-            allMoves = piece.pieceMoves(board,startPosition);
+            allMoves = piece.pieceMoves(board,startPosition); //checks if the piece can move anyway
             if (allMoves.isEmpty()){
                 return allMoves;
             }else{
                 for (ChessMove move : allMoves){
                     ChessBoard testboard = board.clone(); //copies the board
-                    //performs the move on the hypothetical board
+                        //performs the move on the hypothetical board
                         if(move.getPromotionPiece() != null){ //pawn promo
                             testboard.addPiece(move.getEndPosition(), new ChessPiece(piece.getTeamColor(), move.getPromotionPiece()));
                             testboard.addPiece(move.getStartPosition(), null);
@@ -84,11 +84,11 @@ public class ChessGame {
                             testboard.addPiece(move.getEndPosition(), piece);
                             testboard.addPiece(move.getStartPosition(), null);
                         }
+                    //checks if the move does NOT result in check and then adds it to the valid list
                     if (!checkBoardForCheck(testboard, piece.getTeamColor())){
                         validMoveSet.add(move); //finds invalid moves
                     }
                 }
-
 
             }
         }
@@ -142,19 +142,19 @@ public class ChessGame {
         boolean isChecked = false;
         ChessPosition kingPos = findKing(passedBoard, color);
         //get enemy pieces
-        HashMap<ChessPiece, ChessPosition> enemyPieceList = new HashMap<>();
+        HashMap<ChessPosition, ChessPiece> enemyPieceList = new HashMap<>();
         for (int r = 1; r <=8; r++){
             for (int c = 1; c <=8; c++){
                 ChessPosition testPos = new ChessPosition(r,c);
                 ChessPiece testPiece = passedBoard.getPiece(testPos);
                 if (testPiece != null && testPiece.getTeamColor() != color){
-                    enemyPieceList.put(testPiece, testPos);
+                    enemyPieceList.put(testPos, testPiece); //use position as the key to ensure it's a unique key
                 }
             }
         }
         //check if pieces put king in check
-        for (ChessPiece enemyPiece : enemyPieceList.keySet()){
-            Collection<ChessMove> enemyMove = enemyPiece.pieceMoves(passedBoard,enemyPieceList.get(enemyPiece));
+        for (ChessPosition enemyPos : enemyPieceList.keySet()){
+            Collection<ChessMove> enemyMove = enemyPieceList.get(enemyPos).pieceMoves(passedBoard,enemyPos);
             for (ChessMove move : enemyMove){
                 ChessPosition kingComparePosition = move.getEndPosition();
                 if (kingComparePosition.equals(kingPos)) {
