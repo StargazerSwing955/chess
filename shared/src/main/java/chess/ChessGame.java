@@ -74,9 +74,15 @@ public class ChessGame {
                 return allMoves;
             }else{
                 for (ChessMove move : allMoves){
-                    ChessBoard testboard = board.clone(); //NOT CURRENTLY A COPY OF THE BOARD
-                    testboard.addPiece(move.getStartPosition(),null);
-                    testboard.addPiece(move.getEndPosition(), piece);
+                    ChessBoard testboard = board.clone(); //copies the board
+                    //performs the move on the hypothetical board
+                        if(move.getPromotionPiece() != null){ //pawn promo
+                            testboard.addPiece(move.getEndPosition(), new ChessPiece(piece.getTeamColor(), move.getPromotionPiece()));
+                            testboard.addPiece(move.getStartPosition(), null);
+                        }else{
+                            testboard.addPiece(move.getEndPosition(), piece);
+                            testboard.addPiece(move.getStartPosition(), null);
+                        }
                     if (checkBoardForCheck(testboard, piece.getTeamColor())){
                         allMoves.remove(move);
                     }
@@ -157,13 +163,13 @@ public class ChessGame {
 
     //checks if there are moves for all pieces of color
     public boolean canMove(ChessBoard board, TeamColor color){
-        boolean movePossible = false;
+        boolean movePossible = true;
         for (int r = 1; r <=8; r++){
             for (int c = 1; c <=8; c++){
                 ChessPosition testPos = new ChessPosition(r,c);
                 ChessPiece testPiece = board.getPiece(testPos);
                 if ((testPiece != null && testPiece.getTeamColor() == color) && !validMoves(testPos).isEmpty()){
-                   movePossible = true;
+                   movePossible = false;
                 }
             }
         }
