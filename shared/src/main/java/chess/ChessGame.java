@@ -119,14 +119,15 @@ public class ChessGame {
 
 
     //locates the king for check
-    public ChessPosition findKing(ChessBoard board, TeamColor color){
+    public ChessPosition findKing(ChessBoard passedBoard, TeamColor color){
        ChessPosition kingPos = new ChessPosition(1,1);
        for (int r = 1; r <=8; r++){
            for (int c = 1; c <=8; c++){
                ChessPosition testPos = new ChessPosition(r,c);
-               ChessPiece testPiece = board.getPiece(testPos);
+               ChessPiece testPiece = passedBoard.getPiece(testPos);
                if (testPiece != null && testPiece.getPieceType() == ChessPiece.PieceType.KING && testPiece.getTeamColor() == color){
                    kingPos = testPos;
+                   break;
                }
            }
        }
@@ -134,15 +135,15 @@ public class ChessGame {
     }
 
     //checks if king is in check
-    public boolean checkBoardForCheck(ChessBoard board, TeamColor color){
+    public boolean checkBoardForCheck(ChessBoard passedBoard, TeamColor color){
         boolean isChecked = false;
-        ChessPosition kingPos = findKing(board, color);
+        ChessPosition kingPos = findKing(passedBoard, color);
         //get enemy pieces
         HashMap<ChessPiece, ChessPosition> enemyPieceList = new HashMap<>();
         for (int r = 1; r <=8; r++){
             for (int c = 1; c <=8; c++){
                 ChessPosition testPos = new ChessPosition(r,c);
-                ChessPiece testPiece = board.getPiece(testPos);
+                ChessPiece testPiece = passedBoard.getPiece(testPos);
                 if (testPiece != null && testPiece.getTeamColor() != color){
                     enemyPieceList.put(testPiece, testPos);
                 }
@@ -150,14 +151,20 @@ public class ChessGame {
         }
         //check if pieces put king in check
         for (ChessPiece enemyPiece : enemyPieceList.keySet()){
-            Collection<ChessMove> enemyMove = enemyPiece.pieceMoves(board,enemyPieceList.get(enemyPiece));
+            Collection<ChessMove> enemyMove = enemyPiece.pieceMoves(passedBoard,enemyPieceList.get(enemyPiece));
             for (ChessMove move : enemyMove){
-                if (move.getEndPosition() == kingPos) {
+                ChessPosition kingComparePosition = move.getEndPosition();
+                int kingRow = kingPos.getRow();
+                int kingCol = kingPos.getColumn();
+                int compRow = kingComparePosition.getRow();
+                int compCol = kingComparePosition.getColumn();
+                if ((compRow == kingRow) && (compCol == kingCol)) {
                     isChecked = true;
                     break;
                 }
             }
         }
+
         return isChecked;
     }
 
