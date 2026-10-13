@@ -114,6 +114,11 @@ public class ChessBoard implements Cloneable {
 
     }
 
+    // collects the pieces on the specified team
+    // public HashCode<ChessPosition, ChessPiece> collectPieces(TeamColor team){
+    // }
+
+
     @Override
     public ChessBoard clone(){
         try {
