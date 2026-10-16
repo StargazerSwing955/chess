@@ -11,7 +11,7 @@ public class Server {
         // Register your endpoints and exception handlers here.
         javalin.post("/user",ctx -> ctx.result("{}"));
         //clear is called before every test
-        javalin.delete("db", ctx -> ctx.result("{}"));
+        javalin.delete("/db", ctx -> ctx.result("{}"));
 
         //write own tests to ensure everything works to supplement current tests
 
