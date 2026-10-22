@@ -1,10 +1,15 @@
 package dataAccess;
 
+import model.AuthData;
+import model.UserData;
+
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 
 public class UserDataMemory implements DataAccessUsers{
 
-    private HashMap<String,String> UserData = new HashMap<String, String>(); //username, password, email
+    private Collection<UserData> userData = new ArrayList<>();
 
 
     @Override
@@ -19,7 +24,7 @@ public class UserDataMemory implements DataAccessUsers{
 
     @Override
     public void clearUsers() {
-        UserData.clear();
+        userData.clear();
 
     }
 }

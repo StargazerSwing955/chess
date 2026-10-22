@@ -1,28 +1,34 @@
 package dataAccess;
 
-import java.util.HashMap;
+import model.AuthData;
+import java.util.ArrayList;
+import java.util.Collection;
 
 public class AuthDataMemory implements DataAccessAuth {
-
-    private HashMap<String,String> AuthenticationData = new HashMap<String, String>(); //AuthData, Username
+    private Collection<AuthData> authenticationData = new ArrayList<>();
 
     @Override
-    public void addAuthData() {
-
+    public void addAuthData(AuthData dataToAdd) {
+        if (!authenticationData.contains(dataToAdd)){
+            authenticationData.add(dataToAdd);
+        }
     }
 
     @Override
-    public void getAuthData() {
-
+    public void getAuthData(AuthData dataToFind) {
+        authenticationData.contains(dataToFind);
     }
 
     @Override
-    public void removeAuthData() {
+    public void removeAuthData(AuthData dataToRemove) {
+        if (!authenticationData.contains(dataToRemove)){
+            authenticationData.remove(dataToRemove);
 
+        }
     }
 
     @Override
     public void removeAll() {
-        AuthenticationData.clear();
+        authenticationData.clear();
     }
 }

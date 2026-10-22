@@ -1,10 +1,15 @@
 package dataAccess;
 
+import model.AuthData;
+import model.GameData;
+
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 
 public class GameDataMemory implements DataAccessGames {
 
-    private HashMap<String,String> GameData = new HashMap<String, String>(); //gameID, white player, black player
+    private Collection<GameData> gameLists = new ArrayList<>();
 
 
     @Override
@@ -24,6 +29,6 @@ public class GameDataMemory implements DataAccessGames {
 
     @Override
     public void deleteGames() { //clear GameData
-
+        gameLists.clear();
     }
 }
