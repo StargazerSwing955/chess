@@ -1,14 +1,17 @@
 package server;
 
+import dataAccess.AuthDataMemory;
+import dataAccess.DataAccessException;
+import dataAccess.GameDataMemory;
+import dataAccess.UserDataMemory;
 import io.javalin.http.Context;
 
 public class Handler {
 
+    private final ServiceDelete serviceCallDelete;
 
-    private ServiceDelete serviceCallDelete = new ServiceDelete();
-
-    public Handler(){
-
+    public Handler(AuthDataMemory authMemory, UserDataMemory userMemory, GameDataMemory gameMemory){
+         serviceCallDelete = new ServiceDelete(authMemory,gameMemory,userMemory);
     }
 
     //register
@@ -25,7 +28,11 @@ public class Handler {
 
     //clear
     public void clear(Context ctx){
-      serviceCallDelete.deleteData();
+        try {
+            serviceCallDelete.deleteData();
+        } catch (DataAccessException e) {
+            throw new RuntimeException(e);
+        }
 
     }
 

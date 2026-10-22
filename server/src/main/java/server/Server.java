@@ -1,21 +1,69 @@
 package server;
 
+import dataAccess.AuthDataMemory;
+import dataAccess.GameDataMemory;
+import dataAccess.UserDataMemory;
 import io.javalin.*;
 
 public class Server {
 
     private final Javalin javalin;
 
-    public Server() {
+    //db memory objects
+    private final AuthDataMemory authMemory = new AuthDataMemory();
+    private final UserDataMemory userMemory = new UserDataMemory();
+    private final GameDataMemory gameMemory = new GameDataMemory();
+
+    private final Handler handler = new Handler(authMemory,userMemory,gameMemory);
+
+    public Server() { //holds all the paths
         javalin = Javalin.create(config -> config.staticFiles.add("web"));
-        // Register your endpoints and exception handlers here.
-        javalin.post("/user",ctx -> ctx.result("{}"));
+        //register
+        javalin.post("/user",ctx -> {
+            //success
+
+        });
+
+        //login
+        javalin.post("/session",ctx -> {
+            //success
+        });
+
+        //logout
+        javalin.delete("/session", ctx -> {
+            //success: 200
+            //failure: 401, message: unauthorized
+            //failure: 500, message
+        });
+
+        //get games
+        javalin.get("/games", ctx->{
+            //success: 200, [200] { "games": [{"gameID": "", "whiteUsername":"", "blackUsername":"", "gameName:""} ]}
+            //fail: 401: message: unauthorized
+            //fail: 500
+        });
+
+        //make game
+        javalin.post("/games", ctx->{
+            //success: 200, [200] { "gameID": "" }
+            //fail: 400: bad request
+            //fail: 401: message: unauthorized
+            //fail: 500
+        });
+
+        //join game
+        javalin.put("/games", ctx->{
+            //success: 200
+            //fail: 400, bad request
+            //fail: 401: message: unauthorized
+            //fail 403: already taken
+            //fail: 500
+        });
+
         //clear is called before every test
-        javalin.delete("/db", ctx -> ctx.result("{}"));
+        javalin.delete("/db", handler::clear);
 
         //write own tests to ensure everything works to supplement current tests
-
-
     }
 
     public int run(int desiredPort) {

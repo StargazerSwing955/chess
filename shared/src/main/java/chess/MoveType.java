@@ -15,8 +15,6 @@ public class MoveType {
 
      */
     public MoveType(ChessBoard board, ChessPiece piece, ChessPosition position) {
-
-
     }
 
 

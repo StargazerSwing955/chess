@@ -1,10 +1,10 @@
-package server;
+package dataAccess;
 
 import java.util.HashMap;
 
-public class AuthDataMemory implements DataAccessAuth{
+public class AuthDataMemory implements DataAccessAuth {
 
-    private HashMap<String,String> AuthenticationData = new HashMap<String, String>();
+    private HashMap<String,String> AuthenticationData = new HashMap<String, String>(); //AuthData, Username
 
     @Override
     public void addAuthData() {
@@ -23,6 +23,6 @@ public class AuthDataMemory implements DataAccessAuth{
 
     @Override
     public void removeAll() {
-
+        AuthenticationData.clear();
     }
 }
