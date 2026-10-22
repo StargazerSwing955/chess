@@ -1,13 +1,13 @@
 package server;
 
 import com.google.gson.Gson;
-import dataAccess.AuthDataMemory;
-import dataAccess.DataAccessException;
-import dataAccess.GameDataMemory;
-import dataAccess.UserDataMemory;
+import dataAccess.*;
+import io.javalin.http.ContentType;
 import io.javalin.http.Context;
 import model.AuthData;
 import model.UserData;
+
+import java.util.Map;
 
 public class Handler {
 
@@ -20,15 +20,37 @@ public class Handler {
     }
 
     //register
-    public AuthData registerUser(Context ctx){
+    public void registerUser(Context ctx){
         UserData dataFromCtx  = new Gson().fromJson(ctx.body(), UserData.class);
-        return serviceCallRegister.registerUser(dataFromCtx);
+        String resultString = "";
+        if (dataFromCtx.username() == null || dataFromCtx.password() == null || dataFromCtx.email() ==null){
+            ctx.result( new Gson().toJson(Map.of("message","Error: bad request")))
+                    .contentType(ContentType.APPLICATION_JSON).status(400);
+            return;
+        }
+        try {
+            resultString = new Gson().toJson(serviceCallRegister.registerUser(dataFromCtx));
+        } catch (UserAlreadyTakenException e) {
+            ctx.result( new Gson().toJson(Map.of("message","Error: already taken")))
+                    .contentType(ContentType.APPLICATION_JSON).status(403);
+            return;
+        }
+        ctx.result(resultString).contentType(ContentType.APPLICATION_JSON).status(200);
+
     }
 
     //login
-    public AuthData loginUser(Context ctx){
+    public void loginUser(Context ctx){
         UserData dataFromCtx  = new Gson().fromJson(ctx.body(), UserData.class);
-
+        String resultString = "";
+        try {
+            resultString = new Gson().toJson(serviceCallRegister.loginUser(dataFromCtx));
+        } catch (UserAlreadyTakenException e) {
+            ctx.result( new Gson().toJson(Map.of("message","Error: already taken")))
+                    .contentType(ContentType.APPLICATION_JSON).status(403);
+            return;
+        }
+        ctx.result(resultString).contentType(ContentType.APPLICATION_JSON).status(200);
     }
 
     //logout

@@ -24,9 +24,7 @@ public class Server {
         javalin.post("/user", handler::registerUser);
 
         //login
-        javalin.post("/session",ctx -> {
-            //success
-        });
+        javalin.post("/session",handler::loginUser);
 
         //logout
         javalin.delete("/session", ctx -> {

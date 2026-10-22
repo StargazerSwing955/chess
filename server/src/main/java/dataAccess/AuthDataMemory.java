@@ -1,6 +1,7 @@
 package dataAccess;
 
 import model.AuthData;
+
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -15,8 +16,15 @@ public class AuthDataMemory implements DataAccessAuth {
     }
 
     @Override
-    public void getAuthData(AuthData dataToFind) {
-        authenticationData.contains(dataToFind);
+    public boolean getAuthData(String dataToFind) {
+        boolean doesContain = false;
+        for(AuthData user: authenticationData){
+            if (user.username().equals(dataToFind)) {
+                doesContain = true;
+                break;
+            }
+        }
+        return doesContain;
     }
 
     @Override

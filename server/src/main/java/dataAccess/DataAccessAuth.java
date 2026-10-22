@@ -8,7 +8,7 @@ public interface DataAccessAuth {
     void addAuthData(AuthData dataToAdd);
 
     //find AuthData
-    void getAuthData(AuthData dataToFind);
+    boolean getAuthData(String dataToFind);
 
     //delete AuthData
     void removeAuthData(AuthData dataToRemove);
