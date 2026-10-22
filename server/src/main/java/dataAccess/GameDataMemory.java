@@ -9,7 +9,7 @@ import java.util.HashMap;
 
 public class GameDataMemory implements DataAccessGames {
 
-    private Collection<GameData> gameLists = new ArrayList<>();
+    private Collection<GameData> gameCollection = new ArrayList<>();
 
 
     @Override
@@ -29,6 +29,6 @@ public class GameDataMemory implements DataAccessGames {
 
     @Override
     public void deleteGames() { //clear GameData
-        gameLists.clear();
+        gameCollection.clear();
     }
 }

@@ -1,6 +1,7 @@
 package server;
 
 import dataAccess.AuthDataMemory;
+import dataAccess.DataAccessException;
 import dataAccess.GameDataMemory;
 import dataAccess.UserDataMemory;
 import io.javalin.*;
@@ -18,11 +19,9 @@ public class Server {
 
     public Server() { //holds all the paths
         javalin = Javalin.create(config -> config.staticFiles.add("web"));
-        //register
-        javalin.post("/user",ctx -> {
-            //success
 
-        });
+        //register
+        javalin.post("/user", handler::registerUser);
 
         //login
         javalin.post("/session",ctx -> {
@@ -53,15 +52,12 @@ public class Server {
 
         //join game
         javalin.put("/games", ctx->{
-            //success: 200
-            //fail: 400, bad request
-            //fail: 401: message: unauthorized
-            //fail 403: already taken
-            //fail: 500
+
         });
 
         //clear is called before every test
         javalin.delete("/db", handler::clear);
+
 
         //write own tests to ensure everything works to supplement current tests
     }

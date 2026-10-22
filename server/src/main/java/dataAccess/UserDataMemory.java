@@ -1,30 +1,35 @@
 package dataAccess;
 
-import model.AuthData;
 import model.UserData;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 
 public class UserDataMemory implements DataAccessUsers{
 
-    private Collection<UserData> userData = new ArrayList<>();
+    private Collection<UserData> userDataCollection = new ArrayList<>();
 
 
     @Override
-    public void addUser() {
-
+    public void addUser(UserData dataToAdd) {
+            userDataCollection.add(dataToAdd);
     }
 
     @Override
-    public void findUser() {
-
+    public boolean findUser(UserData dataToFind) {
+        boolean doesContain = false;
+        for(UserData user: userDataCollection){
+            if (user.username().equals(dataToFind.username())) {
+                doesContain = true;
+                break;
+            }
+        }
+        return doesContain;
     }
 
     @Override
     public void clearUsers() {
-        userData.clear();
+        userDataCollection.clear();
 
     }
 }
