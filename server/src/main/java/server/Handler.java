@@ -85,7 +85,7 @@ public class Handler {
             Collection<GameData> resultString = null;
             try{
                 resultString = serviceCallGames.giveGameList(authFromCtx);
-            } catch (DataAccessException e) {
+            } catch (InvalidAuthorizationException e) {
                 ctx.result(new Gson().toJson(Map.of("message", "Error: unauthorized")))
                         .contentType(ContentType.APPLICATION_JSON).status(401);
                 return;
@@ -107,7 +107,7 @@ public class Handler {
             }
             try {
                 resultString = String.valueOf(serviceCallGames.createGame(authFromCtx,gameNameString.gameName()));
-            } catch (DataAccessException e) {
+            } catch (InvalidAuthorizationException e) {
                 ctx.result(new Gson().toJson(Map.of("message", "Error: unauthorized")))
                         .contentType(ContentType.APPLICATION_JSON).status(401);
                 return;
@@ -121,14 +121,14 @@ public class Handler {
         if (hasAuthToken(ctx)){
             String authFromCtx = ctx.header("authorization");
             JoinRequest gameToJoin = new Gson().fromJson(ctx.body(), JoinRequest.class);
-            if (gameToJoin.gameID() == null || gameToJoin.teamColor()==null){
+            if (gameToJoin.gameID() == null || gameToJoin.playerColor()==null){
                 ctx.result( new Gson().toJson(Map.of("message","Error: bad request")))
                         .contentType(ContentType.APPLICATION_JSON).status(400);
                 return;
             }
             try{
-                serviceCallGames.joinGame(authFromCtx,gameToJoin.teamColor(), gameToJoin.gameID());
-            } catch (DataAccessException e) {
+                serviceCallGames.joinGame(authFromCtx,gameToJoin.playerColor(), gameToJoin.gameID());
+            } catch (InvalidAuthorizationException e) {
                 ctx.result(new Gson().toJson(Map.of("message", "Error: unauthorized")))
                         .contentType(ContentType.APPLICATION_JSON).status(401);
                 return;

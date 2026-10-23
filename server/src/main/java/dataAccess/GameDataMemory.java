@@ -22,6 +22,11 @@ public class GameDataMemory implements DataAccessGames {
     }
 
     @Override
+    public GameData giveGame(int gameId){
+       return gameCollection.get(gameId);
+    }
+
+    @Override
     public void joinGame(ChessGame.TeamColor teamColor, String username, int gameId) {
         GameData gameToJoin = gameCollection.get(gameId);
 
@@ -36,8 +41,6 @@ public class GameDataMemory implements DataAccessGames {
                 gameCollection.replace(gameId,gameToJoin, new GameData(gameId,gameToJoin.whiteUsername(),username,gameToJoin.gameName(),gameToJoin.game()));
             }
         }
-
-
     }
 
     @Override
