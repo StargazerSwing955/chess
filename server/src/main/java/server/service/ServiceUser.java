@@ -1,4 +1,4 @@
-package server;
+package server.service;
 
 import dataAccess.*;
 import model.AuthData;
@@ -6,17 +6,20 @@ import model.UserData;
 import java.util.UUID;
 
 
-public class ServiceRegister {
+public class ServiceUser {
 
     private final DataAccessAuth authDAO;
     private final DataAccessUsers userDAO;
 
-    public ServiceRegister(DataAccessAuth authDAO, DataAccessUsers userDAO){
+    public ServiceUser(DataAccessAuth authDAO, DataAccessUsers userDAO){
         this.authDAO = authDAO;
         this.userDAO = userDAO;
     }
 
     public AuthData registerUser(UserData userData)throws UserAlreadyTakenException {
+        if (userData.username() == null){
+
+        }
         UserData alreadyExists= userDAO.findUser(userData);
         if (alreadyExists != null){
             throw new UserAlreadyTakenException("Error: already taken");

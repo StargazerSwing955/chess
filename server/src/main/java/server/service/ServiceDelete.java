@@ -1,4 +1,4 @@
-package server;
+package server.service;
 
 import dataAccess.DataAccessAuth;
 import dataAccess.DataAccessException;

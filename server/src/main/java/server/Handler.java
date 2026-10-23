@@ -6,6 +6,9 @@ import io.javalin.http.ContentType;
 import io.javalin.http.Context;
 import model.GameData;
 import model.UserData;
+import server.service.ServiceDelete;
+import server.service.ServiceGameList;
+import server.service.ServiceUser;
 
 import java.util.Collection;
 import java.util.Map;
@@ -13,12 +16,12 @@ import java.util.Map;
 public class Handler {
 
     private final ServiceDelete serviceCallDelete;
-    private final ServiceRegister serviceCallRegister;
+    private final ServiceUser serviceCallRegister;
     private final ServiceGameList serviceCallGames;
 
     public Handler(AuthDataMemory authMemory, UserDataMemory userMemory, GameDataMemory gameMemory){
          serviceCallDelete = new ServiceDelete(authMemory,gameMemory,userMemory);
-         serviceCallRegister = new ServiceRegister( authMemory,userMemory);
+         serviceCallRegister = new ServiceUser( authMemory,userMemory);
          serviceCallGames = new ServiceGameList(authMemory, gameMemory);
     }
 
