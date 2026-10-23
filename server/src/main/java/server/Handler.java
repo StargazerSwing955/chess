@@ -1,11 +1,9 @@
 package server;
 
-import chess.ChessGame;
 import com.google.gson.Gson;
 import dataAccess.*;
 import io.javalin.http.ContentType;
 import io.javalin.http.Context;
-import model.AuthData;
 import model.GameData;
 import model.UserData;
 
@@ -122,18 +120,21 @@ public class Handler {
     public void joinGame(Context ctx){ //authToken, playerColor, gameID
         if (hasAuthToken(ctx)){
             String authFromCtx = ctx.header("authorization");
-            GameData gameToJoin = new Gson().fromJson(ctx.body(), GameData.class);
-            ChessGame.TeamColor teamJoin = new Gson().fromJson(ctx.body(), ChessGame.TeamColor.class);
-            if (gameToJoin.gameID() == null || teamJoin==null){
+            JoinRequest gameToJoin = new Gson().fromJson(ctx.body(), JoinRequest.class);
+            if (gameToJoin.gameID() == null || gameToJoin.teamColor()==null){
                 ctx.result( new Gson().toJson(Map.of("message","Error: bad request")))
                         .contentType(ContentType.APPLICATION_JSON).status(400);
                 return;
             }
             try{
-                serviceCallGames.joinGame(authFromCtx,teamJoin, gameToJoin.gameID());
+                serviceCallGames.joinGame(authFromCtx,gameToJoin.teamColor(), gameToJoin.gameID());
             } catch (DataAccessException e) {
                 ctx.result(new Gson().toJson(Map.of("message", "Error: unauthorized")))
                         .contentType(ContentType.APPLICATION_JSON).status(401);
+                return;
+            } catch (GameFullException e){
+                ctx.result(new Gson().toJson(Map.of("message", "Error: already taken")))
+                        .contentType(ContentType.APPLICATION_JSON).status(403);
                 return;
             }
 

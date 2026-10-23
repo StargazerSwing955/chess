@@ -1,16 +1,17 @@
 package service;
 
-import dataAccess.ServiceGameList;
+import server.ServiceGameList;
 import server.ServiceDelete;
 import server.ServiceRegister;
-
-import java.net.HttpURLConnection;
-import java.util.*;
 
 public class serviceTests {
 
     private static ServiceRegister userServices;
     private static ServiceGameList gameServices;
     private static ServiceDelete clearService;
+
+
+
+
 
 }

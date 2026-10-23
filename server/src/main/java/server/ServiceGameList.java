@@ -1,6 +1,10 @@
-package dataAccess;
+package server;
 
 import chess.ChessGame;
+import dataAccess.DataAccessAuth;
+import dataAccess.DataAccessException;
+import dataAccess.DataAccessGames;
+import dataAccess.GameFullException;
 import model.AuthData;
 import model.GameData;
 
@@ -16,7 +20,7 @@ public class ServiceGameList {
         this.gameDAO = gameDAO;
     }
 
-    public AuthData checkAuthorization(String receivedAuthToken) throws DataAccessException{
+    public AuthData checkAuthorization(String receivedAuthToken) throws DataAccessException {
         AuthData isLoggedIn = authDAO.getAuthData(receivedAuthToken);
         if(isLoggedIn == null){
             throw new DataAccessException("authToken does not exist");
@@ -25,7 +29,7 @@ public class ServiceGameList {
     }
 
     //join game
-    public void joinGame(String authToken, ChessGame.TeamColor teamColor, Integer gameId) throws DataAccessException, GameFullException{
+    public void joinGame(String authToken, ChessGame.TeamColor teamColor, Integer gameId) throws DataAccessException, GameFullException {
         AuthData userAuthData = checkAuthorization(authToken);
         gameDAO.joinGame(teamColor, userAuthData.username(),gameId);
     }
