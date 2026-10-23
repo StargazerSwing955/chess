@@ -60,24 +60,40 @@ public class Handler {
 
     //logout
     public void logoutUser(Context ctx){
-        UserData dataFromCtx  = new Gson().fromJson(ctx.body(), UserData.class);
+        String dataFromCtx  = ctx.header("authorization");
+        if (dataFromCtx == null){
+            ctx.result( new Gson().toJson(Map.of("message","Error: unauthorized")))
+                    .contentType(ContentType.APPLICATION_JSON).status(401);
+            return;
+        }
+
+        try {
+          serviceCallRegister.logoutUser(dataFromCtx);
+        } catch (DataAccessException e) {
+            ctx.result( new Gson().toJson(Map.of("message","Error: unauthorized")))
+                    .contentType(ContentType.APPLICATION_JSON).status(401);
+            return;
+        }
+        ctx.status(200);
+    }
+
+
+
+    //get games
+    public void getGameList(Context ctx){ // just authToken
+        AuthData dataFromCtx  = new Gson().fromJson(ctx.body(), AuthData.class);
         String resultString = "";
 
-
-        ctx.result(resultString).contentType(ContentType.APPLICATION_JSON).status(200);
-    }
-    //get games
-    public void getGameList(Context ctx){
 
     }
 
     //make game
-    public void createGame(Context ctx){
+    public void createGame(Context ctx){ // authToken, gameName
 
     }
 
     //join game
-    public void joinGame(Context ctx){
+    public void joinGame(Context ctx){ //authToken, playerColor, gameID
 
     }
 

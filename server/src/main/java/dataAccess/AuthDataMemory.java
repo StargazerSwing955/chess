@@ -16,23 +16,18 @@ public class AuthDataMemory implements DataAccessAuth {
     }
 
     @Override
-    public boolean getAuthData(String dataToFind) { //checks the user is logged in based on username
-        boolean doesContain = false;
+    public AuthData getAuthData(String dataToFind) { //checks the user is logged in based on username or authToken
         for(AuthData user: authenticationData){
-            if (user.username().equals(dataToFind)) {
-                doesContain = true;
-                break;
+            if (user.username().equals(dataToFind) || user.authToken().equals(dataToFind)) {
+               return user;
             }
         }
-        return doesContain;
+        return null;
     }
 
     @Override
     public void removeAuthData(AuthData dataToRemove) {
-        if (!authenticationData.contains(dataToRemove)){
-            authenticationData.remove(dataToRemove);
-
-        }
+        authenticationData.remove(dataToRemove);
     }
 
     @Override

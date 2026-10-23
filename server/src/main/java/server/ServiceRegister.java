@@ -51,8 +51,12 @@ public class ServiceRegister {
         return UUID.randomUUID().toString();
     }
 
-    public void logoutUser(String logoutData) { //takes just the authToken
-
+    public void logoutUser(String logoutData) throws DataAccessException{ //takes just the authToken
+        AuthData isLoggedIn = authDAO.getAuthData(logoutData);
+        if(isLoggedIn == null){
+            throw new DataAccessException("authToken does not exist");
+        }
+        authDAO.removeAuthData(isLoggedIn);
     }
 
 
