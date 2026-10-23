@@ -8,7 +8,7 @@ public interface DataAccessUsers {
     void addUser(UserData dataToAdd);
 
     //find user
-    boolean findUser(UserData dataToFind);
+    UserData findUser(UserData dataToFind);
 
     //delete users
     void clearUsers();

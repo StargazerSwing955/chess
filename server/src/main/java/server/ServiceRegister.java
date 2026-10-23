@@ -1,9 +1,6 @@
 package server;
 
-import dataAccess.DataAccessAuth;
-import dataAccess.DataAccessUsers;
-import dataAccess.UserAlreadyTakenException;
-import dataAccess.UserNotExistException;
+import dataAccess.*;
 import model.AuthData;
 import model.UserData;
 import java.util.UUID;
@@ -22,8 +19,8 @@ public class ServiceRegister {
     }
 
     public AuthData registerUser(UserData userData)throws UserAlreadyTakenException {
-        boolean alreadyExists= userDAO.findUser(userData);
-        if (alreadyExists){
+        UserData alreadyExists= userDAO.findUser(userData);
+        if (alreadyExists != null){
             throw new UserAlreadyTakenException("Error: already taken");
         }
         userDAO.addUser(userData);
@@ -31,10 +28,13 @@ public class ServiceRegister {
 
     }
 
-    public AuthData loginUser(UserData userData) throws UserNotExistException {
-        boolean alreadyExists = userDAO.findUser(userData);
-        if(!alreadyExists){
+    public AuthData loginUser(UserData userData) throws UserNotExistException, InvalidAuthorizationException {
+        UserData alreadyExists = userDAO.findUser(userData);
+        if(alreadyExists == null){
             throw new UserNotExistException("Error: bad request");
+        }
+        if (!alreadyExists.password().equals(userData.password())){
+            throw new InvalidAuthorizationException("Error: invalid login");
         }
         return createAuthData(userData);
     }

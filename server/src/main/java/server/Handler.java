@@ -43,11 +43,16 @@ public class Handler {
     public void loginUser(Context ctx){
         UserData dataFromCtx  = new Gson().fromJson(ctx.body(), UserData.class);
         String resultString = "";
+        if (dataFromCtx.username() == null || dataFromCtx.password() == null){
+            ctx.result( new Gson().toJson(Map.of("message","Error: bad request")))
+                    .contentType(ContentType.APPLICATION_JSON).status(400);
+            return;
+        }
         try {
             resultString = new Gson().toJson(serviceCallRegister.loginUser(dataFromCtx));
-        } catch (UserAlreadyTakenException e) {
-            ctx.result( new Gson().toJson(Map.of("message","Error: already taken")))
-                    .contentType(ContentType.APPLICATION_JSON).status(403);
+        } catch (UserNotExistException | InvalidAuthorizationException e){
+            ctx.result( new Gson().toJson(Map.of("message","Error: unauthorized")))
+                    .contentType(ContentType.APPLICATION_JSON).status(401);
             return;
         }
         ctx.result(resultString).contentType(ContentType.APPLICATION_JSON).status(200);
