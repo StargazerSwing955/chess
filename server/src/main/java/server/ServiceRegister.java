@@ -6,8 +6,6 @@ import model.UserData;
 import java.util.UUID;
 
 
-import java.util.Collection;
-
 public class ServiceRegister {
 
     private final DataAccessAuth authDAO;

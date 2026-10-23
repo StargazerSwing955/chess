@@ -10,9 +10,7 @@ public class AuthDataMemory implements DataAccessAuth {
 
     @Override
     public void addAuthData(AuthData dataToAdd) {
-        if (!authenticationData.contains(dataToAdd)){
             authenticationData.add(dataToAdd);
-        }
     }
 
     @Override

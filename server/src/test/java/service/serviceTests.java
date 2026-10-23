@@ -1,5 +1,6 @@
 package service;
 
+import dataAccess.ServiceGameList;
 import server.ServiceDelete;
 import server.ServiceRegister;
 
@@ -9,7 +10,7 @@ import java.util.*;
 public class serviceTests {
 
     private static ServiceRegister userServices;
+    private static ServiceGameList gameServices;
     private static ServiceDelete clearService;
-
 
 }

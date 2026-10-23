@@ -30,13 +30,13 @@ public class Server {
         javalin.delete("/session", handler::logoutUser);
 
         //get games
-        javalin.get("/games", handler::getGameList);
+        javalin.get("/game", handler::getGameList);
 
         //make game
-        javalin.post("/games", handler::createGame);
+        javalin.post("/game", handler::createGame);
 
         //join game
-        javalin.put("/games", handler::joinGame);
+        javalin.put("/game", handler::joinGame);
 
         //clear is called before every test
         javalin.delete("/db", handler::clear);

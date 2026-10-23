@@ -36,8 +36,9 @@ public class ServiceGameList {
     }
 
     //create game
-    public void createGame(String authToken, String gameName) throws DataAccessException {
+    public int createGame(String authToken, String gameName) throws DataAccessException {
         AuthData userAuthData = checkAuthorization(authToken);
+        return gameDAO.addGame(gameName);
 
     }
 

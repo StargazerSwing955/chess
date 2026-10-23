@@ -80,20 +80,33 @@ public class Handler {
     public void getGameList(Context ctx){ // just authToken
         if(hasAuthToken(ctx)) {
             String authFromCtx = ctx.header("authorization");
+            String resultString = "";
             try{
-                serviceCallGames.giveGameList(authFromCtx);
+                resultString = serviceCallGames.giveGameList(authFromCtx).toString();
             } catch (DataAccessException e) {
                 ctx.result(new Gson().toJson(Map.of("message", "Error: unauthorized")))
                         .contentType(ContentType.APPLICATION_JSON).status(401);
                 return;
             }
-            ctx.status(200);
+            ctx.result(resultString).contentType(ContentType.APPLICATION_JSON).status(200);
         }
     }
 
     //make game
-    public void createGame(Context ctx){ // authToken, gameName
-
+    public void createGame(Context ctx) { // authToken, gameName
+        if (hasAuthToken(ctx)) {
+            String authFromCtx = ctx.header("authorization");
+            String gameNameString  = new Gson().fromJson(ctx.body(), String.class);
+            String resultString = "";
+            try {
+                resultString = String.valueOf(serviceCallGames.createGame(authFromCtx,gameNameString));
+            } catch (DataAccessException e) {
+                ctx.result(new Gson().toJson(Map.of("message", "Error: unauthorized")))
+                        .contentType(ContentType.APPLICATION_JSON).status(401);
+                return;
+            }
+            ctx.result(resultString).contentType(ContentType.APPLICATION_JSON).status(200);
+        }
     }
 
     //join game
