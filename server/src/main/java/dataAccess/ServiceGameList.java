@@ -1,5 +1,6 @@
 package dataAccess;
 
+import chess.ChessGame;
 import model.AuthData;
 import model.GameData;
 
@@ -24,9 +25,9 @@ public class ServiceGameList {
     }
 
     //join game
-    public void userJoinGame(String authToken) throws DataAccessException, GameFullException{
+    public void joinGame(String authToken, ChessGame.TeamColor teamColor, Integer gameId) throws DataAccessException, GameFullException{
         AuthData userAuthData = checkAuthorization(authToken);
-
+        gameDAO.joinGame(teamColor, userAuthData.username(),gameId);
     }
 
     //return full game list

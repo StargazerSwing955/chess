@@ -1,11 +1,15 @@
 package server;
 
+import chess.ChessGame;
 import com.google.gson.Gson;
 import dataAccess.*;
 import io.javalin.http.ContentType;
 import io.javalin.http.Context;
+import model.AuthData;
+import model.GameData;
 import model.UserData;
 
+import java.util.Collection;
 import java.util.Map;
 
 public class Handler {
@@ -80,15 +84,15 @@ public class Handler {
     public void getGameList(Context ctx){ // just authToken
         if(hasAuthToken(ctx)) {
             String authFromCtx = ctx.header("authorization");
-            String resultString = "";
+            Collection<GameData> resultString = null;
             try{
-                resultString = serviceCallGames.giveGameList(authFromCtx).toString();
+                resultString = serviceCallGames.giveGameList(authFromCtx);
             } catch (DataAccessException e) {
                 ctx.result(new Gson().toJson(Map.of("message", "Error: unauthorized")))
                         .contentType(ContentType.APPLICATION_JSON).status(401);
                 return;
             }
-            ctx.result(resultString).contentType(ContentType.APPLICATION_JSON).status(200);
+            ctx.result(new Gson().toJson(Map.of("games",resultString))).contentType(ContentType.APPLICATION_JSON).status(200);
         }
     }
 
@@ -96,22 +100,45 @@ public class Handler {
     public void createGame(Context ctx) { // authToken, gameName
         if (hasAuthToken(ctx)) {
             String authFromCtx = ctx.header("authorization");
-            String gameNameString  = new Gson().fromJson(ctx.body(), String.class);
+            GameData gameNameString  = new Gson().fromJson(ctx.body(), GameData.class);
             String resultString = "";
+            if (gameNameString.gameName() == null){
+                ctx.result( new Gson().toJson(Map.of("message","Error: bad request")))
+                        .contentType(ContentType.APPLICATION_JSON).status(400);
+                return;
+            }
             try {
-                resultString = String.valueOf(serviceCallGames.createGame(authFromCtx,gameNameString));
+                resultString = String.valueOf(serviceCallGames.createGame(authFromCtx,gameNameString.gameName()));
             } catch (DataAccessException e) {
                 ctx.result(new Gson().toJson(Map.of("message", "Error: unauthorized")))
                         .contentType(ContentType.APPLICATION_JSON).status(401);
                 return;
             }
-            ctx.result(resultString).contentType(ContentType.APPLICATION_JSON).status(200);
+            ctx.result(new Gson().toJson(Map.of("gameID",resultString))).contentType(ContentType.APPLICATION_JSON).status(200);
         }
     }
 
     //join game
     public void joinGame(Context ctx){ //authToken, playerColor, gameID
+        if (hasAuthToken(ctx)){
+            String authFromCtx = ctx.header("authorization");
+            GameData gameToJoin = new Gson().fromJson(ctx.body(), GameData.class);
+            ChessGame.TeamColor teamJoin = new Gson().fromJson(ctx.body(), ChessGame.TeamColor.class);
+            if (gameToJoin.gameID() == null || teamJoin==null){
+                ctx.result( new Gson().toJson(Map.of("message","Error: bad request")))
+                        .contentType(ContentType.APPLICATION_JSON).status(400);
+                return;
+            }
+            try{
+                serviceCallGames.joinGame(authFromCtx,teamJoin, gameToJoin.gameID());
+            } catch (DataAccessException e) {
+                ctx.result(new Gson().toJson(Map.of("message", "Error: unauthorized")))
+                        .contentType(ContentType.APPLICATION_JSON).status(401);
+                return;
+            }
 
+            ctx.status(200);
+        }
     }
 
     //clear
