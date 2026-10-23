@@ -16,7 +16,7 @@ public class AuthDataMemory implements DataAccessAuth {
     }
 
     @Override
-    public boolean getAuthData(String dataToFind) {
+    public boolean getAuthData(String dataToFind) { //checks the user is logged in based on username
         boolean doesContain = false;
         for(AuthData user: authenticationData){
             if (user.username().equals(dataToFind)) {

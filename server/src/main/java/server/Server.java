@@ -27,31 +27,16 @@ public class Server {
         javalin.post("/session",handler::loginUser);
 
         //logout
-        javalin.delete("/session", ctx -> {
-            //success: 200
-            //failure: 401, message: unauthorized
-            //failure: 500, message
-        });
+        javalin.delete("/session", handler::logoutUser);
 
         //get games
-        javalin.get("/games", ctx->{
-            //success: 200, [200] { "games": [{"gameID": "", "whiteUsername":"", "blackUsername":"", "gameName:""} ]}
-            //fail: 401: message: unauthorized
-            //fail: 500
-        });
+        javalin.get("/games", handler::getGameList);
 
         //make game
-        javalin.post("/games", ctx->{
-            //success: 200, [200] { "gameID": "" }
-            //fail: 400: bad request
-            //fail: 401: message: unauthorized
-            //fail: 500
-        });
+        javalin.post("/games", handler::createGame);
 
         //join game
-        javalin.put("/games", ctx->{
-
-        });
+        javalin.put("/games", handler::joinGame);
 
         //clear is called before every test
         javalin.delete("/db", handler::clear);

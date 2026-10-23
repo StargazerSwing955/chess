@@ -51,4 +51,10 @@ public class ServiceRegister {
         return UUID.randomUUID().toString();
     }
 
+    public void logoutUser(String logoutData) { //takes just the authToken
+
+    }
+
+
+
 }

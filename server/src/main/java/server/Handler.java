@@ -59,12 +59,27 @@ public class Handler {
     }
 
     //logout
+    public void logoutUser(Context ctx){
+        UserData dataFromCtx  = new Gson().fromJson(ctx.body(), UserData.class);
+        String resultString = "";
 
+
+        ctx.result(resultString).contentType(ContentType.APPLICATION_JSON).status(200);
+    }
     //get games
+    public void getGameList(Context ctx){
+
+    }
 
     //make game
+    public void createGame(Context ctx){
+
+    }
 
     //join game
+    public void joinGame(Context ctx){
+
+    }
 
     //clear
     public void clear(Context ctx){
