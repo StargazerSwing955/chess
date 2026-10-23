@@ -4,7 +4,6 @@ import com.google.gson.Gson;
 import dataAccess.*;
 import io.javalin.http.ContentType;
 import io.javalin.http.Context;
-import model.AuthData;
 import model.UserData;
 
 import java.util.Map;
@@ -13,10 +12,12 @@ public class Handler {
 
     private final ServiceDelete serviceCallDelete;
     private final ServiceRegister serviceCallRegister;
+    private final ServiceGameList serviceCallGames;
 
     public Handler(AuthDataMemory authMemory, UserDataMemory userMemory, GameDataMemory gameMemory){
          serviceCallDelete = new ServiceDelete(authMemory,gameMemory,userMemory);
          serviceCallRegister = new ServiceRegister( authMemory,userMemory);
+         serviceCallGames = new ServiceGameList(authMemory, gameMemory);
     }
 
     //register
@@ -60,31 +61,34 @@ public class Handler {
 
     //logout
     public void logoutUser(Context ctx){
-        String dataFromCtx  = ctx.header("authorization");
-        if (dataFromCtx == null){
-            ctx.result( new Gson().toJson(Map.of("message","Error: unauthorized")))
-                    .contentType(ContentType.APPLICATION_JSON).status(401);
-            return;
+        if (hasAuthToken(ctx)) {
+            String dataFromCtx  = ctx.header("authorization");
+            try {
+                serviceCallRegister.logoutUser(dataFromCtx);
+            } catch (DataAccessException e) {
+                ctx.result(new Gson().toJson(Map.of("message", "Error: unauthorized")))
+                        .contentType(ContentType.APPLICATION_JSON).status(401);
+                return;
+            }
+            ctx.status(200);
         }
-
-        try {
-          serviceCallRegister.logoutUser(dataFromCtx);
-        } catch (DataAccessException e) {
-            ctx.result( new Gson().toJson(Map.of("message","Error: unauthorized")))
-                    .contentType(ContentType.APPLICATION_JSON).status(401);
-            return;
-        }
-        ctx.status(200);
     }
 
 
 
     //get games
     public void getGameList(Context ctx){ // just authToken
-        AuthData dataFromCtx  = new Gson().fromJson(ctx.body(), AuthData.class);
-        String resultString = "";
-
-
+        if(hasAuthToken(ctx)) {
+            String authFromCtx = ctx.header("authorization");
+            try{
+                serviceCallGames.giveGameList(authFromCtx);
+            } catch (DataAccessException e) {
+                ctx.result(new Gson().toJson(Map.of("message", "Error: unauthorized")))
+                        .contentType(ContentType.APPLICATION_JSON).status(401);
+                return;
+            }
+            ctx.status(200);
+        }
     }
 
     //make game
@@ -107,6 +111,14 @@ public class Handler {
 
     }
 
+    public boolean hasAuthToken(Context ctx){
+        String dataFromCtx  = ctx.header("authorization");
+        if (dataFromCtx == null){
+            ctx.result( new Gson().toJson(Map.of("message","Error: unauthorized")))
+                    .contentType(ContentType.APPLICATION_JSON).status(401);
+        }
+        return true;
+    }
 
 
 }

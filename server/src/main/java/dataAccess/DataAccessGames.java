@@ -1,15 +1,20 @@
 package dataAccess;
 
+import chess.ChessGame;
+import model.GameData;
+
+import java.util.Collection;
+
 public interface DataAccessGames {
 
     //find game
-    void findGame();
+    Collection<GameData> listGame();
 
     //add game
-    void addGame();
+    int addGame(String gameName);
 
     //join game
-    void joinGame();
+    void joinGame(ChessGame.TeamColor teamColor, String username, int gameId);
 
     //delete game
     void deleteGames();

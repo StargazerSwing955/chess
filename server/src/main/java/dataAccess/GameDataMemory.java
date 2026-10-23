@@ -1,29 +1,29 @@
 package dataAccess;
 
-import model.AuthData;
+import chess.ChessGame;
 import model.GameData;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 
 public class GameDataMemory implements DataAccessGames {
 
-    private Collection<GameData> gameCollection = new ArrayList<>();
-
+    private final HashMap<Integer,GameData> gameCollection = new HashMap<>();
+    private int gameIdGen = 0;
 
     @Override
-    public void findGame() {
+    public Collection<GameData> listGame() { return gameCollection.values(); }
 
+    @Override
+    public int addGame(String gameName) {
+        GameData gameData = new GameData(++gameIdGen,null, null, gameName,new ChessGame());
+        gameCollection.put(gameIdGen, gameData);
+        return gameIdGen;
     }
 
     @Override
-    public void addGame() {
-
-    }
-
-    @Override
-    public void joinGame() {
+    public void joinGame(ChessGame.TeamColor teamColor, String username, int gameId) {
+        GameData gameToJoin = gameCollection.get(gameId);
 
     }
 
@@ -31,4 +31,5 @@ public class GameDataMemory implements DataAccessGames {
     public void deleteGames() { //clear GameData
         gameCollection.clear();
     }
+
 }
