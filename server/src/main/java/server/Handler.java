@@ -6,9 +6,9 @@ import io.javalin.http.ContentType;
 import io.javalin.http.Context;
 import model.GameData;
 import model.UserData;
-import server.service.ServiceDelete;
-import server.service.ServiceGameList;
-import server.service.ServiceUser;
+import service.ServiceDelete;
+import service.ServiceGameList;
+import service.ServiceUser;
 
 import java.util.Collection;
 import java.util.Map;
