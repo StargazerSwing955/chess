@@ -1,5 +1,6 @@
 package service;
 
+import chess.ChessGame;
 import dataAccess.*;
 import model.AuthData;
 import model.GameData;
@@ -8,6 +9,9 @@ import org.junit.jupiter.api.Test;
 import server.service.ServiceGameList;
 import server.service.ServiceDelete;
 import server.service.ServiceUser;
+
+import java.util.Collection;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -25,6 +29,16 @@ public class serviceTests {
 
 
 
+    @Test
+    void clearAllDAO() {
+        try {
+            clearService.deleteData();
+        } catch (DataAccessException e) {
+            throw new RuntimeException(e);
+        } {
+
+        }
+    }
 
     @Test
     void registerUser(){
@@ -46,19 +60,19 @@ public class serviceTests {
         userServices.loginUser(tester);
 
         assertEquals(tester, userDAO.findUser(tester));
-
     }
-
 
     @Test
-    void clearAllDAO() {
-        try {
-            clearService.deleteData();
-        } catch (DataAccessException e) {
-            throw new RuntimeException(e);
-        } {
+    void createGame(){
+        UserData tester = new UserData("beebee","14567","a@email.com");
+        AuthData testedRegister = userServices.registerUser(tester);
 
-        }
+        gameServices.createGame(testedRegister.authToken(),"game1");
+        GameData game1 = new GameData(1,null,null,"game1", new ChessGame());
+
+        assertEquals(game1, gamesDAO.giveGame(1));
+
     }
+
 
 }
