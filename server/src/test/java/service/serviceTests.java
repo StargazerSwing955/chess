@@ -5,6 +5,8 @@ import dataAccess.*;
 import model.AuthData;
 import model.GameData;
 import model.UserData;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import server.service.ServiceGameList;
 import server.service.ServiceDelete;
@@ -29,7 +31,7 @@ public class serviceTests {
 
 
 
-    @Test
+    @BeforeEach
     void clearAllDAO() {
         try {
             clearService.deleteData();
@@ -62,13 +64,17 @@ public class serviceTests {
         assertEquals(tester, userDAO.findUser(tester));
     }
 
+
+
     @Test
-    void createGame(){
+    void joinGame(){
         UserData tester = new UserData("beebee","14567","a@email.com");
         AuthData testedRegister = userServices.registerUser(tester);
 
         gameServices.createGame(testedRegister.authToken(),"game1");
-        GameData game1 = new GameData(1,null,null,"game1", new ChessGame());
+        gameServices.joinGame(testedRegister.authToken(), ChessGame.TeamColor.WHITE,1);
+
+        GameData game1 = new GameData(1,"beebee",null,"game1", new ChessGame());
 
         assertEquals(game1, gamesDAO.giveGame(1));
 

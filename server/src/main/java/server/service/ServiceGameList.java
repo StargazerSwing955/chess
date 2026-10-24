@@ -54,5 +54,4 @@ public class ServiceGameList {
         return gameDAO.addGame(gameName);
 
     }
-
 }
