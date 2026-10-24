@@ -17,11 +17,9 @@ public class serviceTests {
     private static DataAccessAuth authDAO = new AuthDataMemory();
     private static DataAccessUsers userDAO = new UserDataMemory();
 
-
     private static ServiceUser userServices = new ServiceUser(authDAO,userDAO);
     private static ServiceGameList gameServices = new ServiceGameList(authDAO,gamesDAO);
     private static ServiceDelete clearService =new ServiceDelete(authDAO,gamesDAO,userDAO);
-
 
 
     @BeforeEach
