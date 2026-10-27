@@ -1,9 +1,9 @@
 package service;
 
-import dataAccess.DataAccessAuth;
-import dataAccess.DataAccessException;
-import dataAccess.DataAccessGames;
-import dataAccess.DataAccessUsers;
+import dataaccess.DataAccessAuth;
+import dataaccess.DataAccessException;
+import dataaccess.DataAccessGames;
+import dataaccess.DataAccessUsers;
 
 public class ServiceDelete {
 

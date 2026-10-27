@@ -1,4 +1,4 @@
-package dataAccess;
+package dataaccess;
 
 public class UserNotExistException extends RuntimeException {
     public UserNotExistException(String message) {

@@ -1,7 +1,7 @@
 package server;
 
 import com.google.gson.Gson;
-import dataAccess.*;
+import dataaccess.*;
 import io.javalin.http.ContentType;
 import io.javalin.http.Context;
 import model.GameData;

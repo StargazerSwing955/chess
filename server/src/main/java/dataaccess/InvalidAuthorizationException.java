@@ -1,4 +1,4 @@
-package dataAccess;
+package dataaccess;
 
 public class InvalidAuthorizationException extends RuntimeException {
     public InvalidAuthorizationException(String message) {

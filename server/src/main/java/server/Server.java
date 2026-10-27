@@ -1,9 +1,8 @@
 package server;
 
-import dataAccess.AuthDataMemory;
-import dataAccess.DataAccessException;
-import dataAccess.GameDataMemory;
-import dataAccess.UserDataMemory;
+import dataaccess.AuthDataMemory;
+import dataaccess.GameDataMemory;
+import dataaccess.UserDataMemory;
 import io.javalin.*;
 
 public class Server {

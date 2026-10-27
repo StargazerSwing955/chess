@@ -1,7 +1,7 @@
 package service;
 
 import chess.ChessGame;
-import dataAccess.*;
+import dataaccess.*;
 import model.AuthData;
 import model.GameData;
 import model.UserData;
@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 
-public class serviceTests {
+public class ServiceTests {
 
     private static DataAccessGames gamesDAO = new GameDataMemory();
     private static DataAccessAuth authDAO = new AuthDataMemory();
