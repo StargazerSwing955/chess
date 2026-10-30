@@ -8,7 +8,7 @@ public interface DataAccessUsers {
     void addUser(UserData dataToAdd) throws FailedToConnectException;
 
     //find user
-    UserData findUser(UserData dataToFind)throws FailedToConnectException;
+    UserData findUser(UserData dataToFind) throws FailedToConnectException;
 
     //delete users
     void clearUsers() throws FailedToConnectException;

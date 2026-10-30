@@ -15,6 +15,6 @@ public interface DataAccessGames {
 
     void joinGame(ChessGame.TeamColor teamColor, String username, int gameId);
 
-    void deleteGames();
+    void deleteGames() throws FailedToConnectException;
 
 }

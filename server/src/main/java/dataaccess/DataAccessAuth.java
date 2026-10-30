@@ -14,6 +14,6 @@ public interface DataAccessAuth {
     void removeAuthData(AuthData dataToRemove);
 
     //delete all
-    void removeAll();
+    void removeAll() throws FailedToConnectException;
 
 }

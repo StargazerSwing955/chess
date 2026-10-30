@@ -3,6 +3,7 @@ package dataaccess;
 import chess.ChessGame;
 import model.GameData;
 
+import java.sql.SQLException;
 import java.util.Collection;
 import java.util.List;
 
@@ -31,7 +32,14 @@ public class GameDataDataAccess implements DataAccessGames{
     }
 
     @Override
-    public void deleteGames() {
-        //drop
+    public void deleteGames() throws FailedToConnectException {
+        try(var conn = DatabaseManager.getConnection()) {
+            try (var preparedStatement = conn.prepareStatement("TRUNCATE games")) {
+                preparedStatement.executeUpdate();
+            }
+        }
+        catch (SQLException | DataAccessException e) {
+            throw new FailedToConnectException("failed to connect");
+        }
     }
 }

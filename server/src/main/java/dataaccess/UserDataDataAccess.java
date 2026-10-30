@@ -6,22 +6,16 @@ import model.UserData;
 import java.sql.SQLException;
 
 public class UserDataDataAccess implements DataAccessUsers{
-    //email, username, password
-    //remember to hash password!!!! <- where
 
     @Override
     public void addUser(UserData dataToAdd) throws FailedToConnectException {
-        //insert
         try(var conn = DatabaseManager.getConnection()){
             try (var preparedStatement = conn.prepareStatement("INSERT INTO users (email, username, password) VALUES (?, ?, ?)")) {
                 preparedStatement.setString(1, dataToAdd.email());
                 preparedStatement.setString(2, dataToAdd.username());
-                //where to hash password
                 preparedStatement.setString(3, dataToAdd.password());
 
                 preparedStatement.executeUpdate();
-
-                String json = new Gson().toJson(dataToAdd);
             }
 
         } catch (SQLException | DataAccessException e) {
@@ -35,7 +29,10 @@ public class UserDataDataAccess implements DataAccessUsers{
     public UserData findUser(UserData dataToFind) throws FailedToConnectException {
         //select
         try(var conn = DatabaseManager.getConnection()) {
+            try (var preparedStatement = conn.prepareStatement("SELECT (username, password) ")) {
 
+
+            }
         }
         catch (SQLException | DataAccessException e) {
             throw new FailedToConnectException("failed to connect");
@@ -44,8 +41,14 @@ public class UserDataDataAccess implements DataAccessUsers{
     }
 
     @Override
-    public void clearUsers() {
-        //drop
-
+    public void clearUsers() throws FailedToConnectException {
+        try(var conn = DatabaseManager.getConnection()) {
+            try (var preparedStatement = conn.prepareStatement("TRUNCATE users")) {
+                preparedStatement.executeUpdate();
+            }
+        }
+        catch (SQLException | DataAccessException e) {
+            throw new FailedToConnectException("failed to connect");
+        }
     }
 }
