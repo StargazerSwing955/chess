@@ -1,8 +1,6 @@
 package server;
 
-import dataaccess.AuthDataMemory;
-import dataaccess.GameDataMemory;
-import dataaccess.UserDataMemory;
+import dataaccess.*;
 import io.javalin.*;
 
 public class Server {
@@ -10,13 +8,19 @@ public class Server {
     private final Javalin javalin;
 
     //db memory objects
-    private final AuthDataMemory authMemory = new AuthDataMemory();
-    private final UserDataMemory userMemory = new UserDataMemory();
-    private final GameDataMemory gameMemory = new GameDataMemory();
+    private final DataAccessAuth authMemory = new AuthDataMemory();
+    private final DataAccessUsers userMemory = new UserDataMemory();
+    private final DataAccessGames gameMemory = new GameDataMemory();
 
     private final Handler handler = new Handler(authMemory,userMemory,gameMemory);
 
-    public Server() { //holds all the paths
+    public Server() {
+        try {
+            DatabaseManager.createDatabase();
+        } catch (DataAccessException e){
+            throw new RuntimeException("failed to connect to database");
+        }
+        //holds all the paths
         javalin = Javalin.create(config -> config.staticFiles.add("web"));
 
         //register

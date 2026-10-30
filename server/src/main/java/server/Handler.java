@@ -19,7 +19,7 @@ public class Handler {
     private final ServiceUser serviceCallRegister;
     private final ServiceGameList serviceCallGames;
 
-    public Handler(AuthDataMemory authMemory, UserDataMemory userMemory, GameDataMemory gameMemory){
+    public Handler(DataAccessAuth authMemory, DataAccessUsers userMemory, DataAccessGames gameMemory){
          serviceCallDelete = new ServiceDelete(authMemory,gameMemory,userMemory);
          serviceCallRegister = new ServiceUser( authMemory,userMemory);
          serviceCallGames = new ServiceGameList(authMemory, gameMemory);

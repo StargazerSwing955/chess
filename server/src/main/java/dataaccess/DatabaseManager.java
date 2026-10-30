@@ -41,6 +41,43 @@ public class DatabaseManager {
      * }
      * </code>
      */
+
+    void configureDatabase() throws SQLException {
+        try (var conn = getConnection()) {
+
+            String createUserTable = """
+            CREATE TABLE IF NOT EXISTS users (
+                email VARCHAR(255) NOT NULL,
+                username VARCHAR(255) NOT NULL,
+                password VARCHAR(255) NOT NULL,
+                PRIMARY KEY (username)
+            )""";
+
+            String createAuthTable = """
+            CREATE TABLE IF NOT EXISTS users (
+                authToken VARCHAR(255) NOT NULL,
+                username VARCHAR(255) NOT NULL,
+                PRIMARY KEY (authToken)
+            )""";
+
+            String createGameTable = """
+            CREATE TABLE IF NOT EXISTS users (
+                gameID INT NOT NULL AUTO_INCREMENT,
+                whiteUser VARCHAR(255),
+                blackUser VARCHAR(255),
+                gameName VARCHAR(255) NOT NULL,
+                game MEDIUMTEXT NOT NULL,
+                PRIMARY KEY (id)
+            )""";
+
+            try (var createTableStatement = conn.prepareStatement(createPetTable)) {
+                createTableStatement.executeUpdate();
+            }
+        } catch (DataAccessException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     static Connection getConnection() throws DataAccessException {
         try {
             //do not wrap the following line with a try-with-resources
