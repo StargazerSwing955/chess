@@ -13,7 +13,7 @@ public class UserDataDataAccess implements DataAccessUsers{
     public void addUser(UserData dataToAdd) throws FailedToConnectException {
         //insert
         try(var conn = DatabaseManager.getConnection()){
-            try (var preparedStatement = conn.prepareStatement("INSERT INTO users (email, username, password, json) VALUES (?, ?, ?)")) {
+            try (var preparedStatement = conn.prepareStatement("INSERT INTO users (email, username, password) VALUES (?, ?, ?)")) {
                 preparedStatement.setString(1, dataToAdd.email());
                 preparedStatement.setString(2, dataToAdd.username());
                 //where to hash password
@@ -32,8 +32,14 @@ public class UserDataDataAccess implements DataAccessUsers{
     }
 
     @Override
-    public UserData findUser(UserData dataToFind) {
+    public UserData findUser(UserData dataToFind) throws FailedToConnectException {
         //select
+        try(var conn = DatabaseManager.getConnection()) {
+
+        }
+        catch (SQLException | DataAccessException e) {
+            throw new FailedToConnectException("failed to connect");
+        }
         return null;
     }
 

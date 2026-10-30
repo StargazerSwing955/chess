@@ -41,7 +41,7 @@ public class Handler {
                     .contentType(ContentType.APPLICATION_JSON).status(403);
             return;
         } catch (FailedToConnectException e) {
-            ctx.result( new Gson().toJson(Map.of("message","Error: unauthorized")))
+            ctx.result( new Gson().toJson(Map.of("message","Error: Did not connect")))
                     .contentType(ContentType.APPLICATION_JSON).status(500);
             return;
         }
@@ -64,7 +64,12 @@ public class Handler {
             ctx.result( new Gson().toJson(Map.of("message","Error: unauthorized")))
                     .contentType(ContentType.APPLICATION_JSON).status(401);
             return;
+        } catch (FailedToConnectException e) {
+            ctx.result(new Gson().toJson(Map.of("message", "Error: Did not connect")))
+                    .contentType(ContentType.APPLICATION_JSON).status(500);
+            return;
         }
+
         ctx.result(resultString).contentType(ContentType.APPLICATION_JSON).status(200);
     }
 
