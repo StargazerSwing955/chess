@@ -45,7 +45,7 @@ public class ServiceUser {
         return createAuthData(userData);
     }
 
-    public AuthData createAuthData(UserData userData) {
+    public AuthData createAuthData(UserData userData) throws FailedToConnectException {
         String username = userData.username();
         String newToken = generateToken();
         AuthData createdData = new AuthData(newToken, username);

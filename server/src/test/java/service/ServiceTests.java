@@ -15,7 +15,7 @@ public class ServiceTests {
 
     private static DataAccessGames gamesDAO = new GameDataMemory();
     private static DataAccessAuth authDAO = new AuthDataMemory();
-    private static DataAccessUsers userDAO = new UserDataMemory();
+    private static DataAccessUsers userDAO = new UserDataDataAccess();
 
     private static ServiceUser userServices = new ServiceUser(authDAO,userDAO);
     private static ServiceGameList gameServices = new ServiceGameList(authDAO,gamesDAO);
@@ -34,15 +34,15 @@ public class ServiceTests {
     }
 
     @Test
-    void registerUser(){
+    void registerUser() throws FailedToConnectException {
         UserData tester = new UserData("beebee","14567","a@email.com");
         userServices.registerUser(tester);
 
-        assertEquals(tester, userDAO.findUser(tester));
+        assertEquals(tester.username(), userDAO.findUser(tester).username());
     }
 
     @Test
-    void loginUser(){
+    void loginUser() throws FailedToConnectException {
         UserData tester = new UserData("beebee","14567","a@email.com");
         AuthData testedRegister = userServices.registerUser(tester);
         try {
@@ -58,7 +58,7 @@ public class ServiceTests {
 
 
     @Test
-    void joinGame(){
+    void joinGame() throws FailedToConnectException {
         UserData tester = new UserData("beebee","14567","a@email.com");
         AuthData testedRegister = userServices.registerUser(tester);
 

@@ -28,10 +28,18 @@ public class UserDataDataAccess implements DataAccessUsers{
     @Override
     public UserData findUser(UserData dataToFind) throws FailedToConnectException {
         //select
+        String statement = "SELECT * FROM users WHERE username =?";
         try(var conn = DatabaseManager.getConnection()) {
-            try (var preparedStatement = conn.prepareStatement("SELECT (username, password) ")) {
-
-
+            try (var preparedStatement = conn.prepareStatement(statement)) {
+                preparedStatement.setString(1, dataToFind.username());
+                try(var dbData = preparedStatement.executeQuery()){
+                    if(dbData.next()){
+                        var userName = dbData.getString("username");
+                        var passHash = dbData.getString("password");
+                        var email = dbData.getString("email");
+                        return new UserData(userName, passHash, email);
+                    }
+                }
             }
         }
         catch (SQLException | DataAccessException e) {

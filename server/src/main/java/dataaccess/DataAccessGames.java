@@ -11,7 +11,7 @@ public interface DataAccessGames {
 
     GameData giveGame(int gameId);
 
-    int addGame(String gameName);
+    int addGame(String gameName) throws FailedToConnectException;
 
     void joinGame(ChessGame.TeamColor teamColor, String username, int gameId);
 

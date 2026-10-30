@@ -9,7 +9,7 @@ public class Server {
 
     //db memory objects
     private final DataAccessAuth authMemory = new AuthDataMemory();
-    private final DataAccessUsers userMemory = new UserDataMemory();
+    private final DataAccessUsers userMemory = new UserDataDataAccess();
     private final DataAccessGames gameMemory = new GameDataMemory();
 
     private final Handler handler = new Handler(authMemory,userMemory,gameMemory);

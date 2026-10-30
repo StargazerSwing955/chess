@@ -101,6 +101,10 @@ public class Handler {
                 ctx.result(new Gson().toJson(Map.of("message", "Error: unauthorized")))
                         .contentType(ContentType.APPLICATION_JSON).status(401);
                 return;
+            } catch (FailedToConnectException e) {
+                ctx.result(new Gson().toJson(Map.of("message", "Error: Did not connect")))
+                        .contentType(ContentType.APPLICATION_JSON).status(500);
+                return;
             }
             ctx.result(new Gson().toJson(Map.of("games",resultString))).contentType(ContentType.APPLICATION_JSON).status(200);
         }
@@ -122,6 +126,10 @@ public class Handler {
             } catch (InvalidAuthorizationException e) {
                 ctx.result(new Gson().toJson(Map.of("message", "Error: unauthorized")))
                         .contentType(ContentType.APPLICATION_JSON).status(401);
+                return;
+            } catch (FailedToConnectException e) {
+                ctx.result(new Gson().toJson(Map.of("message", "Error: Did not connect")))
+                        .contentType(ContentType.APPLICATION_JSON).status(500);
                 return;
             }
             ctx.result(new Gson().toJson(Map.of("gameID",resultString))).contentType(ContentType.APPLICATION_JSON).status(200);
@@ -147,6 +155,10 @@ public class Handler {
             } catch (GameFullException e){
                 ctx.result(new Gson().toJson(Map.of("message", "Error: already taken")))
                         .contentType(ContentType.APPLICATION_JSON).status(403);
+                return;
+            } catch (FailedToConnectException e) {
+                ctx.result(new Gson().toJson(Map.of("message", "Error: Did not connect")))
+                        .contentType(ContentType.APPLICATION_JSON).status(500);
                 return;
             }
 
