@@ -70,7 +70,13 @@ public class DatabaseManager {
                 PRIMARY KEY (id)
             )""";
 
-            try (var createTableStatement = conn.prepareStatement(createPetTable)) {
+            try (var createTableStatement = conn.prepareStatement(createUserTable)) {
+                createTableStatement.executeUpdate();
+            }
+            try (var createTableStatement = conn.prepareStatement(createAuthTable)) {
+                createTableStatement.executeUpdate();
+            }
+            try (var createTableStatement = conn.prepareStatement(createGameTable)) {
                 createTableStatement.executeUpdate();
             }
         } catch (DataAccessException e) {
