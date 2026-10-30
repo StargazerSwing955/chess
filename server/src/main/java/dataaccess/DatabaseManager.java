@@ -27,6 +27,8 @@ public class DatabaseManager {
         } catch (SQLException ex) {
             throw new DataAccessException("failed to create database", ex);
         }
+            configureDatabase();
+
     }
 
     /**
@@ -42,7 +44,7 @@ public class DatabaseManager {
      * </code>
      */
 
-    void configureDatabase() throws SQLException {
+    static void configureDatabase() throws DataAccessException {
         try (var conn = getConnection()) {
 
             String createUserTable = """
@@ -54,20 +56,20 @@ public class DatabaseManager {
             )""";
 
             String createAuthTable = """
-            CREATE TABLE IF NOT EXISTS users (
+            CREATE TABLE IF NOT EXISTS auth (
                 authToken VARCHAR(255) NOT NULL,
                 username VARCHAR(255) NOT NULL,
                 PRIMARY KEY (authToken)
             )""";
 
             String createGameTable = """
-            CREATE TABLE IF NOT EXISTS users (
-                gameID INT NOT NULL AUTO_INCREMENT,
+            CREATE TABLE IF NOT EXISTS games (
+                gameID INT NOT NULL,
                 whiteUser VARCHAR(255),
                 blackUser VARCHAR(255),
                 gameName VARCHAR(255) NOT NULL,
                 game MEDIUMTEXT NOT NULL,
-                PRIMARY KEY (id)
+                PRIMARY KEY (gameID)
             )""";
 
             try (var createTableStatement = conn.prepareStatement(createUserTable)) {
@@ -79,8 +81,9 @@ public class DatabaseManager {
             try (var createTableStatement = conn.prepareStatement(createGameTable)) {
                 createTableStatement.executeUpdate();
             }
-        } catch (DataAccessException e) {
-            throw new RuntimeException(e);
+
+        } catch (SQLException e) {
+            throw new DataAccessException("Error: "+e.getMessage());
         }
     }
 

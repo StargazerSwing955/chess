@@ -18,7 +18,7 @@ public class Server {
         try {
             DatabaseManager.createDatabase();
         } catch (DataAccessException e){
-            throw new RuntimeException("failed to connect to database");
+            throw new RuntimeException("failed to connect to database", e);
         }
         //holds all the paths
         javalin = Javalin.create(config -> config.staticFiles.add("web"));

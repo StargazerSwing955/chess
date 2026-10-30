@@ -16,7 +16,7 @@ public class ServiceUser {
         this.userDAO = userDAO;
     }
 
-    public AuthData registerUser(UserData userData)throws UserAlreadyTakenException {
+    public AuthData registerUser(UserData userData) throws UserAlreadyTakenException, FailedToConnectException {
         if (userData.username() == null){
 
         }
@@ -24,7 +24,11 @@ public class ServiceUser {
         if (alreadyExists != null){
             throw new UserAlreadyTakenException("Error: already taken");
         }
-        userDAO.addUser(userData);
+        try {
+            userDAO.addUser(userData);
+        } catch (DataAccessException e) {
+            throw new FailedToConnectException("Did not connect");
+        }
         return createAuthData(userData);
 
     }
