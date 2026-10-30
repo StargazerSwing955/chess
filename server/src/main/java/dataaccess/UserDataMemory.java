@@ -18,7 +18,7 @@ public class UserDataMemory implements DataAccessUsers{
     @Override
     public UserData findUser(UserData dataToFind) {
         for(UserData user: userDataCollection){
-            if (user.username().equals(dataToFind.username())) {
+            if (user.username().equals(dataToFind.username())&& user.password().equals(dataToFind.password())) {
                 return user;
             }
         }
