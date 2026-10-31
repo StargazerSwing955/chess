@@ -16,7 +16,7 @@ import service.ServiceUser;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
-public class ServiceTestsDB {
+public class ServiceDBTests {
 
     private static DataAccessGames gamesDAO = new GameDataDataAccess();
     private static DataAccessAuth authDAO = new AuthDataDataAccess();
