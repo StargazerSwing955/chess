@@ -47,14 +47,14 @@ public class ServiceGameList {
     //return full game list
     public Collection<GameData> giveGameList(String authToken) throws InvalidAuthorizationException,
             FailedToConnectException {
-        AuthData userAuthData = checkAuthorization(authToken);
+        AuthData userAuthData = checkAuthorization(authToken); //here in case error is thrown
         return gameDAO.listGame();
     }
 
     //create game
     public int createGame(String authToken, String gameName) throws InvalidAuthorizationException,
             FailedToConnectException {
-        AuthData userAuthData = checkAuthorization(authToken);
+        AuthData userAuthData = checkAuthorization(authToken);//here in case error is thrown
         return gameDAO.addGame(gameName);
 
     }
