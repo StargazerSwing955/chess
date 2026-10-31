@@ -27,7 +27,6 @@ public class UserDataDataAccess implements DataAccessUsers{
 
     @Override
     public UserData findUser(UserData dataToFind) throws FailedToConnectException {
-        //select
         String statement = "SELECT * FROM users WHERE username =?";
         try(var conn = DatabaseManager.getConnection()) {
             try (var preparedStatement = conn.prepareStatement(statement)) {

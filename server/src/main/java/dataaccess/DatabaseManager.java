@@ -64,7 +64,7 @@ public class DatabaseManager {
 
             String createGameTable = """
             CREATE TABLE IF NOT EXISTS games (
-                gameID INT NOT NULL,
+                gameID INT NOT NULL AUTO_INCREMENT,
                 whiteUser VARCHAR(255),
                 blackUser VARCHAR(255),
                 gameName VARCHAR(255) NOT NULL,

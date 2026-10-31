@@ -28,7 +28,7 @@ public class Handler {
     //register
     public void registerUser(Context ctx){
         UserData dataFromCtx  = new Gson().fromJson(ctx.body(), UserData.class);
-        String resultString = "";
+        String resultString;
         if (dataFromCtx.username() == null || dataFromCtx.password() == null || dataFromCtx.email() ==null){
             ctx.result( new Gson().toJson(Map.of("message","Error: bad request")))
                     .contentType(ContentType.APPLICATION_JSON).status(400);
@@ -52,7 +52,7 @@ public class Handler {
     //login
     public void loginUser(Context ctx){
         UserData dataFromCtx  = new Gson().fromJson(ctx.body(), UserData.class);
-        String resultString = "";
+        String resultString;
         if (dataFromCtx.username() == null || dataFromCtx.password() == null){
             ctx.result( new Gson().toJson(Map.of("message","Error: bad request")))
                     .contentType(ContentType.APPLICATION_JSON).status(400);
@@ -94,7 +94,7 @@ public class Handler {
     public void getGameList(Context ctx){ // just authToken
         if(hasAuthToken(ctx)) {
             String authFromCtx = ctx.header("authorization");
-            Collection<GameData> resultString = null;
+            Collection<GameData> resultString;
             try{
                 resultString = serviceCallGames.giveGameList(authFromCtx);
             } catch (InvalidAuthorizationException e) {
@@ -115,7 +115,7 @@ public class Handler {
         if (hasAuthToken(ctx)) {
             String authFromCtx = ctx.header("authorization");
             GameData gameNameString  = new Gson().fromJson(ctx.body(), GameData.class);
-            String resultString = "";
+            String resultString;
             if (gameNameString.gameName() == null){
                 ctx.result( new Gson().toJson(Map.of("message","Error: bad request")))
                         .contentType(ContentType.APPLICATION_JSON).status(400);

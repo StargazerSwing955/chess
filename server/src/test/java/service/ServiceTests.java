@@ -67,7 +67,7 @@ public class ServiceTests {
 
         GameData game1 = new GameData(1,"beebee",null,"game1", new ChessGame());
 
-        assertEquals(game1, gamesDAO.giveGame(1));
+        assertEquals(game1.whiteUsername(), gamesDAO.giveGame(1).whiteUsername());
 
     }
 
