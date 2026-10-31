@@ -1,0 +1,92 @@
+package dataaccess.sql;
+
+import chess.ChessGame;
+import dataaccess.*;
+import exceptions.DataAccessException;
+import exceptions.FailedToConnectException;
+import model.AuthData;
+import model.GameData;
+import model.UserData;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import service.ServiceDelete;
+import service.ServiceGameList;
+import service.ServiceUser;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+
+public class ServiceTestsDB {
+
+    private static DataAccessGames gamesDAO = new GameDataDataAccess();
+    private static DataAccessAuth authDAO = new AuthDataDataAccess();
+    private static DataAccessUsers userDAO = new UserDataDataAccess();
+
+    private static ServiceUser userServices = new ServiceUser(authDAO,userDAO);
+    private static ServiceGameList gameServices = new ServiceGameList(authDAO,gamesDAO);
+    private static ServiceDelete clearService =new ServiceDelete(authDAO,gamesDAO,userDAO);
+
+
+    @BeforeEach
+    void clearAllDAO() {
+        try {
+            clearService.deleteData();
+        } catch (DataAccessException e) {
+            throw new RuntimeException(e);
+        } {
+
+        }
+    }
+
+    @Test
+    void registerUser() throws FailedToConnectException {
+        UserData tester = new UserData("beebee","14567","a@email.com");
+        userServices.registerUser(tester);
+
+        assertEquals(tester.username(), userDAO.findUser(tester).username());
+    }
+
+    @Test
+    void loginUser() throws FailedToConnectException {
+        UserData tester = new UserData("beebee","14567","a@email.com");
+        AuthData testedRegister = userServices.registerUser(tester);
+        try {
+            userServices.logoutUser(testedRegister.authToken());
+        } catch (DataAccessException e) {
+            throw new RuntimeException(e);
+        }
+        userServices.loginUser(tester);
+
+        assertEquals(tester.username(), authDAO.getAuthData(tester.username()).username());
+    }
+
+    @Test
+    void createGame() throws FailedToConnectException{
+        UserData tester = new UserData("beebee","14567","a@email.com");
+        AuthData testedRegister = userServices.registerUser(tester);
+
+        gameServices.createGame(testedRegister.authToken(),"game1");
+        GameData game1 = new GameData(1,null,null,"game1", null);
+
+        assertEquals(game1, gamesDAO.giveGame(1));
+
+    }
+
+
+
+    @Test
+    void joinGame() throws FailedToConnectException {
+        UserData tester = new UserData("beebee","14567","a@email.com");
+        AuthData testedRegister = userServices.registerUser(tester);
+
+        gameServices.createGame(testedRegister.authToken(),"game1");
+        gameServices.joinGame(testedRegister.authToken(), ChessGame.TeamColor.WHITE,1);
+
+        GameData game1 = new GameData(1,"beebee",null,"game1", new ChessGame());
+
+        assertEquals(game1.whiteUsername(), gamesDAO.giveGame(1).whiteUsername());
+
+    }
+
+
+}
