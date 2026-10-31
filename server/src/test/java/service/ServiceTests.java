@@ -13,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class ServiceTests {
 
-    private static DataAccessGames gamesDAO = new GameDataMemory();
+    private static DataAccessGames gamesDAO = new GameDataDataAccess();
     private static DataAccessAuth authDAO = new AuthDataDataAccess();
     private static DataAccessUsers userDAO = new UserDataDataAccess();
 
