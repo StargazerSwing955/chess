@@ -1,5 +1,6 @@
 package dataaccess;
 
+import exceptions.FailedToConnectException;
 import model.AuthData;
 
 public interface DataAccessAuth {

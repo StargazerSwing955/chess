@@ -1,6 +1,7 @@
 package dataaccess;
 
-import com.google.gson.Gson;
+import exceptions.DataAccessException;
+import exceptions.FailedToConnectException;
 import model.UserData;
 
 import java.sql.SQLException;

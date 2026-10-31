@@ -32,13 +32,15 @@ public class GameDataMemory implements DataAccessGames {
 
         if (teamColor == ChessGame.TeamColor.WHITE){
             if (gameToJoin.whiteUsername() == null){
-                gameCollection.replace(gameId,gameToJoin,new GameData(gameId,username,gameToJoin.blackUsername(), gameToJoin.gameName(),gameToJoin.game()));
+                gameCollection.replace(gameId,gameToJoin,new GameData(gameId,username,gameToJoin.blackUsername(),
+                        gameToJoin.gameName(),gameToJoin.game()));
             }
 
         }
         if (teamColor == ChessGame.TeamColor.BLACK){
             if (gameToJoin.blackUsername() == null){
-                gameCollection.replace(gameId,gameToJoin, new GameData(gameId,gameToJoin.whiteUsername(),username,gameToJoin.gameName(),gameToJoin.game()));
+                gameCollection.replace(gameId,gameToJoin, new GameData(gameId,gameToJoin.whiteUsername(),username,
+                        gameToJoin.gameName(),gameToJoin.game()));
             }
         }
     }

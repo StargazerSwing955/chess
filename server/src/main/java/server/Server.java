@@ -1,6 +1,7 @@
 package server;
 
 import dataaccess.*;
+import exceptions.DataAccessException;
 import io.javalin.*;
 
 public class Server {

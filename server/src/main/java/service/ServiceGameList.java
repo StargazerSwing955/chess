@@ -2,6 +2,9 @@ package service;
 
 import chess.ChessGame;
 import dataaccess.*;
+import exceptions.FailedToConnectException;
+import exceptions.GameFullException;
+import exceptions.InvalidAuthorizationException;
 import model.AuthData;
 import model.GameData;
 

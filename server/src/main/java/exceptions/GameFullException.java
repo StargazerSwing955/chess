@@ -1,4 +1,4 @@
-package dataaccess;
+package exceptions;
 
 public class GameFullException extends RuntimeException {
     public GameFullException(String message) {

@@ -1,6 +1,7 @@
 package service;
 
 import dataaccess.*;
+import exceptions.FailedToConnectException;
 
 public class ServiceDelete {
 
