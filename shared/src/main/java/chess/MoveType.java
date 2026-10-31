@@ -67,7 +67,8 @@ public class MoveType {
     }
 
 
-    public ArrayList<ChessMove> genericPawn(ChessBoard board, ChessPiece piece, ChessPosition position, int direction, int startRow, ChessPiece.PieceType promoType){
+    public ArrayList<ChessMove> genericPawn(ChessBoard board, ChessPiece piece, ChessPosition position,
+                                            int direction, int startRow, ChessPiece.PieceType promoType){
         ArrayList<ChessMove> pawnLegalMoves = new ArrayList<>();
 
         //straight ahead move
@@ -92,7 +93,8 @@ public class MoveType {
         }
 
         //corners
-        List<ChessPosition> corners = List.of(new ChessPosition(position.getRow()+direction, position.getColumn()+1),new ChessPosition(position.getRow()+direction, position.getColumn()-1));
+        List<ChessPosition> corners = List.of(new ChessPosition(position.getRow()+direction, position.getColumn()+1),
+                new ChessPosition(position.getRow()+direction, position.getColumn()-1));
         for (ChessPosition corner: corners){
             if (corner.isValid()){
                 ChessPiece cornerPiece = board.getPiece(corner);
@@ -156,7 +158,8 @@ public class MoveType {
         White: starts at 2, moves +1, jumps 2, promotes at 8
         Black: starts at 7, moves -1, jumps -2, promotes at 1
          */
-        List<ChessPiece.PieceType> promoPieces = List.of(ChessPiece.PieceType.QUEEN, ChessPiece.PieceType.BISHOP, ChessPiece.PieceType.KNIGHT, ChessPiece.PieceType.ROOK);
+        List<ChessPiece.PieceType> promoPieces = List.of(ChessPiece.PieceType.QUEEN,
+                ChessPiece.PieceType.BISHOP, ChessPiece.PieceType.KNIGHT, ChessPiece.PieceType.ROOK);
         if (position.getRow()+direction == promoRow){
             for (ChessPiece.PieceType type : promoPieces){
                 pawnMoves.addAll(genericPawn(board, piece,position, direction, startingRow,type));
