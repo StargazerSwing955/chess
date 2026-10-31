@@ -17,7 +17,8 @@ public class ServiceGameList {
         this.gameDAO = gameDAO;
     }
 
-    public AuthData checkAuthorization(String receivedAuthToken) throws InvalidAuthorizationException, FailedToConnectException {
+    public AuthData checkAuthorization(String receivedAuthToken) throws InvalidAuthorizationException,
+            FailedToConnectException {
         AuthData isLoggedIn = authDAO.getAuthData(receivedAuthToken);
         if(isLoggedIn == null){
             throw new InvalidAuthorizationException("authToken does not exist");
@@ -26,7 +27,8 @@ public class ServiceGameList {
     }
 
     //join game
-    public void joinGame(String authToken, ChessGame.TeamColor teamColor, Integer gameId) throws InvalidAuthorizationException, GameFullException, FailedToConnectException {
+    public void joinGame(String authToken, ChessGame.TeamColor teamColor, Integer gameId) throws InvalidAuthorizationException,
+            GameFullException, FailedToConnectException {
         AuthData userAuthData = checkAuthorization(authToken);
         GameData seeIfFull = gameDAO.giveGame(gameId);
         if(teamColor == ChessGame.TeamColor.WHITE){
@@ -43,13 +45,15 @@ public class ServiceGameList {
     }
 
     //return full game list
-    public Collection<GameData> giveGameList(String authToken) throws InvalidAuthorizationException, FailedToConnectException {
+    public Collection<GameData> giveGameList(String authToken) throws InvalidAuthorizationException,
+            FailedToConnectException {
         AuthData userAuthData = checkAuthorization(authToken);
         return gameDAO.listGame();
     }
 
     //create game
-    public int createGame(String authToken, String gameName) throws InvalidAuthorizationException, FailedToConnectException {
+    public int createGame(String authToken, String gameName) throws InvalidAuthorizationException,
+            FailedToConnectException {
         AuthData userAuthData = checkAuthorization(authToken);
         return gameDAO.addGame(gameName);
 

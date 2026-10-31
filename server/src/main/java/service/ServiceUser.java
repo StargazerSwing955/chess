@@ -34,7 +34,8 @@ public class ServiceUser {
         return createAuthData(userData);
     }
 
-    public AuthData loginUser(UserData userData) throws UserNotExistException, InvalidAuthorizationException, FailedToConnectException {
+    public AuthData loginUser(UserData userData) throws UserNotExistException, InvalidAuthorizationException,
+            FailedToConnectException {
         UserData alreadyExists = userDAO.findUser(userData);
         if(alreadyExists == null){
             throw new UserNotExistException("Error: bad request");
@@ -57,7 +58,7 @@ public class ServiceUser {
         return UUID.randomUUID().toString();
     }
 
-    public void logoutUser(String logoutData) throws DataAccessException{ //takes just the authToken
+    public void logoutUser(String logoutData) throws FailedToConnectException, DataAccessException{ //takes just the authToken
         AuthData isLoggedIn = authDAO.getAuthData(logoutData);
         if(isLoggedIn == null){
             throw new DataAccessException("authToken does not exist");

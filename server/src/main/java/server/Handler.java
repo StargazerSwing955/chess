@@ -79,11 +79,17 @@ public class Handler {
             String dataFromCtx  = ctx.header("authorization");
             try {
                 serviceCallRegister.logoutUser(dataFromCtx);
-            } catch (DataAccessException e) {
+            } catch (FailedToConnectException e) {
+                ctx.result(new Gson().toJson(Map.of("message", "Error: Did not connect")))
+                        .contentType(ContentType.APPLICATION_JSON).status(500);
+                return;
+            }
+            catch (DataAccessException e) {
                 ctx.result(new Gson().toJson(Map.of("message", "Error: unauthorized")))
                         .contentType(ContentType.APPLICATION_JSON).status(401);
                 return;
             }
+
             ctx.status(200);
         }
     }
@@ -170,8 +176,9 @@ public class Handler {
     public void clear(Context ctx){
         try {
             serviceCallDelete.deleteData();
-        } catch (DataAccessException e) {
-            throw new RuntimeException(e);
+        }  catch (FailedToConnectException e) {
+            ctx.result(new Gson().toJson(Map.of("message", "Error: Did not connect")))
+                    .contentType(ContentType.APPLICATION_JSON).status(500);
         }
 
     }

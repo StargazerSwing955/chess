@@ -1,9 +1,6 @@
 package service;
 
-import dataaccess.DataAccessAuth;
-import dataaccess.DataAccessException;
-import dataaccess.DataAccessGames;
-import dataaccess.DataAccessUsers;
+import dataaccess.*;
 
 public class ServiceDelete {
 
@@ -18,7 +15,7 @@ public class ServiceDelete {
     }
 
 
-    public void deleteData() throws DataAccessException {
+    public void deleteData() throws FailedToConnectException {
         authData.removeAll();
         gameData.deleteGames();
         userData.clearUsers();
