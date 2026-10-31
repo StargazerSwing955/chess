@@ -39,7 +39,7 @@ public class ServiceUser {
         if(alreadyExists == null){
             throw new UserNotExistException("Error: bad request");
         }
-        if (BCrypt.checkpw(userData.password(), alreadyExists.password())){
+        if (!BCrypt.checkpw(userData.password(), alreadyExists.password())){
             throw new InvalidAuthorizationException("Error: invalid login");
         }
         return createAuthData(userData);

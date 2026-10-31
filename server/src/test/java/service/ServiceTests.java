@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class ServiceTests {
 
     private static DataAccessGames gamesDAO = new GameDataMemory();
-    private static DataAccessAuth authDAO = new AuthDataMemory();
+    private static DataAccessAuth authDAO = new AuthDataDataAccess();
     private static DataAccessUsers userDAO = new UserDataDataAccess();
 
     private static ServiceUser userServices = new ServiceUser(authDAO,userDAO);
@@ -52,7 +52,7 @@ public class ServiceTests {
         }
         userServices.loginUser(tester);
 
-        assertEquals(tester, userDAO.findUser(tester));
+        assertEquals(tester.username(), authDAO.getAuthData(tester.username()).username());
     }
 
 

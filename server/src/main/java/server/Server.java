@@ -8,7 +8,7 @@ public class Server {
     private final Javalin javalin;
 
     //db memory objects
-    private final DataAccessAuth authMemory = new AuthDataMemory();
+    private final DataAccessAuth authMemory = new AuthDataDataAccess();
     private final DataAccessUsers userMemory = new UserDataDataAccess();
     private final DataAccessGames gameMemory = new GameDataMemory();
 
