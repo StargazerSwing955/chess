@@ -12,9 +12,9 @@ public class GameDataDataAccess implements DataAccessGames{
 
     @Override
     public Collection<GameData> listGame() throws FailedToConnectException {
-        Collection<GameData> gameList = new ArrayList<GameData>();
+        Collection<GameData> gameList = new ArrayList<>();
         try (var conn = DatabaseManager.getConnection()) {
-            String statement = "SELECT * FROM game";
+            String statement = "SELECT * FROM games";
             try (var preparedStatement = conn.prepareStatement(statement)) {
                 try(var dbData = preparedStatement.executeQuery()){
                     while (dbData.next()){
@@ -36,7 +36,7 @@ public class GameDataDataAccess implements DataAccessGames{
     @Override
     public GameData giveGame(int gameId) throws FailedToConnectException {
         try (var conn = DatabaseManager.getConnection()) {
-            String statement = "SELECT * FROM game WHERE gameID =?";
+            String statement = "SELECT * FROM games WHERE gameID =?";
                 try (var preparedStatement = conn.prepareStatement(statement)) {
                     preparedStatement.setString(1, String.valueOf(gameId));
                     try(var dbData = preparedStatement.executeQuery()){
@@ -57,7 +57,7 @@ public class GameDataDataAccess implements DataAccessGames{
 
     public GameData giveGameByName(String gameName) throws FailedToConnectException {
         try (var conn = DatabaseManager.getConnection()) {
-            String statement = "SELECT * FROM game WHERE gameName =?";
+            String statement = "SELECT * FROM games WHERE gameName =?";
             try (var preparedStatement = conn.prepareStatement(statement)) {
                 preparedStatement.setString(1, String.valueOf(gameName));
                 try(var dbData = preparedStatement.executeQuery()){
@@ -80,12 +80,11 @@ public class GameDataDataAccess implements DataAccessGames{
     @Override
     public int addGame(String gameName) throws FailedToConnectException {
         try (var conn = DatabaseManager.getConnection()) {
-            var json = new Gson().toJson(new ChessGame());
-            try (var preparedStatement = conn.prepareStatement("INSERT INTO games (whiteUser, blackUser,gameName, game) VALUES (?, ?, ?, ?)")) {
-                preparedStatement.setString(1, null);
-                preparedStatement.setString(2, null);
-                preparedStatement.setString(3, gameName);
-                preparedStatement.setString(4, json);
+            String json = new Gson().toJson(new ChessGame());
+            String statement = "INSERT INTO games (gameName, game) VALUES (?, ?)";
+            try (var preparedStatement = conn.prepareStatement(statement)) {
+                preparedStatement.setString(1, gameName);
+                preparedStatement.setString(2, json);
 
                 preparedStatement.executeUpdate();
                 return giveGameByName(gameName).gameID();
@@ -101,20 +100,23 @@ public class GameDataDataAccess implements DataAccessGames{
     public void joinGame(ChessGame.TeamColor teamColor, String username, int gameId) throws FailedToConnectException {
         //update
         try (var conn = DatabaseManager.getConnection()) {
-            String statement = "UPDATE ? FROM game WHERE gameID =?";
 
             if (teamColor == ChessGame.TeamColor.WHITE){
-                try (var preparedStatement = conn.prepareStatement(statement)) {
-                    preparedStatement.setString(1, "whiteUser");
-                    preparedStatement.setString(2, username);
+                String statementWhite = "UPDATE games SET whiteUser = ? WHERE gameID =?";
+                try (var preparedStatement = conn.prepareStatement(statementWhite)) {
+                    preparedStatement.setString(1, username);
+                    preparedStatement.setString(2, String.valueOf(gameId));
+
                     preparedStatement.executeUpdate();
                 }
             }
 
             if (teamColor == ChessGame.TeamColor.BLACK){
-                try (var preparedStatement = conn.prepareStatement(statement)) {
-                    preparedStatement.setString(1, "blackUser");
-                    preparedStatement.setString(2, username);
+                String statementBlack = "UPDATE games SET blackUser = ? WHERE gameID =?";
+                try (var preparedStatement = conn.prepareStatement(statementBlack)) {
+                    preparedStatement.setString(1, username);
+                    preparedStatement.setString(2, String.valueOf(gameId));
+
                     preparedStatement.executeUpdate();
                 }
             }

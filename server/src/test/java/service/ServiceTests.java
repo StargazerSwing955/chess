@@ -55,6 +55,18 @@ public class ServiceTests {
         assertEquals(tester.username(), authDAO.getAuthData(tester.username()).username());
     }
 
+    @Test
+    void createGame() throws FailedToConnectException{
+        UserData tester = new UserData("beebee","14567","a@email.com");
+        AuthData testedRegister = userServices.registerUser(tester);
+
+        gameServices.createGame(testedRegister.authToken(),"game1");
+        GameData game1 = new GameData(1,null,null,"game1", null);
+
+        assertEquals(game1, gamesDAO.giveGame(1));
+
+    }
+
 
 
     @Test
