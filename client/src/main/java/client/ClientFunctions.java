@@ -57,20 +57,26 @@ public class ClientFunctions {
     //help
     public String help(){
         //gives list of commands
-        String printMessage = "Options: \n" + "- register \n" + "- login \n" + "- quit \n";
-
+        String printMessage;
+        if(isSignedIn){
+            printMessage = "Options: \n" + "- logout \n" + "- list \n" + "- create \n" + "- join \n" + "- quit \n";
+        } else {
+            printMessage = "Options: \n" + "- register \n" + "- login \n" + "- quit \n";
+        }
         return printMessage;
     }
 
 
     //register
     public String register(String username, String password, String email){
+        isSignedIn = true;
 
         return "registered";
     }
 
     //login
     public String login(String username, String password){
+        isSignedIn = true;
 
         return "logged in";
     }
