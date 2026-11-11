@@ -5,5 +5,5 @@ public class ServerFacade {
 
     //take in port and url just in case
 
-    //example is in petshop's server folder!!
+    //example is in petshop's shared folder!!
 }

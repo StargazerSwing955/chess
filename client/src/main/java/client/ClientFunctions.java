@@ -36,7 +36,7 @@ public class ClientFunctions {
                 case "login" -> login(tokens[1], tokens[2]);
                 case "help" -> help();
                 case "quit" -> "quit";
-                default -> "Invalid input. Please type 'help' for list of inputs";
+                default -> "Invalid input. Please type 'help' for list of inputs \n";
             };
         } else {
             return switch (cmd) {
@@ -46,7 +46,7 @@ public class ClientFunctions {
                 case "join" -> joinGame();
                 case "help" -> help();
                 case "quit" -> "quit";
-                default -> "Invalid input. Please type 'help' for list of inputs";
+                default -> "Invalid input. Please type 'help' for list of inputs \n";
             };
         }
 //        } catch (ResponseException ex) {
@@ -71,38 +71,39 @@ public class ClientFunctions {
     public String register(String username, String password, String email){
         isSignedIn = true;
 
-        return "registered";
+        return "registered\n";
     }
 
     //login
     public String login(String username, String password){
         isSignedIn = true;
 
-        return "logged in";
+        return "logged in\n";
     }
 
     //logout
     public String logout(){
+        isSignedIn = false;
 
-        return "logged out";
+        return "logged out\n";
     }
 
     //create game
     public String createGame(){
 
-        return "made game";
+        return "made game\n";
     }
 
     //list games
     public String listGames(){
 
-        return "games:";
+        return "games: \n";
     }
 
     //join game
     public String joinGame(){
 
-        return "joined game";
+        return "joined game\n";
     }
 
     //observe game
