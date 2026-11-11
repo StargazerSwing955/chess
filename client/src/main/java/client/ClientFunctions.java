@@ -45,7 +45,7 @@ public class ClientFunctions {
                 case "create" -> createGame();
                 case "join" -> joinGame();
                 case "help" -> help();
-                case "quit" -> "quit";
+                case "observe" -> joinAsObserver();
                 default -> "Invalid input. Please type 'help' for list of inputs \n";
             };
         }
@@ -59,9 +59,21 @@ public class ClientFunctions {
         //gives list of commands
         String printMessage;
         if(isSignedIn){
-            printMessage = "Options: \n" + "- logout \n" + "- list \n" + "- create \n" + "- join \n" + "- quit \n";
+            printMessage = """
+                    Options:\s
+                    - logout\s
+                    - list\s
+                    - create\s
+                    - join\s
+                    - observe\s
+                    """;
         } else {
-            printMessage = "Options: \n" + "- register \n" + "- login \n" + "- quit \n";
+            printMessage = """
+                    Options:\s
+                    - register\s
+                    - login\s
+                    - quit\s
+                    """;
         }
         return printMessage;
     }
@@ -107,5 +119,9 @@ public class ClientFunctions {
     }
 
     //observe game
+    public String joinAsObserver(){
+
+        return "joined game as observer\n";
+    }
 
 }
