@@ -24,6 +24,7 @@ public class GameDataDataAccess implements DataAccessGames{
                         var whiteUser = dbData.getString("whiteUser");
                         var blackUser = dbData.getString("blackUser");
                         var gameName = dbData.getString("gameName");
+                        //ChessGame gameData = dbData.getObject("game");
                         gameList.add(new GameData(gameIdDB, whiteUser, blackUser,gameName,null));
                     }
                 }
