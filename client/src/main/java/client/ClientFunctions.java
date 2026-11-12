@@ -1,11 +1,13 @@
 package client;
 
+import serverfacade.ServerFacade;
+
 import java.util.Scanner;
 
 public class ClientFunctions {
     //4 pre-login: register, login, help, quit/exit
     Scanner scanner = new Scanner(System.in);
-
+    ServerFacade facade = new ServerFacade("localhost");
     boolean isSignedIn = false;
 
     public void run() {
@@ -70,8 +72,8 @@ public class ClientFunctions {
         } else {
             printMessage = """
                     Options:\s
-                    - register\s
-                    - login\s
+                    - register - please include username password and email\s
+                    - login - please include username password\s
                     - quit\s
                     """;
         }

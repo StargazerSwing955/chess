@@ -24,11 +24,9 @@ public class GameDataDataAccess implements DataAccessGames{
                         var whiteUser = dbData.getString("whiteUser");
                         var blackUser = dbData.getString("blackUser");
                         var gameName = dbData.getString("gameName");
+                        var chessGame = new Gson().fromJson(dbData.getString("game"), ChessGame.class);
 
-                        //var gameData = dbData.getObject("game");
-                        //var chessGame = gameData.fromJson(dbData.getObject("game"), ChessGame.class);
-
-                        gameList.add(new GameData(gameIdDB, whiteUser, blackUser,gameName,null));
+                        gameList.add(new GameData(gameIdDB, whiteUser, blackUser,gameName,chessGame));
                     }
                 }
             }
@@ -51,7 +49,9 @@ public class GameDataDataAccess implements DataAccessGames{
                             var whiteUser = dbData.getString("whiteUser");
                             var blackUser = dbData.getString("blackUser");
                             var gameName = dbData.getString("gameName");
-                            return new GameData(gameIdDB, whiteUser, blackUser,gameName,null);
+                            var chessGame = new Gson().fromJson(dbData.getString("game"), ChessGame.class);
+
+                            return new GameData(gameIdDB, whiteUser, blackUser,gameName,chessGame);
                         }
                     }
                 }
@@ -72,7 +72,9 @@ public class GameDataDataAccess implements DataAccessGames{
                         var whiteUser = dbData.getString("whiteUser");
                         var blackUser = dbData.getString("blackUser");
                         var gameNamedB = dbData.getString("gameName");
-                        return new GameData(gameIdDB, whiteUser, blackUser, gameNamedB,null);
+                        var chessGame = new Gson().fromJson(dbData.getString("game"), ChessGame.class);
+
+                        return new GameData(gameIdDB, whiteUser, blackUser, gameNamedB,chessGame);
                     }
                 }
             }
