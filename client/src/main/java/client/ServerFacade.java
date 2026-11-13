@@ -53,7 +53,6 @@ public class ServerFacade {
         var request = buildRequest("GET", "/game", null, userData.authToken());
         var response = sendRequest(request);
         return handleResponse(response, ListGamesResult.class);
-
     }
 
 
