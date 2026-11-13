@@ -162,7 +162,7 @@ public class ClientFunctions {
         ChessGame joinedGame = gameList.games().get(id).game();
         printGame(joinedGame, color);
 
-        return "\n";
+        return "Joined game as"+joinColor+"\n";
     }
 
     //observe game
@@ -177,10 +177,10 @@ public class ClientFunctions {
 
     public static void printGame(ChessGame game, ChessGame.TeamColor colorPOV){
         ChessBoard board = game.getBoard();
-        int startVal = 0;
-        int endVal = 0;
-        int iterator = 0;
-        String letterLabel = "";
+        int startVal;
+        int endVal;
+        int iterator;
+        String letterLabel;
         if (colorPOV== ChessGame.TeamColor.WHITE) {
             startVal = 1;
             endVal = 8;

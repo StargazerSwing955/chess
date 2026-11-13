@@ -1,17 +1,14 @@
 package client.serverfacade;
 
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import model.*;
 
 import java.io.IOException;
-import java.lang.reflect.Type;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.util.List;
-import java.util.Map;
+
 
 public class ServerFacade {
     private final HttpClient client = HttpClient.newHttpClient();
@@ -30,9 +27,8 @@ public class ServerFacade {
     public AuthData registerFacade(UserData userData) throws IOException, InterruptedException {
         var request = buildRequest("POST", "/user", userData, null);
         var response = sendRequest(request);
-        var handledResponse = handleResponse(response, AuthData.class);
 
-        return handledResponse;
+        return handleResponse(response, AuthData.class);
     }
 
 
@@ -41,9 +37,8 @@ public class ServerFacade {
     public AuthData loginFacade(UserData userData) {
         var request = buildRequest("POST", "/session", userData, null);
         var response = sendRequest(request);
-        var handledResponse = handleResponse(response, AuthData.class);
 
-        return handledResponse;
+        return handleResponse(response, AuthData.class);
     }
 
     //logout
@@ -74,10 +69,10 @@ public class ServerFacade {
 
     //join game
     //javalin.put("/game", handler::joinGame);
-    public GameData joinFacade(JoinRequest gameInfo, String authTok) {
+    public void joinFacade(JoinRequest gameInfo, String authTok) {
         var request = buildRequest("put", "/game", gameInfo, authTok);
         var response = sendRequest(request);
-        return handleResponse(response, GameData.class);
+        //handleResponse(response, GameData.class);
     }
 
 
