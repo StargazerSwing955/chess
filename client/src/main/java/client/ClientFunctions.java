@@ -1,13 +1,22 @@
 package client;
 
+import chess.ChessBoard;
+import chess.ChessGame;
+import chess.ChessPiece;
+import chess.ChessPosition;
+import model.AuthData;
+import model.UserData;
 import serverfacade.ServerFacade;
+import ui.EscapeSequences;
 
+import java.io.IOException;
+import java.util.List;
 import java.util.Scanner;
 
 public class ClientFunctions {
     //4 pre-login: register, login, help, quit/exit
     Scanner scanner = new Scanner(System.in);
-    ServerFacade facade = new ServerFacade("localhost");
+    ServerFacade facade = new ServerFacade("http://localhost:8080");
     boolean isSignedIn = false;
 
     public void run() {
@@ -83,13 +92,23 @@ public class ClientFunctions {
 
     //register
     public String register(String username, String password, String email){
+        UserData registerData = new UserData(username, password, email);
+        AuthData regData;
+        try {
+            regData = facade.registerFacade(registerData);
+        } catch (IOException | InterruptedException e) {
+            throw new RuntimeException(e);
+        }
         isSignedIn = true;
 
-        return "registered\n";
+        return String.format("%s registered at %s\n",regData.username(), regData.authToken());
     }
 
     //login
     public String login(String username, String password){
+        List<String> registerData = List.of(new String[]{username, password});
+
+
         isSignedIn = true;
 
         return "logged in\n";
@@ -125,5 +144,51 @@ public class ClientFunctions {
 
         return "joined game as observer\n";
     }
+
+    public static void printGame(ChessGame game){
+        ChessBoard board = game.getBoard();
+
+        System.out.println("  A   B   C   D   E   F   G   H  ");
+        for (int row = 1; row <= 8; row++) {
+            System.out.print(row + " ");
+            for (int col = 1; col <= 8; col++) {
+                if ((row + col) % 2 == 0) { // colors
+                    System.out.print("\u001b[47m"); // Light gray background
+                } else {
+                    System.out.print("\u001b[100m"); // Dark gray background
+                }
+
+                ChessPiece squarePiece = board.getPiece(new ChessPosition(row,col));
+                if (squarePiece == null){
+                    System.out.print(EscapeSequences.EMPTY);
+                }else if(squarePiece.getTeamColor() == ChessGame.TeamColor.BLACK){
+                    switch (squarePiece.getPieceType()){
+                        case ROOK -> System.out.print(EscapeSequences.BLACK_ROOK);
+                        case KNIGHT -> System.out.print(EscapeSequences.BLACK_KNIGHT);
+                        case BISHOP -> System.out.print(EscapeSequences.BLACK_BISHOP);
+                        case KING -> System.out.print(EscapeSequences.BLACK_KING);
+                        case QUEEN -> System.out.print(EscapeSequences.BLACK_QUEEN);
+                        case PAWN -> System.out.print(EscapeSequences.BLACK_PAWN);
+                    }
+                } else{
+                    switch (squarePiece.getPieceType()){
+                        case ROOK -> System.out.print(EscapeSequences.WHITE_ROOK);
+                        case KNIGHT -> System.out.print(EscapeSequences.WHITE_KNIGHT);
+                        case BISHOP -> System.out.print(EscapeSequences.WHITE_BISHOP);
+                        case KING -> System.out.print(EscapeSequences.WHITE_KING);
+                        case QUEEN -> System.out.print(EscapeSequences.WHITE_QUEEN);
+                        case PAWN -> System.out.print(EscapeSequences.WHITE_PAWN);
+                    }
+                }
+
+                System.out.print("\u001b[0m"); //reset
+            }
+            System.out.print(" "+row);
+            System.out.println(); // New line for next row
+        }
+        System.out.println("  A   B   C   D   E   F   G   H  ");
+
+    }
+
 
 }

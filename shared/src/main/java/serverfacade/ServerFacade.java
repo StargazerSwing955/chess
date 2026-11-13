@@ -2,6 +2,7 @@ package serverfacade;
 
 import com.google.gson.Gson;
 import model.AuthData;
+import model.UserData;
 
 import java.io.IOException;
 import java.net.URI;
@@ -20,20 +21,19 @@ public class ServerFacade {
     }
     //connects to the endpoints of the server;
     // aka, calls server which runs all the internal workings and passes back that stuff got
-    //example is in petshop's shared folder!!
 
     //take in port and url just in case*
 
     //register
     //javalin.post("/user", handler::registerUser);
-    public String registerFacade(List<String> userData) throws IOException, InterruptedException {
+    public AuthData registerFacade(UserData userData) throws IOException, InterruptedException {
         var request = buildRequest("POST", "/user", userData);
         var response = sendRequest(request);
         var handledResponse = handleResponse(response, AuthData.class);
         if(handledResponse != null) {
             authenticationToken = handledResponse.authToken();
         }
-        return " ";
+        return handledResponse;
     }
 
 
