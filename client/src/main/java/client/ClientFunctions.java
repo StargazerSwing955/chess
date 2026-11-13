@@ -59,9 +59,6 @@ public class ClientFunctions {
                 default -> "Invalid input. Please type 'help' for list of inputs \n";
             };
         }
-//        } catch (ResponseException ex) {
-//            return ex.getMessage();
-//        }
     }
 
     //help
