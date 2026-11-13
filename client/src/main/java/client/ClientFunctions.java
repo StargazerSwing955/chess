@@ -8,7 +8,7 @@ import model.AuthData;
 import model.CreateGameRequest;
 import model.GameData;
 import model.UserData;
-import serverfacade.ServerFacade;
+import client.serverfacade.ServerFacade;
 import ui.EscapeSequences;
 
 import java.io.IOException;
@@ -140,15 +140,10 @@ public class ClientFunctions {
 
     //list games
     public String listGames(){
-        List<String> stringGameList = Collections.emptyList();
         AuthData passingVals = new AuthData(auToken, null);
         List<GameData> gameList = facade.gameListFacade(passingVals);
-        for (GameData gameData : gameList){
-            stringGameList.add(String.format("Game ID: %n, Game Name: %s, White: %s, Black: %s", gameData.gameID(),
-                    gameData.gameName(),gameData.whiteUsername(), gameData.blackUsername()));
-        }
 
-        return "Games: \n"+ stringGameList;
+        return "games: "+ gameList;
     }
 
     //join game

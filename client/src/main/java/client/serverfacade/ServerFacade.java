@@ -1,4 +1,4 @@
-package serverfacade;
+package client.serverfacade;
 
 import com.google.gson.Gson;
 import model.AuthData;
@@ -28,7 +28,7 @@ public class ServerFacade {
     //register
     //javalin.post("/user", handler::registerUser);
     public AuthData registerFacade(UserData userData) throws IOException, InterruptedException {
-        var request = buildRequest("POST", "/user", userData);
+        var request = buildRequest("POST", "/user", userData, null);
         var response = sendRequest(request);
         var handledResponse = handleResponse(response, AuthData.class);
 
@@ -39,7 +39,7 @@ public class ServerFacade {
     //login
     //javalin.post("/session",handler::loginUser);
     public AuthData loginFacade(UserData userData) {
-        var request = buildRequest("POST", "/session", userData);
+        var request = buildRequest("POST", "/session", userData, null);
         var response = sendRequest(request);
         var handledResponse = handleResponse(response, AuthData.class);
 
@@ -49,14 +49,14 @@ public class ServerFacade {
     //logout
     //javalin.delete("/session", handler::logoutUser);
     public void logoutFacade(AuthData authTok ) {
-        var request = buildRequest("DELETE", "/session", authTok);
+        var request = buildRequest("DELETE", "/session", null, authTok.authToken());
         var response = sendRequest(request);
     }
 
     //get games
     //javalin.get("/game", handler::getGameList);
     public List<GameData> gameListFacade(AuthData userData) {
-        var request = buildRequest("GET", "/game", userData);
+        var request = buildRequest("GET", "/game", null, userData.authToken());
         var response = sendRequest(request);
         return handleResponse(response, List.class);
 
@@ -66,7 +66,7 @@ public class ServerFacade {
     //make game
     //javalin.post("/game", handler::createGame);
     public GameData createGameFacade(CreateGameRequest gameInfo) {
-        var request = buildRequest("POST", "/game", gameInfo);
+        var request = buildRequest("POST", "/game", gameInfo, gameInfo.authToken());
         var response = sendRequest(request);
         return handleResponse(response, GameData.class);
     }
@@ -74,23 +74,27 @@ public class ServerFacade {
 
     //join game
     //javalin.put("/game", handler::joinGame);
-    public GameData joinFacade(List<String> gameInfo) {
-        var request = buildRequest("put", "/game", gameInfo);
-        var response = sendRequest(request);
-        return handleResponse(response, GameData.class);
-    }
+//    public GameData joinFacade(List<String> gameInfo) {
+//        var request = buildRequest("put", "/game", gameInfo);
+//        var response = sendRequest(request);
+//        return handleResponse(response, GameData.class);
+//    }
 
 
     //clear is called before every test; might not need in client side
     //javalin.delete("/db", handler::clear);
 
-    private HttpRequest buildRequest(String method, String path, Object body) {
+    private HttpRequest buildRequest(String method, String path, Object body, String token) {
         var request = HttpRequest.newBuilder()
                 .uri(URI.create(serverUrl + path))
                 .method(method, makeRequestBody(body));
         if (body != null) {
             request.setHeader("Content-Type", "application/json");
         }
+        if (token != null){
+            request.setHeader("authorization", token);
+        }
+
         return request.build();
     }
 
@@ -109,6 +113,7 @@ public class ServerFacade {
             throw new RuntimeException(ex.getMessage());
         }
     }
+
 
     private <T> T handleResponse(HttpResponse<String> response, Class<T> responseClass) {
         int status = response.statusCode();
