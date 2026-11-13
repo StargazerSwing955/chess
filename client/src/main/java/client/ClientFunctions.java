@@ -7,11 +7,11 @@ import chess.ChessPosition;
 import model.*;
 import ui.EscapeSequences;
 
-import java.io.IOException;
 import java.util.Scanner;
 
 public class ClientFunctions {
     //4 pre-login: register, login, help, quit/exit
+
     Scanner scanner = new Scanner(System.in);
     ServerFacade facade = new ServerFacade("http://localhost:8080");
     boolean isSignedIn = false;
@@ -93,12 +93,9 @@ public class ClientFunctions {
     public String register(String username, String password, String email){
         UserData registerData = new UserData(username, password, email);
         AuthData signedInData;
-        try {
-            signedInData = facade.registerFacade(registerData);
-            auToken = signedInData.authToken();
-        } catch (IOException | InterruptedException e) {
-            throw new RuntimeException(e);
-        }
+        signedInData = facade.registerFacade(registerData);
+        auToken = signedInData.authToken();
+
         isSignedIn = true;
 
         return String.format("%s registered\n", signedInData.username());
