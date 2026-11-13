@@ -17,6 +17,7 @@ public class ClientFunctions {
     Scanner scanner = new Scanner(System.in);
     ServerFacade facade = new ServerFacade("http://localhost:8080");
     boolean isSignedIn = false;
+    String auToken = null;
 
     public void run() {
         System.out.println(" Welcome to the chess. Sign in to start.");
@@ -95,6 +96,7 @@ public class ClientFunctions {
         AuthData signedInData;
         try {
             signedInData = facade.registerFacade(registerData);
+            auToken = signedInData.authToken();
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);
         }
@@ -108,6 +110,7 @@ public class ClientFunctions {
         UserData loginData = new UserData(username, password, null);
         AuthData signedInData;
         signedInData = facade.loginFacade(loginData);
+        auToken = signedInData.authToken();
 
         isSignedIn = true;
 
@@ -116,6 +119,7 @@ public class ClientFunctions {
 
     //logout
     public String logout(){
+        facade.logoutFacade(new AuthData(auToken, null));
         isSignedIn = false;
 
         return "Successfully logged out\n";

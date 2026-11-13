@@ -14,7 +14,6 @@ import java.util.List;
 public class ServerFacade {
     private final HttpClient client = HttpClient.newHttpClient();
     private final String serverUrl;
-    private String authenticationToken;
 
     public ServerFacade(String url) {
         serverUrl = url;
@@ -30,9 +29,7 @@ public class ServerFacade {
         var request = buildRequest("POST", "/user", userData);
         var response = sendRequest(request);
         var handledResponse = handleResponse(response, AuthData.class);
-        if(handledResponse != null) {
-            authenticationToken = handledResponse.authToken();
-        }
+
         return handledResponse;
     }
 
@@ -43,9 +40,7 @@ public class ServerFacade {
         var request = buildRequest("POST", "/session", userData);
         var response = sendRequest(request);
         var handledResponse = handleResponse(response, AuthData.class);
-        if(handledResponse != null) {
-            authenticationToken = handledResponse.authToken();
-        }
+
         return handledResponse;
     }
 
@@ -58,7 +53,7 @@ public class ServerFacade {
 
     //get games
     //javalin.get("/game", handler::getGameList);
-    public String gameListFacade(List<String> userData) {
+    public String gameListFacade(AuthData userData) {
         var request = buildRequest("GET", "/game", userData);
         var response = sendRequest(request);
         //return handleResponse(response, [figure it out]);
