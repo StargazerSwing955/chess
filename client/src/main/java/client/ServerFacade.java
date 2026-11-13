@@ -1,4 +1,4 @@
-package client.serverfacade;
+package client;
 
 import com.google.gson.Gson;
 import model.*;
@@ -24,7 +24,7 @@ public class ServerFacade {
 
     //register
     //javalin.post("/user", handler::registerUser);
-    public AuthData registerFacade(UserData userData) throws IOException, InterruptedException {
+    public AuthData registerFacade(UserData userData) {
         var request = buildRequest("POST", "/user", userData, null);
         var response = sendRequest(request);
 
@@ -61,7 +61,7 @@ public class ServerFacade {
     //make game
     //javalin.post("/game", handler::createGame);
     public GameData createGameFacade(CreateGameRequest gameInfo) {
-        var request = buildRequest("POST", "/game", gameInfo.gameName(), gameInfo.authToken());
+        var request = buildRequest("POST", "/game", gameInfo, gameInfo.authToken());
         var response = sendRequest(request);
         return handleResponse(response, GameData.class);
     }
@@ -69,17 +69,17 @@ public class ServerFacade {
 
     //join game
     //javalin.put("/game", handler::joinGame);
-    public void joinFacade(JoinRequest gameInfo, String authTok) {
+    public GameData joinFacade(JoinRequest gameInfo, String authTok) {
         var request = buildRequest("put", "/game", gameInfo, authTok);
         var response = sendRequest(request);
-        //handleResponse(response, GameData.class);
+        return handleResponse(response, GameData.class);
     }
 
 
     //clear is called before every test; might not need in client side
     //javalin.delete("/db", handler::clear);
 
-    private HttpRequest buildRequest(String method, String path, Object body, String token) {
+    public HttpRequest buildRequest(String method, String path, Object body, String token) {
         var request = HttpRequest.newBuilder()
                 .uri(URI.create(serverUrl + path))
                 .method(method, makeRequestBody(body));
@@ -101,7 +101,7 @@ public class ServerFacade {
         }
     }
 
-    private HttpResponse<String> sendRequest(HttpRequest request) {
+    public HttpResponse<String> sendRequest(HttpRequest request) {
         try {
             return client.send(request, HttpResponse.BodyHandlers.ofString());
         } catch (Exception ex) {
@@ -115,20 +115,16 @@ public class ServerFacade {
         if (!isSuccessful(status)) {
             var body = response.body();
             if (body != null) {
-                throw new RuntimeException(String.format("%d, %s", status, body));
+                throw new RuntimeException(String.format("%s\n", body));
             }
-            throw new RuntimeException(String.format("%d, Error: unknown error", status));
+            throw new RuntimeException(String.format("Error: unknown error\n"));
         }
-
         if (responseClass != null) {
             return new Gson().fromJson(response.body(), responseClass);
         }
-
         return null;
     }
-
     private boolean isSuccessful(int status) {
         return (status / 100) == 2;
     }
-
 }

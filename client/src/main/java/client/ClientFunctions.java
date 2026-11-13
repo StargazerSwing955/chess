@@ -5,7 +5,6 @@ import chess.ChessGame;
 import chess.ChessPiece;
 import chess.ChessPosition;
 import model.*;
-import client.serverfacade.ServerFacade;
 import ui.EscapeSequences;
 
 import java.io.IOException;
@@ -75,7 +74,7 @@ public class ClientFunctions {
                     - logout\s
                     - list\s
                     - create - please include the game name\s
-                    - join - please include which color to join as \s
+                    - join - please include which color to join as and the game id \s
                     - observe\s
                     """;
         } else {
@@ -102,7 +101,7 @@ public class ClientFunctions {
         }
         isSignedIn = true;
 
-        return String.format("%s registered at %s\n", signedInData.username(), signedInData.authToken());
+        return String.format("%s registered\n", signedInData.username());
     }
 
     //login
@@ -114,7 +113,7 @@ public class ClientFunctions {
 
         isSignedIn = true;
 
-        return String.format("%s logged in at %s\n", signedInData.username(), signedInData.authToken());
+        return String.format("%s logged in \n", signedInData.username());
     }
 
     //logout
@@ -139,7 +138,6 @@ public class ClientFunctions {
         AuthData passingVals = new AuthData(auToken, null);
         gameList = facade.gameListFacade(passingVals);
 
-
         return "games:"+ gameList.games()+ "\n";
     }
 
@@ -159,10 +157,11 @@ public class ClientFunctions {
         facade.joinFacade(joinReq,auToken);
 
         //get game and print it
-        ChessGame joinedGame = gameList.games().get(id).game();
+        listGames();
+        ChessGame joinedGame = gameList.games().get(id-1).game();
         printGame(joinedGame, color);
 
-        return "Joined game as"+joinColor+"\n";
+        return "Joined game as "+joinColor+"\n";
     }
 
     //observe game
@@ -183,20 +182,20 @@ public class ClientFunctions {
         String letterLabel;
         if (colorPOV== ChessGame.TeamColor.WHITE) {
             startVal = 1;
-            endVal = 8;
+            endVal = 9;
             iterator = 1;
             letterLabel = "  A   B   C   D   E   F   G   H  ";
         }else {
             startVal = 8;
-            endVal = 1;
+            endVal = 0;
             iterator = -1;
             letterLabel = "  H   G   F   E   D   C   B   A  ";
         }
 
         System.out.println(letterLabel);
-        for (int row = startVal; row <= endVal; row+=iterator) {
+        for (int row = startVal; row != endVal; row+=iterator) {
             System.out.print((9-row) + " ");
-            for (int col = startVal; col <= endVal; col+=iterator) {
+            for (int col = startVal; col != endVal; col+=iterator) {
                 if ((row + col) % 2 == 0) { // colors
                     System.out.print(EscapeSequences.SET_BG_COLOR_LIGHT_GREY);
                 } else {
