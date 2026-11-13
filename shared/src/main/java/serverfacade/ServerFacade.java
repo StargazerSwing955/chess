@@ -2,6 +2,8 @@ package serverfacade;
 
 import com.google.gson.Gson;
 import model.AuthData;
+import model.CreateGameRequest;
+import model.GameData;
 import model.UserData;
 
 import java.io.IOException;
@@ -53,31 +55,29 @@ public class ServerFacade {
 
     //get games
     //javalin.get("/game", handler::getGameList);
-    public String gameListFacade(AuthData userData) {
+    public List<GameData> gameListFacade(AuthData userData) {
         var request = buildRequest("GET", "/game", userData);
         var response = sendRequest(request);
-        //return handleResponse(response, [figure it out]);
-        return " ";
+        return handleResponse(response, List.class);
+
     }
 
 
     //make game
     //javalin.post("/game", handler::createGame);
-    public String createGameFacade(List<String> gameInfo) {
+    public GameData createGameFacade(CreateGameRequest gameInfo) {
         var request = buildRequest("POST", "/game", gameInfo);
         var response = sendRequest(request);
-        //return handleResponse(response, [figure it out]);
-        return " ";
+        return handleResponse(response, GameData.class);
     }
 
 
     //join game
     //javalin.put("/game", handler::joinGame);
-    public String joinFacade(List<String> gameInfo) {
+    public GameData joinFacade(List<String> gameInfo) {
         var request = buildRequest("put", "/game", gameInfo);
         var response = sendRequest(request);
-        //return handleResponse(response, [figure it out]);
-        return " ";
+        return handleResponse(response, GameData.class);
     }
 
 

@@ -5,11 +5,15 @@ import chess.ChessGame;
 import chess.ChessPiece;
 import chess.ChessPosition;
 import model.AuthData;
+import model.CreateGameRequest;
+import model.GameData;
 import model.UserData;
 import serverfacade.ServerFacade;
 import ui.EscapeSequences;
 
 import java.io.IOException;
+import java.util.Collections;
+import java.util.List;
 import java.util.Scanner;
 
 public class ClientFunctions {
@@ -53,7 +57,7 @@ public class ClientFunctions {
             return switch (cmd) {
                 case "logout"-> logout();
                 case "list" -> listGames();
-                case "create" -> createGame();
+                case "create" -> createGame(tokens[1]);
                 case "join" -> joinGame();
                 case "help" -> help();
                 case "observe" -> joinAsObserver();
@@ -74,8 +78,8 @@ public class ClientFunctions {
                     Options:\s
                     - logout\s
                     - list\s
-                    - create\s
-                    - join\s
+                    - create - please include the game name\s
+                    - join - please include which color to join as \s
                     - observe\s
                     """;
         } else {
@@ -121,20 +125,30 @@ public class ClientFunctions {
     public String logout(){
         facade.logoutFacade(new AuthData(auToken, null));
         isSignedIn = false;
+        auToken = null;
 
         return "Successfully logged out\n";
     }
 
     //create game
-    public String createGame(){
+    public String createGame(String gameName){
+        CreateGameRequest passingVals = new CreateGameRequest(auToken, gameName);
+        GameData createdGame = facade.createGameFacade(passingVals);
 
-        return "made game\n";
+        return String.format("Game %s created as game \n",createdGame.gameName(), createdGame.gameID());
     }
 
     //list games
     public String listGames(){
+        List<String> stringGameList = Collections.emptyList();
+        AuthData passingVals = new AuthData(auToken, null);
+        List<GameData> gameList = facade.gameListFacade(passingVals);
+        for (GameData gameData : gameList){
+            stringGameList.add(String.format("Game ID: %n, Game Name: %s, White: %s, Black: %s", gameData.gameID(),
+                    gameData.gameName(),gameData.whiteUsername(), gameData.blackUsername()));
+        }
 
-        return "games: \n";
+        return "Games: \n"+ stringGameList;
     }
 
     //join game
@@ -148,6 +162,7 @@ public class ClientFunctions {
 
         return "joined game as observer\n";
     }
+
 
     public static void printGame(ChessGame game){
         ChessBoard board = game.getBoard();
