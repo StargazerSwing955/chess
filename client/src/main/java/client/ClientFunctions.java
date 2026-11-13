@@ -9,7 +9,6 @@ import client.serverfacade.ServerFacade;
 import ui.EscapeSequences;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.Scanner;
 
 public class ClientFunctions {
@@ -18,6 +17,7 @@ public class ClientFunctions {
     ServerFacade facade = new ServerFacade("http://localhost:8080");
     boolean isSignedIn = false;
     String auToken = null;
+    ListGamesResult gameList;
 
     public void run() {
         System.out.println(" Welcome to the chess. Sign in to start.");
@@ -131,15 +131,16 @@ public class ClientFunctions {
         CreateGameRequest passingVals = new CreateGameRequest(auToken, gameName);
         GameData createdGame = facade.createGameFacade(passingVals);
 
-        return String.format("Game %s created with id %d \n", createdGame.gameName(), createdGame.gameID());
+        return String.format("Game created with id %d\n",  createdGame.gameID());
     }
 
     //list games
     public String listGames(){
         AuthData passingVals = new AuthData(auToken, null);
-        List<GameData> gameList = facade.gameListFacade(passingVals);
+        gameList = facade.gameListFacade(passingVals);
 
-        return "games: "+ gameList;
+
+        return "games:"+ gameList.games()+ "\n";
     }
 
     //join game
@@ -158,29 +159,48 @@ public class ClientFunctions {
         facade.joinFacade(joinReq,auToken);
 
         //get game and print it
+        ChessGame joinedGame = gameList.games().get(id).game();
+        printGame(joinedGame, color);
 
         return "\n";
     }
 
     //observe game
     public String joinAsObserver(String gameID){
+        Integer id = Integer.valueOf(gameID);
+        ChessGame joinedGame = gameList.games().get(id).game();
+        printGame(joinedGame, ChessGame.TeamColor.WHITE);
 
-
-        return "joined game as observer\n";
+        return "Joined game as observer\n";
     }
 
 
-    public static void printGame(ChessGame game){
+    public static void printGame(ChessGame game, ChessGame.TeamColor colorPOV){
         ChessBoard board = game.getBoard();
+        int startVal = 0;
+        int endVal = 0;
+        int iterator = 0;
+        String letterLabel = "";
+        if (colorPOV== ChessGame.TeamColor.WHITE) {
+            startVal = 1;
+            endVal = 8;
+            iterator = 1;
+            letterLabel = "  A   B   C   D   E   F   G   H  ";
+        }else {
+            startVal = 8;
+            endVal = 1;
+            iterator = -1;
+            letterLabel = "  H   G   F   E   D   C   B   A  ";
+        }
 
-        System.out.println("  A   B   C   D   E   F   G   H  ");
-        for (int row = 1; row <= 8; row++) {
-            System.out.print(row + " ");
-            for (int col = 1; col <= 8; col++) {
+        System.out.println(letterLabel);
+        for (int row = startVal; row <= endVal; row+=iterator) {
+            System.out.print((9-row) + " ");
+            for (int col = startVal; col <= endVal; col+=iterator) {
                 if ((row + col) % 2 == 0) { // colors
-                    System.out.print("\u001b[47m"); // Light gray background
+                    System.out.print(EscapeSequences.SET_BG_COLOR_LIGHT_GREY);
                 } else {
-                    System.out.print("\u001b[100m"); // Dark gray background
+                    System.out.print(EscapeSequences.SET_BG_COLOR_DARK_GREY);
                 }
 
                 ChessPiece squarePiece = board.getPiece(new ChessPosition(row,col));
@@ -205,13 +225,12 @@ public class ClientFunctions {
                         case PAWN -> System.out.print(EscapeSequences.WHITE_PAWN);
                     }
                 }
-
                 System.out.print("\u001b[0m"); //reset
             }
-            System.out.print(" "+row);
-            System.out.println(); // New line for next row
+            System.out.print(" "+(9-row));
+            System.out.println();
         }
-        System.out.println("  A   B   C   D   E   F   G   H  ");
+        System.out.println(letterLabel);
 
     }
 

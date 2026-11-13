@@ -26,7 +26,7 @@ public class GameDataDataAccess implements DataAccessGames{
                         var gameName = dbData.getString("gameName");
                         var chessGame = new Gson().fromJson(dbData.getString("game"), ChessGame.class);
 
-                        gameList.add(new GameData(gameIdDB, whiteUser, blackUser,gameName,chessGame));
+                        gameList.add(new GameData(gameIdDB, whiteUser, blackUser,gameName, chessGame));
                     }
                 }
             }

@@ -1,14 +1,17 @@
 package client.serverfacade;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import model.*;
 
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.List;
+import java.util.Map;
 
 public class ServerFacade {
     private final HttpClient client = HttpClient.newHttpClient();
@@ -52,10 +55,10 @@ public class ServerFacade {
 
     //get games
     //javalin.get("/game", handler::getGameList);
-    public List<GameData> gameListFacade(AuthData userData) {
+    public ListGamesResult gameListFacade(AuthData userData) {
         var request = buildRequest("GET", "/game", null, userData.authToken());
         var response = sendRequest(request);
-        return handleResponse(response, List.class);
+        return handleResponse(response, ListGamesResult.class);
 
     }
 
@@ -63,7 +66,7 @@ public class ServerFacade {
     //make game
     //javalin.post("/game", handler::createGame);
     public GameData createGameFacade(CreateGameRequest gameInfo) {
-        var request = buildRequest("POST", "/game", gameInfo, gameInfo.authToken());
+        var request = buildRequest("POST", "/game", gameInfo.gameName(), gameInfo.authToken());
         var response = sendRequest(request);
         return handleResponse(response, GameData.class);
     }
