@@ -4,7 +4,6 @@ import chess.ChessBoard;
 import chess.ChessGame;
 import chess.ChessPiece;
 import chess.ChessPosition;
-import com.google.gson.Gson;
 import model.*;
 import ui.EscapeSequences;
 
@@ -31,8 +30,7 @@ public class ClientFunctions {
                 System.out.print(result);
             } catch (Throwable e) {
                 String msg = e.getMessage();
-                ErrorResponse errorMessage = new Gson().fromJson(msg, ErrorResponse.class);
-                System.out.print(errorMessage.message()+"\n");
+                System.out.print(msg+"\n");
             }
         }
         System.out.println();
@@ -70,14 +68,14 @@ public class ClientFunctions {
                     if(tokens.length ==2) {
                         yield createGame(tokens[1]);
                     }else{
-                        yield "Please give the game name";
+                        yield "Please give the game name\n";
                     }
                 }
                 case "join" -> {
                     if (tokens.length == 3) {
                         yield joinGame(tokens[1], tokens[2]);
                     }else{
-                        yield "Please give the name then the game id";
+                        yield "Please give the name then the game id\n";
                     }
                 }
                 case "help" -> help();
@@ -85,7 +83,7 @@ public class ClientFunctions {
                     if (tokens.length == 2) {
                         yield joinAsObserver(tokens[1]);
                     } else{
-                        yield "Please give game id";
+                        yield "Please give game id\n";
                     }
                 }
                 default -> "Invalid input. Please type 'help' for list of inputs \n";
@@ -200,18 +198,26 @@ public class ClientFunctions {
 
             return "Joined game as "+joinColor+"\n";
         }else{
-            return "Game does not exist";
+            return "Game does not exist\n";
         }
 
     }
 
     //observe game
     public String joinAsObserver(String gameID){
-        Integer id = Integer.valueOf(gameID);
-        ChessGame joinedGame = gameList.games().get(id-1).game();
-        printGame(joinedGame, ChessGame.TeamColor.WHITE);
-
-        return "Joined game as observer\n";
+        Integer id;
+        try {
+            id = Integer.valueOf(gameID);
+        } catch (NumberFormatException e) {
+            throw new RuntimeException("Game Id must be a number");
+        }
+        if(gameList.games().size()>= id) {
+            ChessGame joinedGame = gameList.games().get(id - 1).game();
+            printGame(joinedGame, ChessGame.TeamColor.WHITE);
+            return "Joined game as observer\n";
+        }else{
+            return "Game does not exist\n";
+        }
     }
 
 

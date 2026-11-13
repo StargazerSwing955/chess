@@ -113,7 +113,9 @@ public class ServerFacade {
         if (!isSuccessful(status)) {
             var body = response.body();
             if (body != null) {
-                throw new RuntimeException(String.format("%s\n", body));
+                ErrorResponse errorMessage = new Gson().fromJson(body, ErrorResponse.class);
+
+                throw new RuntimeException(String.format("%s\n", errorMessage.message()));
             }
             throw new RuntimeException(String.format("Error: unknown error\n"));
         }
