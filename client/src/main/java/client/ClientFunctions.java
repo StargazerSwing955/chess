@@ -4,6 +4,7 @@ import chess.ChessBoard;
 import chess.ChessGame;
 import chess.ChessPiece;
 import chess.ChessPosition;
+import com.google.gson.Gson;
 import model.*;
 import ui.EscapeSequences;
 
@@ -29,8 +30,9 @@ public class ClientFunctions {
                 result = eval(line);
                 System.out.print(result);
             } catch (Throwable e) {
-                var msg = e.toString();
-                System.out.print(msg);
+                String msg = e.getMessage();
+                ErrorResponse errorMessage = new Gson().fromJson(msg, ErrorResponse.class);
+                System.out.print(errorMessage.message()+"\n");
             }
         }
         System.out.println();
@@ -42,8 +44,20 @@ public class ClientFunctions {
         String cmd = (tokens.length > 0) ? tokens[0] : "help";
         if(!isSignedIn) {
             return switch (cmd) {
-                case "register" -> register(tokens[1], tokens[2], tokens[3]);
-                case "login" -> login(tokens[1], tokens[2]);
+                case "register" -> {
+                    if(tokens.length ==4) {
+                        yield register(tokens[1], tokens[2], tokens[3]);
+                    }else{
+                        yield "To register please give username, password, and email\n";
+                    }
+                }
+                case "login" -> {
+                    if(tokens.length ==3) {
+                        yield login(tokens[1], tokens[2]);
+                    }else{
+                        yield "To login please give username and password\n";
+                    }
+                }
                 case "help" -> help();
                 case "quit" -> "quit";
                 default -> "Invalid input. Please type 'help' for list of inputs \n";
@@ -52,10 +66,28 @@ public class ClientFunctions {
             return switch (cmd) {
                 case "logout"-> logout();
                 case "list" -> listGames();
-                case "create" -> createGame(tokens[1]);
-                case "join" -> joinGame(tokens[1],tokens[2]);
+                case "create" -> {
+                    if(tokens.length ==2) {
+                        yield createGame(tokens[1]);
+                    }else{
+                        yield "Please give the game name";
+                    }
+                }
+                case "join" -> {
+                    if (tokens.length == 3) {
+                        yield joinGame(tokens[1], tokens[2]);
+                    }else{
+                        yield "Please give the name then the game id";
+                    }
+                }
                 case "help" -> help();
-                case "observe" -> joinAsObserver(tokens[1]);
+                case "observe" -> {
+                    if (tokens.length == 2) {
+                        yield joinAsObserver(tokens[1]);
+                    } else{
+                        yield "Please give game id";
+                    }
+                }
                 default -> "Invalid input. Please type 'help' for list of inputs \n";
             };
         }
@@ -78,7 +110,7 @@ public class ClientFunctions {
             printMessage = """
                     Options:\s
                     - register - please include username password and email\s
-                    - login - please include username password\s
+                    - login - please include username and password\s
                     - quit\s
                     """;
         }
@@ -129,43 +161,63 @@ public class ClientFunctions {
 
     //list games
     public String listGames(){
+        String printList = "";
         AuthData passingVals = new AuthData(auToken, null);
         gameList = facade.gameListFacade(passingVals);
+        for(GameData game: gameList.games()){
+            printList += String.format("%d. Game Name: %s, White: %s, Black: %s \n", game.gameID(), game.gameName(),
+                    game.whiteUsername(), game.blackUsername());
+        }
 
-        return "games:"+ gameList.games()+ "\n";
+        return "games:\n"+ printList;
     }
 
     //join game
     public String joinGame(String joinColor, String gameID){
         ChessGame.TeamColor color;
-        if (joinColor.equalsIgnoreCase("black")){
-            color = ChessGame.TeamColor.BLACK;
-        } else if (joinColor.equalsIgnoreCase("white")) {
-            color = ChessGame.TeamColor.WHITE;
-        } else {
-            return "Team color can only be black or white";
+        Integer id;
+        try {
+            id = Integer.valueOf(gameID);
+        } catch (NumberFormatException e) {
+            throw new RuntimeException("Game Id must be a number");
         }
-        Integer id = Integer.valueOf(gameID);
+        gameList = facade.gameListFacade(new AuthData(auToken, null));
+        if(gameList.games().size()>= id){
+            if (joinColor.equalsIgnoreCase("black")){
+                color = ChessGame.TeamColor.BLACK;
+            } else if (joinColor.equalsIgnoreCase("white")) {
+                color = ChessGame.TeamColor.WHITE;
+            } else {
+                return "Team color can only be black or white\n";
+            }
 
-        JoinRequest joinReq = new JoinRequest(color, id);
-        facade.joinFacade(joinReq,auToken);
+            JoinRequest joinReq = new JoinRequest(color, id);
+            facade.joinFacade(joinReq,auToken);
 
-        //get game and print it
-        listGames();
-        ChessGame joinedGame = gameList.games().get(id-1).game();
-        printGame(joinedGame, color);
+            //get game and print it
+            ChessGame joinedGame = gameList.games().get(id-1).game();
+            printGame(joinedGame, color);
 
-        return "Joined game as "+joinColor+"\n";
+            return "Joined game as "+joinColor+"\n";
+        }else{
+            return "Game does not exist";
+        }
+
     }
 
     //observe game
     public String joinAsObserver(String gameID){
         Integer id = Integer.valueOf(gameID);
-        ChessGame joinedGame = gameList.games().get(id).game();
+        ChessGame joinedGame = gameList.games().get(id-1).game();
         printGame(joinedGame, ChessGame.TeamColor.WHITE);
 
         return "Joined game as observer\n";
     }
+
+
+
+
+
 
 
     public static void printGame(ChessGame game, ChessGame.TeamColor colorPOV){
