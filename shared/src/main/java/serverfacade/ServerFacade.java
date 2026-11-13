@@ -39,22 +39,21 @@ public class ServerFacade {
 
     //login
     //javalin.post("/session",handler::loginUser);
-    public String loginFacade(List<String> userData) {
+    public AuthData loginFacade(UserData userData) {
         var request = buildRequest("POST", "/session", userData);
         var response = sendRequest(request);
         var handledResponse = handleResponse(response, AuthData.class);
         if(handledResponse != null) {
             authenticationToken = handledResponse.authToken();
         }
-        return String.valueOf(handledResponse);
+        return handledResponse;
     }
 
     //logout
     //javalin.delete("/session", handler::logoutUser);
-    public void logoutFacade(List<String> userData) {
-        var request = buildRequest("DELETE", "/session", userData);
+    public void logoutFacade(AuthData authTok ) {
+        var request = buildRequest("DELETE", "/session", authTok);
         var response = sendRequest(request);
-        var handledResponse = handleResponse(response, null);
     }
 
     //get games

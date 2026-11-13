@@ -10,7 +10,6 @@ import serverfacade.ServerFacade;
 import ui.EscapeSequences;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.Scanner;
 
 public class ClientFunctions {
@@ -93,32 +92,33 @@ public class ClientFunctions {
     //register
     public String register(String username, String password, String email){
         UserData registerData = new UserData(username, password, email);
-        AuthData regData;
+        AuthData signedInData;
         try {
-            regData = facade.registerFacade(registerData);
+            signedInData = facade.registerFacade(registerData);
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);
         }
         isSignedIn = true;
 
-        return String.format("%s registered at %s\n",regData.username(), regData.authToken());
+        return String.format("%s registered at %s\n", signedInData.username(), signedInData.authToken());
     }
 
     //login
     public String login(String username, String password){
-        List<String> registerData = List.of(new String[]{username, password});
-
+        UserData loginData = new UserData(username, password, null);
+        AuthData signedInData;
+        signedInData = facade.loginFacade(loginData);
 
         isSignedIn = true;
 
-        return "logged in\n";
+        return String.format("%s logged in at %s\n", signedInData.username(), signedInData.authToken());
     }
 
     //logout
     public String logout(){
         isSignedIn = false;
 
-        return "logged out\n";
+        return "Successfully logged out\n";
     }
 
     //create game
