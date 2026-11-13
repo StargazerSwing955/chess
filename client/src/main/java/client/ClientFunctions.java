@@ -4,15 +4,11 @@ import chess.ChessBoard;
 import chess.ChessGame;
 import chess.ChessPiece;
 import chess.ChessPosition;
-import model.AuthData;
-import model.CreateGameRequest;
-import model.GameData;
-import model.UserData;
+import model.*;
 import client.serverfacade.ServerFacade;
 import ui.EscapeSequences;
 
 import java.io.IOException;
-import java.util.Collections;
 import java.util.List;
 import java.util.Scanner;
 
@@ -58,9 +54,9 @@ public class ClientFunctions {
                 case "logout"-> logout();
                 case "list" -> listGames();
                 case "create" -> createGame(tokens[1]);
-                case "join" -> joinGame();
+                case "join" -> joinGame(tokens[1],tokens[2]);
                 case "help" -> help();
-                case "observe" -> joinAsObserver();
+                case "observe" -> joinAsObserver(tokens[1]);
                 default -> "Invalid input. Please type 'help' for list of inputs \n";
             };
         }
@@ -135,7 +131,7 @@ public class ClientFunctions {
         CreateGameRequest passingVals = new CreateGameRequest(auToken, gameName);
         GameData createdGame = facade.createGameFacade(passingVals);
 
-        return String.format("Game %s created as game \n",createdGame.gameName(), createdGame.gameID());
+        return String.format("Game %s created with id %d \n", createdGame.gameName(), createdGame.gameID());
     }
 
     //list games
@@ -147,13 +143,28 @@ public class ClientFunctions {
     }
 
     //join game
-    public String joinGame(){
+    public String joinGame(String joinColor, String gameID){
+        ChessGame.TeamColor color;
+        if (joinColor.equalsIgnoreCase("black")){
+            color = ChessGame.TeamColor.BLACK;
+        } else if (joinColor.equalsIgnoreCase("white")) {
+            color = ChessGame.TeamColor.WHITE;
+        } else {
+            return "Team color can only be black or white";
+        }
+        Integer id = Integer.valueOf(gameID);
 
-        return "joined game\n";
+        JoinRequest joinReq = new JoinRequest(color, id);
+        facade.joinFacade(joinReq,auToken);
+
+        //get game and print it
+
+        return "\n";
     }
 
     //observe game
-    public String joinAsObserver(){
+    public String joinAsObserver(String gameID){
+
 
         return "joined game as observer\n";
     }

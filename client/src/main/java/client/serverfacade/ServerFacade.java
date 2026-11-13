@@ -1,10 +1,7 @@
 package client.serverfacade;
 
 import com.google.gson.Gson;
-import model.AuthData;
-import model.CreateGameRequest;
-import model.GameData;
-import model.UserData;
+import model.*;
 
 import java.io.IOException;
 import java.net.URI;
@@ -74,11 +71,11 @@ public class ServerFacade {
 
     //join game
     //javalin.put("/game", handler::joinGame);
-//    public GameData joinFacade(List<String> gameInfo) {
-//        var request = buildRequest("put", "/game", gameInfo);
-//        var response = sendRequest(request);
-//        return handleResponse(response, GameData.class);
-//    }
+    public GameData joinFacade(JoinRequest gameInfo, String authTok) {
+        var request = buildRequest("put", "/game", gameInfo, authTok);
+        var response = sendRequest(request);
+        return handleResponse(response, GameData.class);
+    }
 
 
     //clear is called before every test; might not need in client side

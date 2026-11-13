@@ -6,6 +6,7 @@ import exceptions.*;
 import io.javalin.http.ContentType;
 import io.javalin.http.Context;
 import model.GameData;
+import model.JoinRequest;
 import model.UserData;
 import service.ServiceDelete;
 import service.ServiceGameList;
