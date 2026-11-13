@@ -1,13 +1,10 @@
 package client;
 
-import model.AuthData;
-import model.UserData;
+import model.*;
 import org.junit.jupiter.api.*;
 import server.Server;
 
-import java.net.http.HttpRequest;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 public class ServerFacadeTests {
@@ -55,6 +52,23 @@ public class ServerFacadeTests {
         AuthData testReturn = facade.loginFacade(new UserData(testData.username(),testData.password(),null));
 
         assertEquals(testData.username(),testReturn.username());
+    }
+    @Test
+    public void noGames(){
+        UserData testData = new UserData("bananaRoti", "sundae", "t@email.com");
+        AuthData registeredData = facade.registerFacade(testData);
+        ListGamesResult gList = facade.gameListFacade(registeredData);
+        assertTrue(gList.games().isEmpty());
+    }
+
+    @Test
+    public void createGame(){
+        UserData testData = new UserData("bananaRoti", "sundae", "t@email.com");
+        AuthData registeredData = facade.registerFacade(testData);
+        CreateGameRequest gameReq = new CreateGameRequest(registeredData.authToken(),"Sugarland");
+        facade.createGameFacade(gameReq);
+        ListGamesResult gList = facade.gameListFacade(registeredData);
+        assertFalse(gList.games().isEmpty());
     }
 
 
